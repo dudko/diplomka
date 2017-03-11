@@ -4,10 +4,8 @@
 #include <math.h>
 #include <errno.h>
 #include <stdio.h>
-#include <stddef.h>
-#include <lapacke.h>
 
-double* random_point_spehere(void) {
+double* random_point_sphere(void) {
   
   double* xyz = (double*) malloc(sizeof(double) * 3);
   char run = 1;
@@ -22,9 +20,9 @@ double* random_point_spehere(void) {
     xyz[1] = 2 * v * sqrt(1 - u*u - v*v); 
     xyz[2] = 1 - 2 * (u*u + v*v);
 
-    if (math_errhandling & MATH_ERRNO) {
-      printf("%s\n", strerror(errno));
-    }
+    // if (math_errhandling & MATH_ERRNO) {
+    //   printf("%s\n", strerror(errno));
+    // }
     run = 0;
   }
 
@@ -32,17 +30,36 @@ double* random_point_spehere(void) {
 }
 
 void transpose(double **src, double **dst, const int N, const int M) {
-    for(int n = 0; n<N*M; n++) {
-        int i = n/N;
-        int j = n%N;
-        dst[n] = src[M*j + i];
-    }
+  for(int n = 0; n<N*M; n++) {
+      int i = n/N;
+      int j = n%N;
+      dst[n] = src[M*j + i];
+  }
 }
 
 double** allocate_matrix(unsigned int rows, unsigned int cols) {
   double** matrix = malloc(sizeof(double*) * rows);
   for (int i = 0; i < rows; i++) {
     matrix[i] = malloc(sizeof(double) * cols); 
+  }
+}
+
+void print_matrix(double **matrix, unsigned int m) {
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < m; j++) {
+      printf("%f ", matrix[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+void multiply_matrices(double **M, double **N, double **result, unsigned int m) {
+  for(int i = 0; i < m; i++) {
+    for (int j = 0; j < m; j++) {
+      for(int k = 0; k < m; k++) {
+          result[i][j] = M[i][k] * N[k][j];
+      }
+    }
   }
 }
 
@@ -178,20 +195,31 @@ int main(void) {
       {0.0, 0.0, 0.0, 0.0, 0.0, 28.34}
     };
 
-    double* point = random_point_spehere();
-    double x = point[0];
-    double y = point[1];
-    double z = point[2];
+    // print matrix
+    printf("C\n");
+    for (int i = 0; i < 6; i++) {
+      printf("[ ");
+      for (int j = 0; j < 6; j++) {
+        printf("%f, ", C[i][j]);
+      }
+      printf(" ]\n");
+    }
+    printf("\n");  
 
-    printf("x, y, z: %f %f %f\n", x, y, z);
+    double* point = random_point_sphere();
+    double i = point[0];
+    double j = point[1];
+    double k = point[2];
 
-    double theta = acos(z);
+    // printf("i, j, k: %f %f %f\n", i, j, k);
+
+    double theta = acos(k);
     double sin_theta = sin(theta);
     
     double O[3][3] = { 
-      {z + (1 - z) * x * x, (1 - z) * x * y + sin_theta * -z, (1 - z) * x*z + y},
-      {(1 - z) * x * y + sin_theta * z, z + (1 - z) * y *y, (1 - z) * y * z + sin_theta * -x},
-      {(1 - z) * x * z + sin_theta * -y, (1 - z) * z * y + sin_theta * x, z + (1 - z) * z * z}
+      {k + (1 - k) * i * i, (1 - k) * i * j + sin_theta * -k, (1 - k) * i * k + j * sin_theta},
+      {(1 - k) * i * j + sin_theta * k, k + (1 - k) * j *j, (1 - k) * j * k + sin_theta * -i},
+      {(1 - k) * i * k + sin_theta * -j, (1 - k) * k * j + sin_theta * i, k + (1 - k) * k * k}
     };
 
     double K[6][6] = {
@@ -203,14 +231,33 @@ int main(void) {
       {O[0][0]*O[1][0], O[0][1]*O[1][1], O[0][2]*O[1][2], O[0][1]*O[1][2]+O[0][2]*O[1][1], O[0][2]*O[1][0]+O[0][0]*O[1][2], O[0][0]*O[1][1]+O[0][1]*O[1][0]}
     };
 
-    double KS[6][6] = {0};
-
-    transpose((double **) K, (double **) KS, 6, 6);
-
+    // print matrix
+    printf("K\n");
+    for (int i = 0; i < 6; i++) {
+      printf("[ ");
+      for (int j = 0; j < 6; j++) {
+        printf("%f, ", K[i][j]);
+      }
+      printf(" ]\n");
+    }
     printf("\n");
-    
-    double CS[6][6] = {0};
 
+    double KT[6][6] = {0};
+    transpose((double **) K, (double **) KT, 6, 6);
+
+    // print matrix
+    printf("KT\n");    
+    for (int i = 0; i < 6; i++) {
+      printf("[ ");
+      for (int j = 0; j < 6; j++) {
+        printf("%f, ", KT[i][j]);
+      }
+      printf(" ]\n");
+    }
+    printf("\n");
+
+    double CS[6][6] = {0};
+    
     for(int i = 0; i < 6; i++) {
       for (int j = 0; j < 6; j++){
         for(int k = 0; k < 6; k++){
@@ -218,45 +265,59 @@ int main(void) {
         }
       }
     }
+    // print matrix
+    printf("CS1\n");    
+    for (int i = 0; i < 6; i++) {
+      printf("[ ");
+      for (int j = 0; j < 6; j++) {
+        printf("%f, ", C[i][j]);
+      }
+      printf(" ]\n");
+    }
+    printf("\n");
 
     for(int i = 0; i < 6; i++) {
       for (int j = 0; j < 6; j++){
         for(int k = 0; k < 6; k++){
-            C[i][j] = CS[i][k] * KS[k][j];
+            C[i][j] = CS[i][k] * KT[k][j];
         }
       }
     }
 
+    // print matrix
+    printf("CS\n");    
     for (int i = 0; i < 6; i++) {
+      printf("[ ");
       for (int j = 0; j < 6; j++) {
-        printf("%f ", C[i][j]);
+        printf("%f, ", C[i][j]);
       }
-      printf("\n");
-    }  
+      printf(" ]\n");
+    }
+    printf("\n");
 
-    int N = 6;
-    int NN = 36;
+    // int N = 6;
+    // int NN = 36;
 
-    int pivotArray[9]; //since our matrix has three rows
-    int errorHandler;
-    double lapackWorkspace[36];
+    // int pivotArray[9]; //since our matrix has three rows
+    // int errorHandler;
+    // double lapackWorkspace[36];
 
-    // dgetrf(M,N,A,LDA,IPIV,INFO) means invert LDA columns of an M by N matrix
-    // called A, sending the pivot indices to IPIV, and spitting error information
-    // to INFO. also don't forget (like I did) that when you pass a two-dimensional
-    // array to a function you need to specify the number of "rows"
-    dgetrf_(&N, &N, C[0], &N, pivotArray, &errorHandler);
-    printf ("dgetrf eh, %d, should be zero\n", errorHandler);
+    // // dgetrf(M,N,A,LDA,IPIV,INFO) means invert LDA columns of an M by N matrix
+    // // called A, sending the pivot indices to IPIV, and spitting error information
+    // // to INFO. also don't forget (like I did) that when you pass a two-dimensional
+    // // array to a function you need to specify the number of "rows"
+    // dgetrf_(&N, &N, C[0], &N, pivotArray, &errorHandler);
+    // printf ("dgetrf eh, %d, should be zero\n", errorHandler);
 
-    dgetri_(&N, C[0], &N, pivotArray, lapackWorkspace, &NN, &errorHandler);
-    printf ("dgetri eh, %d, should be zero\n", errorHandler);
+    // dgetri_(&N, C[0], &N, pivotArray, lapackWorkspace, &NN, &errorHandler);
+    // printf ("dgetri eh, %d, should be zero\n", errorHandler);
 
-    for (int i = 0; i < 6; i++) {
-      for (int j = 0; j < 6; j++) {
-        printf("%f ", C[i][j]);
-      }
-      printf("\n");
-    }  
+    // for (int i = 0; i < 6; i++) {
+    //   for (int j = 0; j < 6; j++) {
+    //     printf("%f ", C[i][j]);
+    //   }
+    //   printf("\n");
+    // }  
 
     // // Determinant(C, 6);
     // printf("%f", Determinant(C, 6));
