@@ -48,7 +48,7 @@ function sendMatrix() {
   const matrix = formToMatrix();
 
   const http = new XMLHttpRequest();
-  http.open("POST", "/", true);
+  http.open("POST", "/api/calc", true);
   http.setRequestHeader("Content-Type", "application/json");
 
   http.onload = function () {
