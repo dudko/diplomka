@@ -17,22 +17,12 @@ function randomPointSphere() {
     running = false;
   }
 
-  return [i, j, k];
+  return {i, j, k};
 }
 
-const C = math.matrix([
-  [ 106.75, 60.41, 60.41, 0.0, 0.0, 0 ],
-  [ 60.41, 106.75, 60.41, 0.0, 0.0, 0 ],
-  [ 60.41, 60.41, 106.75, 0.0, 0.0, 0 ],
-  [ 0.0, 0.0, 0.0, 28.34, 0.0, 0 ],
-  [ 0.0, 0.0, 0.0, 0.0, 28.34, 0 ],    
-  [ 0.0, 0.0, 0.0, 0.0, 0.0, 28.34]
-]);
-
-for (i = 0; i<1000; i++) {
-  let i, j, k = 0;
-  [i, j, k] = randomPointSphere();
-
+module.exports = (elasticConstants) => {
+  const C = math.matrix(elasticConstants);
+  const {i, j, k} = randomPointSphere();
   const theta = math.acos(k);
   const sinTheta = math.sin(theta);
 
@@ -63,5 +53,6 @@ for (i = 0; i<1000; i++) {
   const x = Y * i;
   const y = Y * j;
   const z = Y * k;
-  console.log(`${x} ${y}, ${y} : ${Y}`)
+
+  return {x, y, z, Y}
 }
