@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const contentType = require('../middlewares/contentTypeValidator');
+const contentType = require('../middleware/contentTypeValidator');
 
 /**
  * Routes.
