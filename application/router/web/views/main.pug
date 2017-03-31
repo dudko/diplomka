@@ -2,63 +2,40 @@ doctype html
 html(lang='en')
   head
     title web
-    link(rel='stylesheet', href='https://unpkg.com/purecss@0.6.2/build/pure-min.css')
+    link(rel='stylesheet', href='//cdn.jsdelivr.net/picnicss/6.3.2/picnic.min.css')
+    link(rel='stylesheet', href='./css/my.css')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    
-      
+    script(src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.js")
+    script(src="//threejs.org/examples/js/geometries/ConvexGeometry.js")
   body
-    div(style="padding: 0 50px")
-      .pure-g
-        .pure-u-6-24
-          h3 Matrix of Elastic constants
+    main.intro
 
-          p        
-            select
-              option(select='selected') Select type (crystal / symmetry)
+      h1 Phase Elasticity
+
+      .flex.two
+        form.half
+          select.flex
+            option(select='selected') Select type (crystal / symmetry)
               option(value='cubic') cubic
-              option(value='hexagonal') hexagonal
-              option(value='tetragonal') tetragonal
-              option(value='trigonal') trigonal
-              option(value='orthorombic') orthorombic              
+            option(value='hexagonal') hexagonal
+            option(value='tetragonal') tetragonal
+            option(value='trigonal') trigonal
+            option(value='orthorombic') orthorombic
 
-          form.pure-form
-            each row in [0, 1, 2, 3, 4, 5]
-              .pure-g
+          p
+          each row in [0, 1, 2, 3, 4, 5]
+            .flex.six
               each col in [0, 1, 2, 3, 4, 5]
-                .pure-u-1-6
-                  input.pure-u-1(name=`${row}${col}`)
-          br
-          div.pure-button-group
-            button.pure-button.pure-button-primary(type='button' onclick='prefill(null)') Prefill
-            button.pure-button.pure-button-primary(type='button' onclick='') Clear
-            button.pure-button.pure-button-primary(type='button' onclick='saveLocaly()') Save
-            button.pure-button.pure-button-primary(type='button' onclick='sendMatrix()') Submit
-
-        .pure-u-1-24
-
-        .pure-u-3-24
-          h3 Locally stored
-          ul#local
-
-        .pure-u-3-24
-          h3 Remotely stored        
-          ul#remote
-      hr
-      .pure-g
-        .pure-u-6-24
-          h3 Marsaglia Sphere Points
-          div(id='points', style='width:500px; height:500px')
+                input(name=`${row}${col}`)
+          .flex
+            button(type='button' onclick='prefill(null)') Prefill
+            button(type='button' onclick='saveLocaly()') Save
+            button(type='button' onclick='sendMatrix()') Submit
 
       hr
-      .pure-g
 
-        .pure-u-6-24
-          h3 Search in faces
-          
-          form.pure-form
-            input(type='text', name='keyword', placeholder='Search by name')
-            button.pure-button.pure-button-primary(type='button') Submit
-            textarea(style='width:300px; height:300px', id='found')
+      div(id='Ys')
+      div(id='Ys2')
 
-    script(src='https://cdn.plot.ly/plotly-latest.min.js')    
+    script(src='https://cdn.plot.ly/plotly-latest.js')
     script(src='./js/helpers.js')
