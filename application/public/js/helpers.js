@@ -1,10 +1,3 @@
-window.onload = init;
-
-function init() {
-  reloadLocal();
-  reloadRemote();
-}
-
 function prefill(faceKey) {
   let cubic = [];
 
@@ -48,12 +41,86 @@ function sendMatrix() {
   const matrix = formToMatrix();
 
   const http = new XMLHttpRequest();
-  http.open("POST", "/api/calc", true);
+  http.open("POST", "/api/calcNew", true);
   http.setRequestHeader("Content-Type", "application/json");
 
   http.onload = function () {
-    // console.log(this);
-    reloadRemote();
+    const { x, y, z, Y } = JSON.parse(this.response);
+    console.log(x.length, y.length, z.length)
+    var trace1 = {
+      x, y, z,
+      // mode: 'markers',
+      // marker: {
+      //   size: 12,
+      //   color: Y,
+      //   colorscale: 'Jet',
+      //   opacity: 1
+      // },
+      type: 'surface'
+    };
+
+    var data = [trace1];
+    var layout = {
+      margin: {
+        l: 0,
+        r: 0,
+        b: 0,
+        t: 20
+      }
+    };
+    Plotly.newPlot('Ys2', data, layout);
+
+    var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(200, 600 / 600, 0.1, 1000);
+        
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(new THREE.Color(0xEEEEEE));
+        renderer.setSize(600, 600);
+
+        var axes = new THREE.AxisHelper(100);
+        scene.add(axes);
+
+        const points = [];
+    
+        for (var i = 0; i <= 10000; i++) {
+            points.push(new THREE.Vector3(x[i], y[i], z[i]));
+        }
+        var material = new THREE.MeshPhongMaterial({
+            color: 0x252525
+        });
+
+        function createMesh(geom) {
+
+            // assign two materials
+            var meshMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, transparent: true, opacity: 0.2});
+            meshMaterial.side = THREE.DoubleSide;
+            var wireFrameMat = new THREE.MeshBasicMaterial();
+            wireFrameMat.wireframe = true;
+
+            // create a multimaterial
+            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial, wireFrameMat]);
+
+            return mesh;
+        }
+
+        var hullGeometry = new THREE.ConvexGeometry(points);
+        mesh = createMesh(hullGeometry);
+        
+        
+        // mesh.rotation.x = -0.5 * Math.PI;
+        mesh.position.x = 0;
+        mesh.position.y = 0;
+        mesh.position.z = 0;
+        scene.add(mesh);
+
+        camera.position.x = -30;
+        camera.position.y = 40;
+        camera.position.z = 50;
+        camera.lookAt(scene.position);
+
+        document.getElementById('Ys')
+            .appendChild(renderer.domElement);
+        renderer.render(scene, camera);
   };
 
   http.send(JSON.stringify({ matrix }));
@@ -118,75 +185,8 @@ function reloadRemote() {
   xhr.send(null);
 }
 
-function marsaglia(numOfPoints) {
-  const points = {
-    x: [],
-    y: [],
-    z: []
-  };
-
-  while(numOfPoints) {
-    // u, v in (-1, 1)
-    const u = Math.random() * (Math.floor(Math.random()*2) == 1 ? 1 : -1)
-    const v = Math.random() * (Math.floor(Math.random()*2) == 1 ? 1 : -1)
-
-    if (Math.pow(u) + Math.pow(v) >= 1) continue;
-
-    points.x.push(2 * u * Math.sqrt(1 - Math.pow(u, 2) - Math.pow(v, 2)));
-    points.y.push(2 * v * Math.sqrt(1 - Math.pow(u, 2) - Math.pow(v, 2)));
-    points.z.push(1 - 2 * (Math.pow(u, 2) + Math.pow(v, 2)));
-
-    numOfPoints--;
-  }
-
-  return points;
-}
-
-const points = marsaglia(1000);
-var trace1 = {
-  x: points.x , y: points.y, z: points.z,
-  mode: 'markers',
-  marker: {
-		size: 5,
-		line: {
-		color: 'rgba(217, 217, 217, 0.14)',
-		width: 0.5},
-		opacity: 1},
-	type: 'scatter3d'
-};
-
-var data = [trace1];
-var layout = {
-  margin: {
-    l: 0,
-    r: 0,
-    b: 0,
-    t: 20
-  }
-};
-Plotly.newPlot('points', data, layout);
-
-function youngus() {
-  const points = marsaglia(1000);
-
-  const i = points.x[0];
-  const j = points.y[0];
-  const k = points.z[0];
-
-  console.log(i, j, k);
-
-  const theta = Math.acos(k);
-
-  console.log(theta);
 
 
-  let I = math.matrix([[k, 0, 0], [0, k, 0], [0, 0, k]]);
-  let M = math.matrix([[0, -k, j], [k, 0, -i], [-j, i, 0]]);
-  let N = math.matrix([[i*i, i*j, i*k], [j*i, j*j, j*k], [k*i, k*j, k*k]]);
-
-  M = math.multiply(M, Math.sin(theta));
-  N = math.multiply(N, 1-k);
-  let sigma = math.add(I, M);
   let s = sigma.toArray();
 
   let K = math.matrix([
