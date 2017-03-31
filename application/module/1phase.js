@@ -48,11 +48,12 @@ module.exports = (elasticConstants) => {
   CS = math.multiply(CS, KT);
 
   const S = math.inv(CS);
-  const Y = 1/math.subset(S, math.index(3, 3));
+  let Y = 1/math.subset(S, math.index(2, 2));
   
   const x = Y * i;
   const y = Y * j;
   const z = Y * k;
+  Y = math.abs(Y);
 
   return {x, y, z, Y}
 }
