@@ -34,11 +34,11 @@ router.post('/calcNew', (req, res, next) => {
     Y: []
   };
 
-  for (i = 0; i< 1000; i++) {
+  for (i = 0; i< 10000; i++) {
     let {x, y, z, E} = youngNew(req.body.matrix);
-    Ys.x.push([x]);
-    Ys.y.push([y]);
-    Ys.z.push([z]);
+    Ys.x.push(x);
+    Ys.y.push(y);
+    Ys.z.push(z);
     Ys.Y.push(E);
   }
 

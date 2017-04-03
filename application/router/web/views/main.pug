@@ -2,11 +2,11 @@ doctype html
 html(lang='en')
   head
     title web
-    link(rel='stylesheet', href='//cdn.jsdelivr.net/picnicss/6.3.2/picnic.min.css')
+    link(rel='stylesheet', href='./css/picnic.min.css')
     link(rel='stylesheet', href='./css/my.css')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    script(src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.js")
-    script(src="//threejs.org/examples/js/geometries/ConvexGeometry.js")
+    //- meta(name='viewport', content='width=device-width, initial-scale=1')
+    script(src="./js/three.js")
+    script(src="./js/ConvexGeometry.js")
   body
     main.intro
 
@@ -37,5 +37,5 @@ html(lang='en')
       div(id='Ys')
       div(id='Ys2')
 
-    script(src='https://cdn.plot.ly/plotly-latest.js')
-    script(src='./js/helpers.js')
+    script(src='./js/helpers.js')    
+    script(src='./js/plotly-latest.js')

@@ -43,20 +43,21 @@ function sendMatrix() {
   const http = new XMLHttpRequest();
   http.open("POST", "/api/calcNew", true);
   http.setRequestHeader("Content-Type", "application/json");
+  http.onerror = (e) => console.log(e);
 
   http.onload = function () {
     const { x, y, z, Y } = JSON.parse(this.response);
-    console.log(x.length, y.length, z.length)
+
     var trace1 = {
       x, y, z,
-      // mode: 'markers',
-      // marker: {
-      //   size: 12,
-      //   color: Y,
-      //   colorscale: 'Jet',
-      //   opacity: 1
-      // },
-      type: 'surface'
+      mode: 'markers',
+      marker: {
+        size: 12,
+        color: Y,
+        colorscale: 'Jet',
+        opacity: 1
+      },
+      type: 'scatter3d'
     };
 
     var data = [trace1];
@@ -68,62 +69,62 @@ function sendMatrix() {
         t: 20
       }
     };
-    Plotly.newPlot('Ys2', data, layout);
+    Plotly.newPlot('Ys', data, layout);
 
-    var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(200, 600 / 600, 0.1, 1000);
+    // var scene = new THREE.Scene();
+    //     var camera = new THREE.PerspectiveCamera(200, 600 / 600, 0.1, 1000);
         
-        var renderer = new THREE.WebGLRenderer();
-        renderer.setClearColor(new THREE.Color(0xEEEEEE));
-        renderer.setSize(600, 600);
+    //     var renderer = new THREE.WebGLRenderer();
+    //     renderer.setClearColor(new THREE.Color(0xEEEEEE));
+    //     renderer.setSize(600, 600);
 
-        var axes = new THREE.AxisHelper(100);
-        scene.add(axes);
+    //     var axes = new THREE.AxisHelper(100);
+    //     scene.add(axes);
 
-        const points = [];
+    //     const points = [];
     
-        for (var i = 0; i <= 10000; i++) {
-            points.push(new THREE.Vector3(x[i], y[i], z[i]));
-        }
-        var material = new THREE.MeshPhongMaterial({
-            color: 0x252525
-        });
+    //     for (var i = 0; i <= 10000; i++) {
+    //         points.push(new THREE.Vector3(x[i], y[i], z[i]));
+    //     }
+    //     var material = new THREE.MeshPhongMaterial({
+    //         color: 0x252525
+    //     });
 
-        function createMesh(geom) {
+    //     function createMesh(geom) {
 
-            // assign two materials
-            var meshMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, transparent: true, opacity: 0.2});
-            meshMaterial.side = THREE.DoubleSide;
-            var wireFrameMat = new THREE.MeshBasicMaterial();
-            wireFrameMat.wireframe = true;
+    //         // assign two materials
+    //         var meshMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, transparent: true, opacity: 0.2});
+    //         meshMaterial.side = THREE.DoubleSide;
+    //         var wireFrameMat = new THREE.MeshBasicMaterial();
+    //         wireFrameMat.wireframe = true;
 
-            // create a multimaterial
-            var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial, wireFrameMat]);
+    //         // create a multimaterial
+    //         var mesh = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial, wireFrameMat]);
 
-            return mesh;
-        }
+    //         return mesh;
+    //     }
 
-        var hullGeometry = new THREE.ConvexGeometry(points);
-        mesh = createMesh(hullGeometry);
+    //     var hullGeometry = new THREE.ConvexGeometry(points);
+    //     mesh = createMesh(hullGeometry);
         
         
-        // mesh.rotation.x = -0.5 * Math.PI;
-        mesh.position.x = 0;
-        mesh.position.y = 0;
-        mesh.position.z = 0;
-        scene.add(mesh);
+    //     // mesh.rotation.x = -0.5 * Math.PI;
+    //     mesh.position.x = 0;
+    //     mesh.position.y = 0;
+    //     mesh.position.z = 0;
+    //     scene.add(mesh);
 
-        camera.position.x = -30;
-        camera.position.y = 40;
-        camera.position.z = 50;
-        camera.lookAt(scene.position);
+    //     camera.position.x = -30;
+    //     camera.position.y = 40;
+    //     camera.position.z = 50;
+    //     camera.lookAt(scene.position);
 
-        document.getElementById('Ys')
-            .appendChild(renderer.domElement);
-        renderer.render(scene, camera);
-  };
-
+    //     document.getElementById('Ys2')
+    //         .appendChild(renderer.domElement);
+    //     renderer.render(scene, camera);
+  }
   http.send(JSON.stringify({ matrix }));
+  
 }
 
 function saveLocaly() {
@@ -187,14 +188,13 @@ function reloadRemote() {
 
 
 
-  let s = sigma.toArray();
+//   let s = sigma.toArray();
 
-  let K = math.matrix([
-    [math.pow(s[0, 0], 2), math.pow(s[0, 1], 2), math.pow(s[0, 2], 2), 2*s[0, 1]*s[0, 2], 2*s[0, 2]*s[0, 0], 2*s[0, 0]*s[0, 1]],
-    [math.pow(s[1, 0], 2), math.pow(s[1, 1], 2), math.pow(s[1, 2], 2), 2*s[1, 1]*s[1, 2], 2*s[1, 2]*s[1, 0], 2*s[1, 0]*s[1, 1]],
-    [math.pow(s[2, 0], 2), math.pow(s[2, 1], 2), math.pow(s[2, 2], 2), 2*s[2, 1]*s[2, 2], 2*s[2, 2]*s[2, 0], 2*s[2, 0]*s[2, 1]],
+//   let K = math.matrix([
+//     [math.pow(s[0, 0], 2), math.pow(s[0, 1], 2), math.pow(s[0, 2], 2), 2*s[0, 1]*s[0, 2], 2*s[0, 2]*s[0, 0], 2*s[0, 0]*s[0, 1]],
+//     [math.pow(s[1, 0], 2), math.pow(s[1, 1], 2), math.pow(s[1, 2], 2), 2*s[1, 1]*s[1, 2], 2*s[1, 2]*s[1, 0], 2*s[1, 0]*s[1, 1]],
+//     [math.pow(s[2, 0], 2), math.pow(s[2, 1], 2), math.pow(s[2, 2], 2), 2*s[2, 1]*s[2, 2], 2*s[2, 2]*s[2, 0], 2*s[2, 0]*s[2, 1]],
     
-])
+// ])
 
-}
 
