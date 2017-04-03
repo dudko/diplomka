@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import MaterialConstantsForm from '../MaterialConstantsForm';
+import MaterialProjectSearch from '../MaterialProjectSearch';
 
 export class App extends Component {
   constructor(props) {
@@ -11,8 +12,10 @@ export class App extends Component {
 
   render() {
     return (
-      <div className="page">
+      <div className="container">
         <MaterialConstantsForm />
+        <hr/>
+        <MaterialProjectSearch />
       </div>
     );
   }

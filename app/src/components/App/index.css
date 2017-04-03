@@ -1,22 +1,6 @@
-.page {
-  margin: 20px auto;
+.container {
+  margin: 10px auto;
   width: 800px;
-}
-
-a {
-  color: #222;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-input {
-  padding: 10px;
-  width: 30px;
-  outline: none;
-  border: 1px solid #dddddd;
-  text-align: center;
 }
 
 /*button {

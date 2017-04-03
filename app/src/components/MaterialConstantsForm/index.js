@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from '../Button';
 import MaterialTypeSelect from '../MaterialTypeSelect';
+import './index.css';
 
 class MaterialConstantsForm extends Component {
   constructor(props) {
@@ -37,17 +38,24 @@ class MaterialConstantsForm extends Component {
     const { material } = this.state;
 
     return (
-      <form>
+      <form
+        className='material-constants-form'
+      >
+        <h4>Select material type:</h4>
         <MaterialTypeSelect
+          className
           getMaterial={this.getMaterial}
           setMaterial={this.setMaterial}
           diagonalSymmetry={this.diagonalSymmetry}
         />
 
         {material.constants.map((row, rowIndex) => (
-          <div key={rowIndex}>
+          <div
+            key={rowIndex}
+          >
             {row.map((cell, cellIndex) => (
               <input
+                className='matrix-cell'
                 key={`${rowIndex}-${cellIndex}`}
                 name={`${rowIndex}-${cellIndex}`}
                 value={cell.value || ''}
@@ -58,11 +66,21 @@ class MaterialConstantsForm extends Component {
           </div>
         ))}
         
+        <div 
+          className='btn-group'
+        >
         <Button
           onClick={() => console.log('click')}
         >
           Submit
         </Button>
+
+        <Button
+          onClick={() => console.log('click')}
+        >
+          Clear
+        </Button>
+        </div>
 
       </form>
     )
