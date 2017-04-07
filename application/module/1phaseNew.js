@@ -25,8 +25,6 @@ module.exports = (elasticConstants) => {
   const S = math.inv(C);
 
   const {i, j, k} = randomPointSphere();
-  const theta = math.acos(k);
-  const sinTheta = math.sin(theta);
 
   const pow = math.pow;
 
@@ -37,14 +35,14 @@ module.exports = (elasticConstants) => {
     pow(i, 2) * pow(j, 2) * math.subset(S, math.index(0, 1)) +
     pow(i, 2) * pow(k, 2) * math.subset(S, math.index(0, 2)) +
     pow(j, 2) * pow(i, 2) * math.subset(S, math.index(1, 0)) +
-    pow(j, 2) * pow(k, 2) * math.subset(S, math.index(2, 2)) +
+    pow(j, 2) * pow(k, 2) * math.subset(S, math.index(1, 2)) +
     pow(i, 2) * pow(k, 2) * math.subset(S, math.index(2, 0)) +
     pow(k, 2) * pow(j, 2) * math.subset(S, math.index(2, 1)) +
     pow(j, 2) * pow(k, 2) * math.subset(S, math.index(3, 3)) +
     pow(i, 2) * pow(k, 2) * math.subset(S, math.index(4, 4)) +
     pow(i, 2) * pow(j, 2) * math.subset(S, math.index(5, 5));
 
-  E = 1/E;
+  E = Math.round(Math.abs(1/E) * 100) / 100;
   const x = E * i;
   const y = E * j;
   const z = E * k;
