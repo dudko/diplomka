@@ -41,6 +41,8 @@ module.exports = (elasticConstants) => {
     [ O[0][0]*O[1][0], O[0][1]*O[1][1], O[0][2]*O[1][2], O[0][1]*O[1][2]+O[0][2]*O[1][1], O[0][2]*O[1][0]+O[0][0]*O[1][2], O[0][0]*O[1][1]+O[0][1]*O[1][0] ]
   ];
 
+
+
   O = math.matrix(O);
   K = math.matrix(K);
   const KT = math.transpose(K);

@@ -1,5 +1,22 @@
 function prefill(faceKey) {
   let cubic = [];
+  let m1 = [
+    [433, 168, 168, 0, 0, 0],
+    [168, 433, 168, 0, 0, 0],
+    [168, 168, 433, 0, 0, 0],
+    [0, 0, 0, 307, 0, 0],
+    [0, 0, 0, 0, 307, 0],
+    [0, 0, 0, 0, 0, 307]
+  ];
+
+  let m2 = [
+    [484, 140, 131, 0, 0, 0],
+    [140, 488, 125, 0, 0, 0],
+    [131, 125, 502, 0, 0, 0],
+    [0, 0, 0, 103, 0, 0],
+    [0, 0, 0, 0, 105, 0],
+    [0, 0, 0, 0, 0, 121]
+  ];
 
   if (faceKey) {
     cubic = JSON.parse(localStorage.getItem(faceKey));
@@ -16,8 +33,15 @@ function prefill(faceKey) {
   
   for (let i = 0; i < 6; i++) {
     for (let j = 0; j < 6; j++) {
-      const cell = document.getElementsByName(`${i}${j}`);
-      cell[0].value = cubic[i][j];
+      const cell = document.getElementsByName(`1-${i}${j}`);
+      cell[0].value = m1[i][j];
+    }
+  }
+
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      const cell = document.getElementsByName(`2-${i}${j}`);
+      cell[0].value = m2[i][j];
     }
   }
 }
@@ -37,11 +61,32 @@ function formToMatrix() {
   return matrix;
 }
 
+function formsToMatrix() {
+  const matrix1 = [
+    [], [], [], [], [], []
+  ];
+  const matrix2 = [
+    [], [], [], [], [], []
+  ];
+
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      const cell1 = document.getElementsByName(`1-${i}${j}`);
+      matrix1[i][j] = parseFloat(cell1[0].value);
+
+      const cell2 = document.getElementsByName(`2-${i}${j}`);
+      matrix2[i][j] = parseFloat(cell2[0].value);      
+    }
+  }
+
+  return [matrix1, matrix2];
+}
+
 function sendMatrix() {
-  const matrix = formToMatrix();
+  const [matrix1, matrix2] = formsToMatrix();
 
   const http = new XMLHttpRequest();
-  http.open("POST", "/api/calcNew", true);
+  http.open("POST", "/api/calcComposite", true);
   http.setRequestHeader("Content-Type", "application/json");
   http.onerror = (e) => console.log(e);
 
@@ -123,7 +168,7 @@ function sendMatrix() {
     //         .appendChild(renderer.domElement);
     //     renderer.render(scene, camera);
   }
-  http.send(JSON.stringify({ matrix }));
+  http.send(JSON.stringify({ matrix1, matrix2 }));
   
 }
 

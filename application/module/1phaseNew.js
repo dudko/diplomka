@@ -21,7 +21,7 @@ function randomPointSphere() {
 }
 
 module.exports = (elasticConstants) => {
-  const C = math.matrix(elasticConstants);
+  const C = elasticConstants;
   const S = math.inv(C);
 
   const {i, j, k} = randomPointSphere();

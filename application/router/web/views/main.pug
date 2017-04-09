@@ -5,8 +5,8 @@ html(lang='en')
     link(rel='stylesheet', href='./css/picnic.min.css')
     link(rel='stylesheet', href='./css/my.css')
     //- meta(name='viewport', content='width=device-width, initial-scale=1')
-    script(src="./js/three.js")
-    script(src="./js/ConvexGeometry.js")
+    //- script(src="./js/three.js")
+    //- script(src="./js/ConvexGeometry.js")
   body
     main.intro
 
@@ -23,10 +23,18 @@ html(lang='en')
             option(value='orthorombic') orthorombic
 
           p
-          each row in [0, 1, 2, 3, 4, 5]
-            .flex.six
-              each col in [0, 1, 2, 3, 4, 5]
-                input(name=`${row}${col}`)
+          div
+            each row in [0, 1, 2, 3, 4, 5]
+              .flex.six
+                each col in [0, 1, 2, 3, 4, 5]
+                  input(name=`1-${row}${col}`)
+          p
+
+          div
+            each row in [0, 1, 2, 3, 4, 5]
+              .flex.six
+                each col in [0, 1, 2, 3, 4, 5]
+                  input(name=`2-${row}${col}`)
           .flex
             button(type='button' onclick='prefill(null)') Prefill
             button(type='button' onclick='saveLocaly()') Save
