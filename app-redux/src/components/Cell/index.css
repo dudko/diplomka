@@ -1,0 +1,8 @@
+.cell {
+  padding: 10px;
+  outline: none;
+  max-width: 30px;
+  border: 1px solid #ccc;
+  border-radius: .2em;
+  text-align: center;
+}
