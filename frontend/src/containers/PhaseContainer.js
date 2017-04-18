@@ -1,19 +1,21 @@
+import React from 'react';
 import { connect } from 'react-redux';
 import Phase from '../components/Phase';
-import { constantChanged } from '../actions';
+import { submitPhase } from '../actions';
 
-/*const PhaseContainer = ({ material, onConstantChanged }) => (
+const PhaseContainer = ({ material, submitPhase }) => (
   <Phase
     material={material}
-    onConstantChanged={onConstantChanged}
+    submitPhase={submitPhase}
   />
-);*/
+);
 
-// const mapStateToProps = (state) => ({
-//   material: state
-// })
-
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state) => ({
+  material: state
 })
 
-export default connect(mapDispatchToProps)(Phase);
+const mapDispatchToProps = dispatch => ({
+  submitPhase: elasticity => dispatch(submitPhase(elasticity))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhaseContainer);
