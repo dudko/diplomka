@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import Phase from '../components/Phase';
 import { submitPhase } from '../actions';
 
-const PhaseContainer = ({ material, submitPhase }) => (
+const PhaseContainer = ({ material, submitPhase, postMessage }) => (
   <Phase
     material={material}
     submitPhase={submitPhase}
+    postMessage={postMessage}
   />
 );
 

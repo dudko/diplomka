@@ -7,8 +7,6 @@ export const UPDATE_TO_SEARCH_RESULT = 'UPDATE_TO_SEARCH_RESULT';
 export const SUBMIT_PHASE = 'SUBMIT_PHASE';
 export const PROCESS_POINTS = 'PROCESS_POINTS';
 
-
-
 export const cellChanged = (value, index) => ({
   type: CELL_CHANGED,
   value,

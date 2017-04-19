@@ -10,7 +10,7 @@ const PlotlyComponent = createPlotlyComponent(Plotly);
 
 export default class Phase extends Component {
   render() {
-    const { submitPhase, material } = this.props;
+    const { submitPhase, material, postMessage } = this.props;
 
     if (material.points) {
       var trace1 = {
@@ -43,24 +43,28 @@ export default class Phase extends Component {
   }
 
   return (
-    <form>
-      <CrystalSystemSelect />
-      <Matrix
-        rowCount={6}
-        columnCount={6}
-      />
-      <MaterialProjectSearch />
-      <Button
-        onClick={() => submitPhase(
-          material.elasticity.map(row => row.map(cell => cell.value)))}
-      >
-        Submit
-      </Button>
+    <div>
       {material.points ?
-        <PlotlyComponent data={data} layout={layout}/> :
-        <h5>No data</h5>
+          <PlotlyComponent data={data} layout={layout}/> :
+          <h5>No data</h5>
       }
-    </form>
+
+      <form>
+        <CrystalSystemSelect />
+        <Matrix
+          rowCount={6}
+          columnCount={6}
+        />
+        <MaterialProjectSearch />
+        <Button
+          onClick={() => postMessage.postMessage(
+            material.elasticity.map(row => row.map(cell => cell.value)))}
+        >
+          Submit
+        </Button>
+        
+      </form>
+    </div>
   )
   }
 }
