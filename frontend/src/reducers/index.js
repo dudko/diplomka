@@ -34,6 +34,13 @@ const reducer = (state = initialState, action) => {
       updatedState.points = _.cloneDeep(action.points);
       return updatedState;
     }
+    case ActionTypes.PROCESS_TABLES: {
+      const { tables } = action.tables;
+      const updatedState = _.cloneDeep(state);
+      updatedState.tables = _.cloneDeep(action.tables);
+      return updatedState;
+    }
+
     default:
       return state;
   }

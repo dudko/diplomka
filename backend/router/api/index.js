@@ -4,7 +4,9 @@ const youngNew = require('../../module/1phaseNew');
 const Face = require('../../model/Face');
 const math = require('mathjs');
 const https = require('https');
+const http = require('http');
 const queryString = require('query-string');
+const cheerio = require('cheerio');
 
 router.use(function (req, res, next) {
 
@@ -181,6 +183,41 @@ router.get('/searchMaterialProject/:keyword', (req, res) => {
     
     searchRequest.write(body);
     searchRequest.end();
+});
+
+router.post('/elateAnalyse', (req, res, next) => {
+  const matrix = req.body.matrix;
+
+  let body = matrix.map(row => row.join('+')).join('%0D%0A');
+  body = `matrix=${body}`;
+
+  const options = {
+    hostname: 'progs.coudert.name',
+    port: 80,
+    path: '/elate',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/html'
+    },
+  };
+
+  const analyseRequest = http
+    .request(options, response => {
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        $ = cheerio.load(data);
+        const tables = [];
+        $('table', 'body').each(function() {
+          tables.push($(this).html());
+        });        
+        return res.send(tables);  
+      });
+      response.on('error', e => res.setStatus(500).send(e));
+    });
+    
+    analyseRequest.write(body);
+    analyseRequest.end();
 });
 
 module.exports = router;

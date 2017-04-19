@@ -38,6 +38,21 @@ const calculatePhase = (cb, elasticity) => {
   http.send(JSON.stringify({ matrix: elasticity }));
 }
 
+const elateAnalyse = (cb, elasticity) => {
+  const http = new XMLHttpRequest();
+  http.open("POST", "http://localhost:8080/api/elateAnalyse", true);
+  http.setRequestHeader("Content-Type", "application/json");
+  http.onerror = (e) => console.log(e);
+
+  
+  http.onload = function () {
+    const tables = JSON.parse(this.response);
+    cb(tables);
+  }
+  http.send(JSON.stringify({ matrix: elasticity }));
+}
+
 export {
-  calculatePhase
+  calculatePhase,
+  elateAnalyse
 }

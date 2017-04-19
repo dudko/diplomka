@@ -6,6 +6,7 @@ export const MATERIAL_KEYWORD_CHANGED = 'MATERIAL_KEYWORD_CHANGED';
 export const UPDATE_TO_SEARCH_RESULT = 'UPDATE_TO_SEARCH_RESULT';
 export const SUBMIT_PHASE = 'SUBMIT_PHASE';
 export const PROCESS_POINTS = 'PROCESS_POINTS';
+export const PROCESS_TABLES = 'PROCESS_TABLES';
 
 export const cellChanged = (value, index) => ({
   type: CELL_CHANGED,
@@ -29,6 +30,11 @@ export const updateToSearchResult = (elasticity, crystalSystem) => ({
   crystalSystem
 });
 
+export const processTables = (tables) => ({
+  type: PROCESS_TABLES,
+  tables  
+});
+
 // export const submitPhase = (elasticity) => (dispatch) => {
 //   console.log('points', elasticity);
 //   console.log(elasticity);
@@ -41,7 +47,8 @@ export const processPoints = (points) => ({
 });
 
 export const submitPhase = (elasticity) => (dispatch) => {
-  api.calculatePhase((points) => {dispatch(processPoints(points))}, elasticity);
+  // api.calculatePhase((points) => {dispatch(processPoints(points))}, elasticity);
+  api.elateAnalyse((tables) => {dispatch(processTables(tables))}, elasticity);
 }
 
  

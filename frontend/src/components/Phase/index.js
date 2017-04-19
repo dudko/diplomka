@@ -6,6 +6,7 @@ import Button from '../Button';
 import createPlotlyComponent from 'react-plotlyjs';
 import Plotly from 'plotly.js/dist/plotly-gl3d';
 const PlotlyComponent = createPlotlyComponent(Plotly);
+import PropertiesContainer from '../../containers/PropertiesContainer';
 
 
 export default class Phase extends Component {
@@ -48,6 +49,7 @@ export default class Phase extends Component {
           <PlotlyComponent data={data} layout={layout}/> :
           <h5>No data</h5>
       }
+      <PropertiesContainer />
 
       <form>
         <CrystalSystemSelect />
@@ -57,12 +59,14 @@ export default class Phase extends Component {
         />
         <MaterialProjectSearch />
         <Button
-          onClick={() => postMessage.postMessage(
-            material.elasticity.map(row => row.map(cell => cell.value)))}
+          onClick={() => {
+            const matrix = material.elasticity.map(row => row.map(cell => cell.value));
+            postMessage.postMessage(matrix);
+            submitPhase(matrix);
+            }}
         >
           Submit
         </Button>
-        
       </form>
     </div>
   )
