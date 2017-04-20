@@ -35,19 +35,14 @@ export const processTables = (tables) => ({
   tables  
 });
 
-// export const submitPhase = (elasticity) => (dispatch) => {
-//   console.log('points', elasticity);
-//   console.log(elasticity);
-//   return api.calculatePhase((points) => dispatch(processPoints(points)), elasticity);
-// }
-
 export const processPoints = (points) => ({
   type: PROCESS_POINTS,
   points
 });
 
-export const submitPhase = (elasticity) => (dispatch) => {
-  // api.calculatePhase((points) => {dispatch(processPoints(points))}, elasticity);
+export const submitPhase = (elasticity, worker) => (dispatch) => {
+  worker.postMessage(elasticity);
+  worker.onmessage = msg => dispatch(processPoints(msg.data));
   api.elateAnalyse((tables) => {dispatch(processTables(tables))}, elasticity);
 }
 

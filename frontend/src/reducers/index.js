@@ -2,16 +2,7 @@ import * as ActionTypes from '../actions';
 const deepFreeze = require('deep-freeze');
 import _ from 'lodash';
 
-const initialState = {
-  crystalSystem: 'unknown',
-  elasticity: [0, 1, 2, 3, 4, 5].map(row =>
-    [0, 1, 2, 3, 4, 5].map(cell =>
-      ({ value: 0, disabled: false })
-    )),
-  points: {}
-}
-
-const reducer = (state = initialState, action) => {
+const reducer = (state = {}, action) => {
   deepFreeze(state);
   switch(action.type) {
     case ActionTypes.CELL_CHANGED: {
@@ -31,7 +22,7 @@ const reducer = (state = initialState, action) => {
     case ActionTypes.PROCESS_POINTS: {
       const { points } = action.points;
       const updatedState = _.cloneDeep(state);
-      updatedState.points = _.cloneDeep(action.points);
+      updatedState.points = action.points;
       return updatedState;
     }
     case ActionTypes.PROCESS_TABLES: {

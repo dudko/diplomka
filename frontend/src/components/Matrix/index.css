@@ -1,6 +1,3 @@
 .matrix {
-  margin: 5px 0;
-  display: flex;
-  flex-direction: column;
-  width: 312px;
+  flex: 0 0 30%;
 }

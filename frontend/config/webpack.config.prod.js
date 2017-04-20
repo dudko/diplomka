@@ -164,7 +164,11 @@ module.exports = {
       // Remember to add the new extension(s) to the "url" loader exclusion list.
     ]
   },
-  
+  eslint: {
+    rules: {
+      'import/no-webpack-loader-syntax': 'off'
+    }
+  },
   // We use PostCSS for autoprefixing only.
   postcss: function() {
     return [

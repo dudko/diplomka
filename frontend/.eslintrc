@@ -1,6 +1,0 @@
-{
-    "rules": {
-        "eqeqeq": "warn",
-        "strict": "off"
-    }
-}

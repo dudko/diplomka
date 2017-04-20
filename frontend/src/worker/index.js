@@ -7,11 +7,11 @@ function randomPointSphere() {
   while (running) {
     const u = Math.random() * (Math.random() < 0.5 ? 1 : -1);
     const v = Math.random() * (Math.random() < 0.5 ? 1 : -1);
-    
+
     if (u*u + v*v >= 1) continue;
 
     i = 2 * u * Math.sqrt(1 - u*u - v*v);
-    j = 2 * v * Math.sqrt(1 - u*u - v*v); 
+    j = 2 * v * Math.sqrt(1 - u*u - v*v);
     k = 1 - 2 * (u*u + v*v);
 
     running = false;
@@ -40,12 +40,21 @@ const young = (elasticConstants) => {
       pow(i, 4) * math.subset(S, math.index(0, 0)) +
       pow(j, 4) * math.subset(S, math.index(1, 1)) +
       pow(k, 4) * math.subset(S, math.index(2, 2)) +
-      pow(i, 2) * pow(j, 2) * math.subset(S, math.index(0, 1)) +
-      pow(i, 2) * pow(k, 2) * math.subset(S, math.index(0, 2)) +
-      pow(j, 2) * pow(i, 2) * math.subset(S, math.index(1, 0)) +
-      pow(j, 2) * pow(k, 2) * math.subset(S, math.index(1, 2)) +
-      pow(i, 2) * pow(k, 2) * math.subset(S, math.index(2, 0)) +
-      pow(k, 2) * pow(j, 2) * math.subset(S, math.index(2, 1)) +
+      pow(i, 2) * pow(j, 2) * 2* math.subset(S, math.index(0, 1)) +
+      pow(i, 2) * pow(k, 2) * 2* math.subset(S, math.index(0, 2)) +
+      pow(j, 2) * pow(k, 2) * 2* math.subset(S, math.index(1, 2)) +
+      pow(i, 2) * j * k * math.subset(S, math.index(0, 3)) +
+      pow(i, 3) * k * math.subset(S, math.index(0, 4)) +
+      pow(i, 3) * j * math.subset(S, math.index(0, 5)) +
+      pow(j, 2) * i * k * math.subset(S, math.index(1, 4)) +
+      pow(j, 3) * k * math.subset(S, math.index(1, 3)) +
+      pow(j, 3) * i * math.subset(S, math.index(1, 5)) +
+      pow(k, 2) * i * j * math.subset(S, math.index(2, 5)) +
+      pow(k, 3) * j * math.subset(S, math.index(2, 3)) +
+      pow(k, 3) * i * math.subset(S, math.index(2, 4)) +
+      pow(k, 2) * i * j * math.subset(S, math.index(3, 4)) +
+      pow(j, 2) * i * k * math.subset(S, math.index(3, 5)) +
+      pow(i, 2) * j * k * math.subset(S, math.index(4, 5)) +
       pow(j, 2) * pow(k, 2) * math.subset(S, math.index(3, 3)) +
       pow(i, 2) * pow(k, 2) * math.subset(S, math.index(4, 4)) +
       pow(i, 2) * pow(j, 2) * math.subset(S, math.index(5, 5));
@@ -62,4 +71,4 @@ const young = (elasticConstants) => {
 
 onmessage = function(event) {
   postMessage(young(event.data))
-}
+} 

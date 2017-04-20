@@ -1,12 +1,28 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import api from '../middleware/api'
-import rootReducer from '../reducers'
+import logger from 'redux-logger';
+import reducer from '../reducers'
+const MyWorker = require('worker-loader!../worker');
 
-const configureStore = preloadedState => createStore(
-  rootReducer,
-  preloadedState,
-  applyMiddleware(thunk, api)
-)
+const initialState = {
+  crystalSystem: 'unknown',
+  elasticity: [0, 1, 2, 3, 4, 5].map(row =>
+    [0, 1, 2, 3, 4, 5].map(cell =>
+      ({ value: 0, disabled: false })
+    )),
+  points: {
+    x: [],
+    y: [],
+    z: [],
+    Y: [],
+  },
+  worker: new MyWorker(),
+}
 
-export default configureStore
+const configureStore = () => createStore(
+  reducer,
+  initialState,
+  applyMiddleware(logger, thunk)
+);
+
+export default configureStore;

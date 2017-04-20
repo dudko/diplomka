@@ -83,13 +83,13 @@ module.exports = {
   module: {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
-    // preLoaders: [
-    //   {
-    //     test: /\.(js|jsx)$/,
-    //     loader: 'eslint',
-    //     include: paths.appSrc,
-    //   }
-    // ],
+    preLoaders: [
+      {
+        test: /\.(js|jsx)$/,
+        loader: 'eslint',
+        include: paths.appSrc,
+      }
+    ],
     loaders: [
       // ** ADDING/UPDATING LOADERS **
       // The "url" loader handles all assets unless explicitly excluded.
@@ -166,6 +166,11 @@ module.exports = {
         ]
       }),
     ];
+  },
+  eslint: {
+    rules: {
+      'import/no-webpack-loader-syntax': 'off'
+    }
   },
   plugins: [
     // Makes some environment variables available in index.html.

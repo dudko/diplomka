@@ -1,16 +1,46 @@
 import React from 'react';
-import { createScene } from 'gl-plot3d';
-import createScatter3d from 'gl-scatter3d';
+import createPlotlyComponent from 'react-plotlyjs';
+import Plotly from 'plotly.js/dist/plotly-gl3d';
+import './index.css';
 
-const scene = createScene();
+const PlotlyComponent = createPlotlyComponent(Plotly);
 
-const initParams = {
-  gl: scene.gl,
-  position: [ [1, 0, -1], [0, 1, -1], [0, 0, 1], [1,1,-1], [1,0,1], [0,1,1] ],
-  color: [ [0,1,0], [0,0,1], [1,1,0], [1,0,1], [0,1,1], [0,0,0] ],
-  size: 12,
-  orthographic: true
-}
+const Chart = ({ points }) => {
+  const { x, y, z, Y } = points;
+  const data = [{
+    x,
+    y,
+    z,
+    mode: 'markers',
+    marker: {
+      size: 12,
+      color: Y,
+      colorscale: 'Jet',
+      opacity: 1
+    },
+    type: 'scatter3d'
+  }];
 
-const scatter = createScatter3d(initParams);
-scene.add(scatter);
+  const layout = {
+    autosize: false,
+    width: 600,
+    height: 600,
+    margin: {
+      l: 0,
+      r: 0,
+      b: 10,
+      t: 0,
+      pad: 0
+    }
+  };
+
+  return (
+    <PlotlyComponent
+      className='chart'
+      data={data}
+      layout={layout}
+    />
+  );
+};
+
+export default Chart;

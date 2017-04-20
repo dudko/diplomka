@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateToSearchResult } from '../../actions';
 import './index.css';
+import Button from '../Button';
 
 
 class MaterialProjectSearch extends Component {
   constructor(props) {
     super(props);    
     this.state = {
-      searchResults : []
+      searchResults : [],
+      value: ''
     }
 
     this.searchMaterial = this.searchMaterial.bind(this);
   }
 
-  searchMaterial(event) {
-    const keyword = event.target.value;
+  searchMaterial(keyword) {
     fetch(`http://localhost:8080/api/searchMaterialProject/${keyword}`)
     .then(responce => responce.json())
     .then(result => this.setState({
@@ -25,7 +26,7 @@ class MaterialProjectSearch extends Component {
   }
 
   render() {
-    const { searchResults } = this.state; 
+    const { searchResults, value } = this.state; 
     const { dispatch } = this.props; 
     return (
     <div
@@ -33,8 +34,14 @@ class MaterialProjectSearch extends Component {
     >
       <input
         type='text'
-        onBlur={this.searchMaterial}
+        value={value}
+        onChange={(event) => this.setState({value: event.target.value})}
       />
+      <Button
+        onClick={() => this.searchMaterial(value)}
+      >
+        Search
+      </Button>
       {searchResults.length ?
         <div className="table">
           { searchResults.map((material, index) => 
