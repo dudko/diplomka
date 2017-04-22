@@ -64,6 +64,7 @@
     "redux": "^3.5.2",
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
+    "shortid": "^2.2.8",
     "worker-loader": "^0.8.0"
   },
   "scripts": {

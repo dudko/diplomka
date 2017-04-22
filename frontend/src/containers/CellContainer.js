@@ -3,7 +3,7 @@ import Cell from '../components/Cell';
 import { cellChanged } from '../actions';
 
 const mapStateToProps = (state) => ({
-  phase: state
+  phase: state.reducer
 })
 
 const mapDispatchToProps = dispatch => ({

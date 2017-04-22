@@ -12,7 +12,7 @@ import PropertiesContainer from './PropertiesContainer';
 
 
 
-class PhaseContainer extends Component {
+class CompositeContainer extends Component {
   render() {
     const { elasticity, crystalSystem, points, worker, submitPhase } = this.props;
 
@@ -25,6 +25,17 @@ class PhaseContainer extends Component {
             points={points}
           />
           <PropertiesContainer />
+        </div>
+
+        <div
+          style={{display: 'flex'}}
+        >
+          {/*<CrystalSystemSelect />*/}
+          <Matrix
+            rowCount={6}
+            columnCount={6}
+          />
+          <MaterialProjectSearch />
         </div>
 
         <div
@@ -61,4 +72,4 @@ const mapDispatchToProps = {
   processPoints
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PhaseContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CompositeContainer);

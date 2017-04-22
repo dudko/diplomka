@@ -9,7 +9,7 @@ const Navigation = () => (
     <h1>Elasticity analysis</h1>
     <ul>
       <li><Link to="/">Single Material</Link></li>
-      <li><Link to="/Composite">Composite</Link></li>
+      <li><Link to="/composite">Composite</Link></li>
     </ul>
     <hr/>
   </div>

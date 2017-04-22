@@ -1,9 +1,11 @@
+import { combineReducers } from 'redux';
+import points from './points';
 import * as ActionTypes from '../actions';
 const deepFreeze = require('deep-freeze');
 import _ from 'lodash';
 
-const reducer = (state = {}, action) => {
-  deepFreeze(state);
+let reducer = (state = {}, action) => {
+  // deepFreeze(state);
   switch(action.type) {
     case ActionTypes.CELL_CHANGED: {
       const { value, index } = action;
@@ -19,12 +21,6 @@ const reducer = (state = {}, action) => {
       updatedState.crystalSystem = crystalSystem;
       return updatedState;
     }
-    case ActionTypes.PROCESS_POINTS: {
-      const { points } = action.points;
-      const updatedState = _.cloneDeep(state);
-      updatedState.points = action.points;
-      return updatedState;
-    }
     case ActionTypes.PROCESS_TABLES: {
       const { tables } = action.tables;
       const updatedState = _.cloneDeep(state);
@@ -36,5 +32,10 @@ const reducer = (state = {}, action) => {
       return state;
   }
 };
+
+reducer = combineReducers({
+  reducer,
+  points
+});
 
 export default reducer;

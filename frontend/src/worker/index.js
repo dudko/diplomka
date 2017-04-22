@@ -31,7 +31,7 @@ const young = (elasticConstants) => {
     Y: []
   };
 
-  for (let points = 0; points < 10000; points++) {
+  for (let points = 0; points < 100; points++) {
     const {i, j, k} = randomPointSphere();
 
     const pow = math.pow;
