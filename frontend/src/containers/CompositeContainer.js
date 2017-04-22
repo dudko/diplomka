@@ -3,14 +3,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { submitPhase, processPoints } from '../actions';
 
-import Matrix from '../components/Matrix';
+import MatrixContainer from './MatrixContainer';
 import CrystalSystemSelect from './CrystalSystemSelect';
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
 import Chart from '../components/Chart';
 import PropertiesContainer from './PropertiesContainer';
-
-
 
 class CompositeContainer extends Component {
   render() {
@@ -31,22 +29,29 @@ class CompositeContainer extends Component {
           style={{display: 'flex'}}
         >
           {/*<CrystalSystemSelect />*/}
-          <Matrix
+          <MatrixContainer
+            id={'1'}
             rowCount={6}
             columnCount={6}
           />
-          <MaterialProjectSearch />
+          <MaterialProjectSearch
+            tensorsId={'1'}            
+          />
         </div>
 
+        <hr/>
         <div
           style={{display: 'flex'}}
         >
           {/*<CrystalSystemSelect />*/}
-          <Matrix
+          <MatrixContainer
+            id={'2'}          
             rowCount={6}
             columnCount={6}
           />
-          <MaterialProjectSearch />
+          <MaterialProjectSearch
+            tensorsId={'2'}
+          />
         </div>
 
         <Button

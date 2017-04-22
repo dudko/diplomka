@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateToSearchResult } from '../../actions';
+import { tensorsToSearchResult } from '../../actions';
 import './index.css';
 import Button from '../Button';
 
@@ -27,7 +27,7 @@ class MaterialProjectSearch extends Component {
 
   render() {
     const { searchResults, value } = this.state; 
-    const { dispatch } = this.props; 
+    const { dispatch, tensorsId } = this.props; 
     return (
     <div
       className='material-project-search'
@@ -47,7 +47,7 @@ class MaterialProjectSearch extends Component {
           { searchResults.map((material, index) => 
             <div key={index} className="table-row" 
               onClick={() =>
-                dispatch(updateToSearchResult(material['elasticity.elastic_tensor'], material['spacegroup.crystal_system']))}
+                dispatch(tensorsToSearchResult(tensorsId, material['elasticity.elastic_tensor'], material['spacegroup.crystal_system']))}
             >
               <span style={{ width: '10%' }}>
                 <a href='#'>{material.pretty_formula}</a>

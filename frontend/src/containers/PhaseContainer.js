@@ -3,14 +3,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { submitPhase, processPoints } from '../actions';
 
-import Matrix from '../components/Matrix';
+import Matrix from './MatrixContainer';
 import CrystalSystemSelect from './CrystalSystemSelect';
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
 import Chart from '../components/Chart';
 import PropertiesContainer from './PropertiesContainer';
-
-
 
 class PhaseContainer extends Component {
   render() {
@@ -32,10 +30,13 @@ class PhaseContainer extends Component {
         >
           {/*<CrystalSystemSelect />*/}
           <Matrix
+            id={'1'}
             rowCount={6}
             columnCount={6}
           />
-          <MaterialProjectSearch />
+          <MaterialProjectSearch
+            tensorsId={'1'}
+          />
         </div>
 
         <Button

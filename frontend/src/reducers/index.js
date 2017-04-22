@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 import points from './points';
-import * as ActionTypes from '../actions';
+import inputForTensors from './inputForTensors';
+import materialsProjectResults from './materialsProjectResults';
+
+import * as ActionTypes from '../constants/ActionTypes';
 const deepFreeze = require('deep-freeze');
 import _ from 'lodash';
 
@@ -35,7 +38,9 @@ let reducer = (state = {}, action) => {
 
 reducer = combineReducers({
   reducer,
-  points
+  points,
+  inputForTensors,
+  materialsProjectResults
 });
 
 export default reducer;

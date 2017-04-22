@@ -18,6 +18,16 @@ const initialState = {
     y: [],
     z: [],
     Y: [],
+  },
+  inputForTensors: {
+    '1': [0, 1, 2, 3, 4, 5].map(row =>
+          [0, 1, 2, 3, 4, 5].map(cell =>
+            ({ value: 0, disabled: false })
+          )),
+    '2': [0, 1, 2, 3, 4, 5].map(row =>
+          [0, 1, 2, 3, 4, 5].map(cell =>
+            ({ value: 0, disabled: false })
+        ))
   }
 }
 

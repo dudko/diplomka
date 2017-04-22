@@ -1,8 +1,9 @@
 import * as types from '../constants/ActionTypes'
 const api = require('../api');
 
-export const cellChanged = (value, index) => ({
-  type: types.CELL_CHANGED,
+export const cellChanged = (id, value, index) => ({
+  type: types.CHANGE_TENSOR,
+  id,
   value,
   index
 });
@@ -17,8 +18,9 @@ export const materialKeywordChanged = (keyword) => ({
   keyword
 });
 
-export const updateToSearchResult = (elasticity, crystalSystem) => ({
-  type: types.UPDATE_TO_SEARCH_RESULT,
+export const tensorsToSearchResult = (tensorsId, elasticity, crystalSystem) => ({
+  type: types.TENSORS_FROM_SEARCH_RESULT,
+  tensorsId,
   elasticity,
   crystalSystem
 });
