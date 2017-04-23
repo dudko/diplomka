@@ -12,11 +12,13 @@ const Chart = ({ points }) => {
     y,
     z,
     mode: 'markers',
+    text: Y,
     marker: {
       size: 12,
       color: Y,
       colorscale: 'Jet',
-      opacity: 1
+      opacity: 1,
+      colorbar: {}
     },
     type: 'scatter3d'
   }];
@@ -34,11 +36,16 @@ const Chart = ({ points }) => {
     }
   };
 
+  const config = {
+    displayModeBar: false
+  };
+
   return (
     <PlotlyComponent
       className='chart'
       data={data}
       layout={layout}
+      config={config}
     />
   );
 };
