@@ -41,6 +41,14 @@ export const submitPhase = (elasticity, worker) => (dispatch) => {
   api.elateAnalyse((tables) => {dispatch(processTables(tables))}, elasticity);
 }
 
+export const submitComposite = (elasticity, worker) => (dispatch) => {
+  worker.postMessage(elasticity);
+  worker.onmessage = msg => {
+    dispatch(processPoints(msg.data));
+    api.elateAnalyse((tables) => {dispatch(processTables(tables))}, msg.data.compositeElasticity)
+  };
+}
+
  
 
 

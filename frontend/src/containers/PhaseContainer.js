@@ -50,8 +50,8 @@ class PhaseContainer extends Component {
   }
 } 
 
-const mapStateToProps = (state) => ({
-  elasticity: state.reducer.elasticity,
+const mapStateToProps = (state, ownProps) => ({
+  elasticity: state.inputForTensors['1'],
   crystalSystem: state.reducer.crystalSystem,
   points: state.points,
   worker: state.reducer.worker,

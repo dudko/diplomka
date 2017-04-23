@@ -10,7 +10,7 @@ const PropertiesContainer = ({ tables }) => (
 );
 
 const mapStateToProps = (state) => ({
-  tables: state.tables
+  tables: state.reducer.tables
 })
 
 export default connect(mapStateToProps)(PropertiesContainer);

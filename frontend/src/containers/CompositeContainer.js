@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { submitPhase, processPoints } from '../actions';
+import { submitComposite, processPoints } from '../actions';
 
 import MatrixContainer from './MatrixContainer';
 import CrystalSystemSelect from './CrystalSystemSelect';
@@ -12,7 +12,7 @@ import PropertiesContainer from './PropertiesContainer';
 
 class CompositeContainer extends Component {
   render() {
-    const { elasticity, crystalSystem, points, worker, submitPhase } = this.props;
+    const { materialOne, materialTwo, crystalSystem, points, worker, submitComposite } = this.props;
 
     return (
       <div>
@@ -56,7 +56,10 @@ class CompositeContainer extends Component {
 
         <Button
           onClick={() =>
-            submitPhase(elasticity.map(row => row.map(cell => cell.value)), worker)}
+            submitComposite({
+              '1': materialOne.map(row => row.map(cell => cell.value)),
+              '2': materialTwo.map(row => row.map(cell => cell.value)),          
+          }, worker)}
         >
           Submit
         </Button>
@@ -66,14 +69,15 @@ class CompositeContainer extends Component {
 } 
 
 const mapStateToProps = (state) => ({
-  elasticity: state.reducer.elasticity,
+  materialOne: state.inputForTensors['1'],
+  materialTwo: state.inputForTensors['2'],
   crystalSystem: state.reducer.crystalSystem,
   points: state.points,
   worker: state.reducer.worker,
 });
 
 const mapDispatchToProps = {
-  submitPhase,
+  submitComposite,
   processPoints
 }
 
