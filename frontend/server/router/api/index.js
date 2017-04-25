@@ -148,7 +148,7 @@ router.get('/searchMaterialProject/:keyword', (req, res) => {
 
   let body = [
     `criteria=%7B%22pretty_formula%22%3A%22${keyword}%22%7D`,
-    '&properties=%5B%22pretty_formula%22%2C+%22elasticity.elastic_tensor%22%2C+%22spacegroup.crystal_system%22%5D'
+    '&properties=%5B%22pretty_formula%22%2C+%22elasticity.elastic_tensor%22%2C+%22spacegroup.crystal_system%22%2C+%22task_ids%22%5D'
   ].join('');
 
   const options = {

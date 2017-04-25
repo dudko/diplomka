@@ -50,7 +50,10 @@ class MaterialProjectSearch extends Component {
                 dispatch(tensorsToSearchResult(tensorsId, material['elasticity.elastic_tensor'], material['spacegroup.crystal_system']))}
             >
               <span style={{ width: '10%' }}>
-                <a href='#'>{material.pretty_formula}</a>
+                <a
+                  href={`https://www.materialsproject.org/materials/${material.task_ids.pop()}`}
+                  target='_blank'
+                >{material.pretty_formula}</a>
               </span>
               <span style={{ width: '10%' }}>
                 {material['spacegroup.crystal_system']}
