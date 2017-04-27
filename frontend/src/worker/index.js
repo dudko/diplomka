@@ -20,9 +20,8 @@ function randomPointSphere() {
   return {i, j, k};
 }
 
-const young = (elasticConstants) => {
-  const C = elasticConstants;
-  const S = math.inv(C);
+const youngsModulus = (tensors, totalCount = 10000, direction) => {
+  const S = math.inv(tensors);
 
   const result = {
     x: [],
@@ -31,12 +30,12 @@ const young = (elasticConstants) => {
     Y: []
   };
 
-  for (let points = 0; points < 10000; points++) {
-    const {i, j, k} = randomPointSphere();
+  for (let count = 0; count < totalCount; count++) {
+    const {i, j, k} = direction || randomPointSphere();
 
     const pow = math.pow;
 
-    let E =
+    let Y =
       pow(i, 4) * math.subset(S, math.index(0, 0)) +
       pow(j, 4) * math.subset(S, math.index(1, 1)) +
       pow(k, 4) * math.subset(S, math.index(2, 2)) +
@@ -59,17 +58,17 @@ const young = (elasticConstants) => {
       pow(i, 2) * pow(k, 2) * math.subset(S, math.index(4, 4)) +
       pow(i, 2) * pow(j, 2) * math.subset(S, math.index(5, 5));
 
-    E = Math.round(Math.abs(1/E) * 100) / 100;
-    result.x.push(E * i);
-    result.y.push(E * j);
-    result.z.push(E * k);
-    result.Y.push(E);
+    Y = Math.round(Math.abs(1/Y) * 100) / 100;
+    result.x.push(Y * i);
+    result.y.push(Y * j);
+    result.z.push(Y * k);
+    result.Y.push(Y);
   }
 
   return result;
 }
 
-function composite(matrices) {
+const prepareComposite = (matrices, f1 = 0.5, f2 = 0.5) => {
   const { '1': c1, '2': c2 } = matrices;
 
   let C1 = math.matrix(c1);
@@ -109,9 +108,6 @@ function composite(matrices) {
 
   I = math.matrix(I); 
 
-  let f1 = 0.5;
-  let f2 = 0.5;
-
   C1 = math.multiply(f1, C1);
   C1 = math.multiply(C1, M);
 
@@ -129,12 +125,25 @@ function composite(matrices) {
 
 onmessage = function(event) {
   if (event.data.constructor === Object) {
-    const prepared = composite(event.data);
-    const calculated = young(prepared);
+    const prepared = prepareComposite(event.data, event.data.ratio, 1-event.data.ratio);
+    const calculated = youngsModulus(prepared);
     calculated.compositeElasticity = prepared._data;
+
+    const rangeRun = {
+      x: [],
+      Y: []
+    };
+
+    for (let f = 0; f <= 1; f = f + 0.01) {
+      const prepared = prepareComposite(event.data, f, 1-f);
+      const calculated = youngsModulus(prepared, 1, { i: 0, j: 0, k: 1 });
+      rangeRun.x.push(f);
+      rangeRun.Y.push(calculated.Y.pop());
+    }
+    calculated.rangeRun = rangeRun;
     postMessage(calculated);  
   } else {
-    postMessage(young(event.data))
+    postMessage(youngsModulus(event.data))
   }
 } 
 

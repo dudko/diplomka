@@ -35,6 +35,11 @@ export const processPoints = (points) => ({
   points
 });
 
+export const processRangeRunPoints = (points) => ({
+  type: types.PROCESS_RANGE_RUN_POINTS,
+  points: points
+});
+
 export const submitPhase = (elasticity, worker) => (dispatch) => {
   worker.postMessage(elasticity);
   worker.onmessage = msg => dispatch(processPoints(msg.data));
@@ -45,6 +50,7 @@ export const submitComposite = (elasticity, worker) => (dispatch) => {
   worker.postMessage(elasticity);
   worker.onmessage = msg => {
     dispatch(processPoints(msg.data));
+    dispatch(processRangeRunPoints(msg.data.rangeRun));
     api.elateAnalyse((tables) => {dispatch(processTables(tables))}, msg.data.compositeElasticity)
   };
 }

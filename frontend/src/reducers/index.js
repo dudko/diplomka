@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import points from './points';
 import inputForTensors from './inputForTensors';
 import materialsProjectResults from './materialsProjectResults';
+import rangeRun from './rangeRun';
 
 import * as ActionTypes from '../constants/ActionTypes';
 const deepFreeze = require('deep-freeze');
@@ -40,7 +41,8 @@ reducer = combineReducers({
   reducer,
   points,
   inputForTensors,
-  materialsProjectResults
+  materialsProjectResults,
+  rangeRun,
 });
 
 export default reducer;

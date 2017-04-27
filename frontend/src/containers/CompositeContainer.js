@@ -7,12 +7,23 @@ import MatrixContainer from './MatrixContainer';
 import CrystalSystemSelect from './CrystalSystemSelect';
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
+import CompositeRotation from '../components/CompositeRotation';
+import RangeRun from './RangeRun';
+
 import Chart from '../components/Chart';
 import PropertiesContainer from './PropertiesContainer';
 
 class CompositeContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ratio: 0.5,
+    }
+  }
+
   render() {
     const { materialOne, materialTwo, crystalSystem, points, worker, submitComposite } = this.props;
+    const { ratio } = this.state;
 
     return (
       <div>
@@ -25,10 +36,20 @@ class CompositeContainer extends Component {
           <PropertiesContainer />
         </div>
 
+        <RangeRun />
+
+        <CompositeRotation />
+        <div>
+          <h5>Composite ratio</h5>
+          <input value={ratio} onChange={(e) => this.setState({ ratio: e.target.value })} />
+          <input value={1-ratio} disabled={true} />
+          <p></p>
+        </div>
+        
         <div
           style={{display: 'flex'}}
         >
-          {/*<CrystalSystemSelect />*/}
+          <CrystalSystemSelect />
           <MatrixContainer
             id={'1'}
             rowCount={6}
@@ -43,7 +64,7 @@ class CompositeContainer extends Component {
         <div
           style={{display: 'flex'}}
         >
-          {/*<CrystalSystemSelect />*/}
+          <CrystalSystemSelect />
           <MatrixContainer
             id={'2'}          
             rowCount={6}
@@ -58,7 +79,8 @@ class CompositeContainer extends Component {
           onClick={() =>
             submitComposite({
               '1': materialOne.map(row => row.map(cell => cell.value)),
-              '2': materialTwo.map(row => row.map(cell => cell.value)),          
+              '2': materialTwo.map(row => row.map(cell => cell.value)),
+              ratio,
           }, worker)}
         >
           Submit
