@@ -16,35 +16,36 @@ class PhaseContainer extends Component {
 
     return (
       <div>
-        <div
-          style={{display: 'flex'}}
-        >
+        <div className='flex two'>
           <Chart
             points={points}
           />
           <PropertiesContainer />
         </div>
+        <div className='flex two'>
+          <div>
+            <CrystalSystemSelect />
+            
+            <Matrix
+              id={'1'}
+              rowCount={6}
+              columnCount={6}
+            />
 
-        <div
-          style={{display: 'flex'}}
-        >
-          {/*<CrystalSystemSelect />*/}
-          <Matrix
-            id={'1'}
-            rowCount={6}
-            columnCount={6}
-          />
+            <Button
+              onClick={() =>
+                submitPhase(elasticity.map(row => row.map(cell => cell.value)), worker)}
+            >
+              Submit
+            </Button>
+          </div>
+          
           <MaterialProjectSearch
             tensorsId={'1'}
           />
         </div>
 
-        <Button
-          onClick={() =>
-            submitPhase(elasticity.map(row => row.map(cell => cell.value)), worker)}
-        >
-          Submit
-        </Button>
+        
       </div>
     )
   }

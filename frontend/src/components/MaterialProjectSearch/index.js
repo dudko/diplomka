@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { tensorsToSearchResult } from '../../actions';
-import './index.css';
+// import './index.css';
 import Button from '../Button';
 
 
@@ -30,40 +30,45 @@ class MaterialProjectSearch extends Component {
     const { dispatch, tensorsId } = this.props; 
     return (
     <div
-      className='material-project-search'
     >
-      <input
-        type='text'
-        value={value}
-        onChange={(event) => this.setState({value: event.target.value})}
-      />
-      <Button
-        onClick={() => this.searchMaterial(value)}
-      >
-        Search
-      </Button>
+      <div className=''>
+        <input
+          type='text'
+          value={value}
+          onChange={(event) => this.setState({value: event.target.value})}
+        />
+        <Button
+          onClick={() => this.searchMaterial(value)}
+        >
+          Search
+        </Button>
+      </div>
       {searchResults.length ?
-        <div className="table">
+        <div>
           { searchResults.map((material, index) => 
-            <div key={index} className="table-row" 
+            <article key={index} className="card" 
               onClick={() =>
                 dispatch(tensorsToSearchResult(tensorsId, material['elasticity.elastic_tensor'], material['spacegroup.crystal_system']))}
             >
-              <span style={{ width: '10%' }}>
-                <a
-                  href={`https://www.materialsproject.org/materials/${material.task_ids.pop()}`}
-                  target='_blank'
-                >{material.pretty_formula}</a>
-              </span>
-              <span style={{ width: '10%' }}>
-                {material['spacegroup.crystal_system']}
-              </span>
-              <span style={{ width: '80%' }}>
-                {'[ ' + material['elasticity.elastic_tensor']
-                  .map(row => `[ ${row.join(',')} ]`)
-                  .join(',') + ' ]'}
-              </span>
-            </div>
+              <header>
+                <h3>
+                  <a
+                    href={`https://www.materialsproject.org/materials/${material.task_ids[0]}`}
+                    target='_blank'
+                  >
+                    {material.task_ids[0]}
+                  </a>
+                </h3>
+                <h3>{material.pretty_formula}</h3>
+                <h3>{material['spacegroup.crystal_system']}</h3>
+              </header>
+              <footer>
+                <table style={{tableLayout:'fixed',width:'100%'}}>
+                  {material['elasticity.elastic_tensor'].map(row =>
+                    <tr>{row.map(cell => <td>{cell}</td>)}</tr>)}
+                </table>          
+              </footer>
+            </article>
           )}
         </div>
         : <p>No results</p>

@@ -1,7 +1,6 @@
 import React from 'react';
 import createPlotlyComponent from 'react-plotlyjs';
 import Plotly from 'plotly.js/dist/plotly-gl3d';
-import './index.css';
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 

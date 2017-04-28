@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from './components/Root';
 import configureStore from './store/configureStore';
-import './index.css';
+import '../node_modules/picnic/picnic.min.css';
 
 const store = configureStore();
 

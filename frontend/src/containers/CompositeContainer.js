@@ -27,14 +27,11 @@ class CompositeContainer extends Component {
 
     return (
       <div>
-        <div
-          style={{display: 'flex'}}
-        >
+        
           <Chart
             points={points}
           />
           <PropertiesContainer />
-        </div>
 
         <RangeRun />
 
@@ -42,13 +39,11 @@ class CompositeContainer extends Component {
         <div>
           <h5>Composite ratio</h5>
           <input value={ratio} onChange={(e) => this.setState({ ratio: e.target.value })} />
-          <input value={1-ratio} disabled={true} />
+          <input value={1.0-ratio} disabled={true} />
           <p></p>
         </div>
         
-        <div
-          style={{display: 'flex'}}
-        >
+
           <CrystalSystemSelect />
           <MatrixContainer
             id={'1'}
@@ -58,12 +53,9 @@ class CompositeContainer extends Component {
           <MaterialProjectSearch
             tensorsId={'1'}            
           />
-        </div>
 
         <hr/>
-        <div
-          style={{display: 'flex'}}
-        >
+
           <CrystalSystemSelect />
           <MatrixContainer
             id={'2'}          
@@ -73,7 +65,6 @@ class CompositeContainer extends Component {
           <MaterialProjectSearch
             tensorsId={'2'}
           />
-        </div>
 
         <Button
           onClick={() =>
