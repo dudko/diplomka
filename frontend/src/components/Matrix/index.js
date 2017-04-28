@@ -36,7 +36,7 @@ export default class Matrix extends Component {
       <div 
         className='six'
       >
-      {tensors.map((row, rowIndex) =>
+      {elasticity.map((row, rowIndex) =>
         row.map((cell, columnIndex) => 
           <input
             key={`${rowIndex}${columnIndex}`}

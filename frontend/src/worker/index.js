@@ -123,6 +123,138 @@ const prepareComposite = (matrices, f1 = 0.5, f2 = 0.5) => {
   return math.multiply(C, T);
 }
 
+const newYoungsModulus = (tensors, totalCount = 10000, direction) => {
+  const S = math.inv(tensors);
+  const s = [
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+  ];
+
+
+  let m, n, coefIJ, coefKL;
+
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++)
+      for (let k = 0; k < 3; k++)
+        for (let l = 0; l < 3; l++) {
+          if (i === j) {
+            m = i;
+            coefIJ = 1;
+          } else {
+            coefIJ = 0.5;
+            if ((i === 0) && (j === 1)) m = 5;
+            if ((i === 0) && (j === 2)) m = 4;
+            if ((i === 1) && (j === 2)) m = 3;
+            if ((i === 1) && (j === 0)) m = 5;
+            if ((i === 2) && (j === 0)) m = 4;
+            if ((i === 2) && (j === 1)) m = 3;
+          }
+
+          if (k === l) {
+            n = k;
+            coefKL = 1;
+          }
+          else {
+            coefKL = 0.5;
+            if ((k === 0) && (l === 1)) n = 5;
+            if ((k === 0) && (l === 2)) n = 4;
+            if ((k === 1) && (l === 2)) n = 3;
+            if ((k === 1) && (l === 0)) n = 5;
+            if ((k === 2) && (l === 0)) n = 4;
+            if ((k === 2) && (l === 1)) n = 3;
+          }
+          s[i][j][k][l] = coefIJ * coefKL * math.subset(S, math.index(m, n));
+        }
+        
+  const result = {
+    x: [],
+    y: [],
+    z: [],
+    Y: []
+  };
+
+  for (let count = 0; count < totalCount; count++) {
+    const {i, j, k} = direction || randomPointSphere();
+
+    const A = [
+      [0, 0, i],
+      [0, 0, j],
+      [0, 0, k]
+    ];
+
+    const s2 = [
+      [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+      [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+      [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+    ];
+
+    let sum = 0;
+    for (let i = 0; i < 3; i++)
+      for (let j = 0; j < 3; j++)
+        for (let k = 0; k < 3; k++)
+          for (let l = 0; l < 3; l++) {
+            sum = sum + A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
+            // sum = sum + A[i][2] * A[j][2] * s[i][j][k][k];
+            // for (let a = 0; a < 3; a++)
+            //   for (let b = 0; b < 3; b++)
+            //     for (let c = 0; c < 3; c++)
+            //       for (let d = 0; d < 3; d++) {
+            //         s2[i][j][k][l] = s2[i][j][k][l] + A[a][i] * A[b][j] * A[c][k] * A[d][l] * s[a][b][c][d];
+            //       }
+         }
+    
+    // let M = [
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0]
+    // ];
+
+    // for (let i = 0; i < 5; i++)
+    //   for (let j = 0; j < 5; j++) {
+    //     if (i === j) {
+    //         m = i;
+    //         coefIJ = 1;
+    //       } else {
+    //         coefIJ = 0.5;
+    //         if ((i === 0) && (j === 1)) m = 5;
+    //         if ((i === 0) && (j === 2)) m = 4;
+    //         if ((i === 1) && (j === 2)) m = 3;
+    //         if ((i === 1) && (j === 0)) m = 5;
+    //         if ((i === 2) && (j === 0)) m = 4;
+    //         if ((i === 2) && (j === 1)) m = 3;
+    //       }
+
+    //       if (k === l) {
+    //         n = k;
+    //         coefKL = 1;
+    //       }
+    //       else {
+    //         coefKL = 0.5;
+    //         if ((k === 0) && (l === 1)) n = 5;
+    //         if ((k === 0) && (l === 2)) n = 4;
+    //         if ((k === 1) && (l === 2)) n = 3;
+    //         if ((k === 1) && (l === 0)) n = 5;
+    //         if ((k === 2) && (l === 0)) n = 4;
+    //         if ((k === 2) && (l === 1)) n = 3;
+    //       }
+    //   }
+
+    let Y = Math.round(Math.abs(1/sum) * 100) / 100;
+    // let Y = sum * 1000;
+
+    result.x.push(Y * i);
+    result.y.push(Y * j);
+    result.z.push(Y * k);
+    result.Y.push(Y);
+  }
+
+  return result;
+}
+
 onmessage = function(event) {
   if (event.data.constructor === Object) {
     const prepared = prepareComposite(event.data, event.data.ratio, 1-event.data.ratio);
@@ -143,7 +275,7 @@ onmessage = function(event) {
     calculated.rangeRun = rangeRun;
     postMessage(calculated);  
   } else {
-    postMessage(youngsModulus(event.data))
+    postMessage(newYoungsModulus(event.data))
   }
 } 
 

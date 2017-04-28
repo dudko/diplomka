@@ -16,6 +16,7 @@ class PhaseContainer extends Component {
 
     return (
       <div>
+        <p></p>
         <div className='flex two'>
           <Chart
             points={points}
