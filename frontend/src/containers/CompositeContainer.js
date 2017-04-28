@@ -18,64 +18,85 @@ class CompositeContainer extends Component {
     super(props);
     this.state = {
       ratio: 0.5,
+      rotation: {
+        x: 0,
+        y: 0,
+        z: 1,
+      }
     }
   }
 
   render() {
     const { materialOne, materialTwo, crystalSystem, points, worker, submitComposite } = this.props;
-    const { ratio } = this.state;
+    const { ratio, rotation } = this.state;
 
     return (
       <div>
-        
+        <div className='flex two'>
           <Chart
             points={points}
           />
           <PropertiesContainer />
-
+        </div>
         <RangeRun />
 
-        <CompositeRotation />
-        <div>
-          <h5>Composite ratio</h5>
-          <input value={ratio} onChange={(e) => this.setState({ ratio: e.target.value })} />
-          <input value={1.0-ratio} disabled={true} />
-          <p></p>
-        </div>
+        <div className='flex two'>
+          <div>
+            <h5>Orientation of components</h5>
+            <input type="text" value={rotation.x} onChange={(e) => this.setState({ rotation: {...rotation, x: e.target.value }})} />
+            <input type="text" value={rotation.y} onChange={(e) => this.setState({ rotation: {...rotation, y: e.target.value }})} />
+            <input type="text" value={rotation.z} onChange={(e) => this.setState({ rotation: {...rotation, z: e.target.value }})} />
+            <p></p>
+          </div>
+          <div>
+            <h5>Composite ratio</h5>
+            <input value={ratio} onChange={(e) => this.setState({ ratio: e.target.value })} />
+            <input value={1.0-ratio} disabled={true} />
+            <p></p>
+          </div>
+        </div>  
         
-
-          <CrystalSystemSelect />
-          <MatrixContainer
-            id={'1'}
-            rowCount={6}
-            columnCount={6}
-          />
+        <div className='flex two'>
+          <div>
+            <CrystalSystemSelect />
+            <MatrixContainer
+              id={'1'}
+              rowCount={6}
+              columnCount={6}
+            />
+          </div>
+          
           <MaterialProjectSearch
             tensorsId={'1'}            
           />
+        </div>
 
-        <hr/>
-
-          <CrystalSystemSelect />
-          <MatrixContainer
-            id={'2'}          
-            rowCount={6}
-            columnCount={6}
-          />
+        <div className='flex two'>
+          <div>
+            <CrystalSystemSelect />
+            <MatrixContainer
+              id={'2'}          
+              rowCount={6}
+              columnCount={6}
+            />
+            <Button
+              onClick={() =>
+                submitComposite({
+                  '1': materialOne.map(row => row.map(cell => cell.value)),
+                  '2': materialTwo.map(row => row.map(cell => cell.value)),
+                  ratio,
+                  direction: rotation,
+              }, worker)}
+            >
+              Submit
+            </Button>
+          </div>
           <MaterialProjectSearch
             tensorsId={'2'}
           />
+        </div>
 
-        <Button
-          onClick={() =>
-            submitComposite({
-              '1': materialOne.map(row => row.map(cell => cell.value)),
-              '2': materialTwo.map(row => row.map(cell => cell.value)),
-              ratio,
-          }, worker)}
-        >
-          Submit
-        </Button>
+
       </div>
     )
   }

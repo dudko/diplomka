@@ -68,12 +68,132 @@ const youngsModulus = (tensors, totalCount = 10000, direction) => {
   return result;
 }
 
-const prepareComposite = (matrices, f1 = 0.5, f2 = 0.5) => {
-  const { '1': c1, '2': c2 } = matrices;
-
-  let C1 = math.matrix(c1);
-  let C2 = math.matrix(c2);
+const rotateTensors = (c, direction) => {
+  const S = math.inv(c);
   
+  const s = [
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+  ];
+
+  let m, n, coefIJ, coefKL;
+
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++)
+      for (let k = 0; k < 3; k++)
+        for (let l = 0; l < 3; l++) {
+          if (i === j) {
+            m = i;
+            coefIJ = 1;
+          } else {
+            coefIJ = 0.5;
+            if ((i === 0) && (j === 1)) m = 5;
+            if ((i === 0) && (j === 2)) m = 4;
+            if ((i === 1) && (j === 2)) m = 3;
+            if ((i === 1) && (j === 0)) m = 5;
+            if ((i === 2) && (j === 0)) m = 4;
+            if ((i === 2) && (j === 1)) m = 3;
+          }
+
+          if (k === l) {
+            n = k;
+            coefKL = 1;
+          }
+          else {
+            coefKL = 0.5;
+            if ((k === 0) && (l === 1)) n = 5;
+            if ((k === 0) && (l === 2)) n = 4;
+            if ((k === 1) && (l === 2)) n = 3;
+            if ((k === 1) && (l === 0)) n = 5;
+            if ((k === 2) && (l === 0)) n = 4;
+            if ((k === 2) && (l === 1)) n = 3;
+          }
+          s[i][j][k][l] = coefIJ * coefKL * math.subset(S, math.index(m, n));
+        }
+  }
+
+  let { x: i, y: j, z: k } = direction;
+
+  const length = math.sqrt(i*i + j*j + k*k);
+
+  i = i / length;
+  j = j / length;
+  k = k / length;
+  
+  const theta = math.acos(k);
+  const sinTheta = math.sin(theta);
+
+  let A = [ 
+    [ k + (1 - k) * i * i, (1 - k) * i * j + sinTheta * -k, (1 - k) * i * k + j * sinTheta],
+    [ (1 - k) * i * j + sinTheta * k, k + (1 - k) * j *j, (1 - k) * j * k + sinTheta * -i],
+    [ (1 - k) * i * k + sinTheta * -j, (1 - k) * k * j + sinTheta * i, k + (1 - k) * k * k]
+  ];
+
+  A = math.transpose(A);
+
+  const s2 = [
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+  ];
+
+  let MI = [
+    [0, 5, 4],
+    [5, 1, 3],
+    [4, 3, 2],
+  ];
+
+  let MK = [
+    [1, 0.5, 0.5],
+    [0.5, 1, 0.5],
+    [0.5, 0.5, 1],
+  ];
+
+  const c2 = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+  ];
+
+
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++)
+      for (let k = 0; k < 3; k++)
+        for (let l = 0; l < 3; l++) {
+          
+          for (let a = 0; a < 3; a++)
+            for (let b = 0; b < 3; b++)
+              for (let c = 0; c < 3; c++)
+                for (let d = 0; d < 3; d++) {
+                  // s2[i][j][k][l] = s2[i][j][k][l] + A[a][i] * A[b][j] * A[c][k] * A[d][l] * s[a][b][c][d];
+                  s2[i][j][k][l] = s2[i][j][k][l] + A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];  
+                }
+          
+          m = MI[i][j];
+          n = MI[k][l];
+          c2[m][n] = (1/MK[i][j]) * (1/MK[k][l]) * s2[i][j][k][l];
+        }
+
+  return c2;
+}
+
+const prepareComposite = (matrices, f1 = 0.5, f2 = 0.5, direction) => {
+  let { '1': c1, '2': c2 } = matrices;
+
+  let c3 = rotateTensors(c1, direction);
+  let c4 = rotateTensors(c2, direction);
+
+  let C1 = math.matrix(c3);
+  let C2 = math.matrix(c4);
+
+  
+  C1 = math.inv(C1); 
+  C2 = math.inv(C2);
+
   let P1 = [
     [1, 0, 0, 0, 0, 0],
     [0, 1, 0, 0, 0, 0],
@@ -243,8 +363,8 @@ const newYoungsModulus = (tensors, totalCount = 10000, direction) => {
     //       }
     //   }
 
-    let Y = Math.round(Math.abs(1/sum) * 100) / 100;
-    // let Y = sum * 1000;
+    // let Y = Math.round(Math.abs(1/sum) * 100) / 100;
+    let Y = sum.toFixed(10);
 
     result.x.push(Y * i);
     result.y.push(Y * j);
@@ -255,9 +375,11 @@ const newYoungsModulus = (tensors, totalCount = 10000, direction) => {
   return result;
 }
 
+
+
 onmessage = function(event) {
   if (event.data.constructor === Object) {
-    const prepared = prepareComposite(event.data, event.data.ratio, 1-event.data.ratio);
+    const prepared = prepareComposite(event.data, event.data.ratio, 1-event.data.ratio, event.data.direction);
     const calculated = youngsModulus(prepared);
     calculated.compositeElasticity = prepared._data;
 
@@ -267,7 +389,7 @@ onmessage = function(event) {
     };
 
     for (let f = 0; f <= 1; f = f + 0.01) {
-      const prepared = prepareComposite(event.data, f, 1-f);
+      const prepared = prepareComposite(event.data, f, 1-f, event.data.direction);
       const calculated = youngsModulus(prepared, 1, { i: 0, j: 0, k: 1 });
       rangeRun.x.push(f);
       rangeRun.Y.push(calculated.Y.pop());

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import './index.css';
 
 const Navigation = () => (
-  <nav>
+  <nav
+    style={{position: 'static'}}
+  >
     <a 
       href='#'
       className='brand'>
