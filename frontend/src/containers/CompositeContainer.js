@@ -8,7 +8,7 @@ import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
 import CompositeRatio from '../components/CompositeRatio';
 import CompositeRotation from '../components/CompositeRotation';
-
+import CrystalSystemSelect from './CrystalSystemSelect';
 
 import RangeRun from './RangeRun';
 
@@ -47,6 +47,25 @@ class CompositeContainer extends Component {
           />
         </div>
         <RangeRun />
+        
+        <hr />
+
+        <Button
+          className='success'
+          onClick={() =>
+            submitComposite({
+              elasticities: [
+                elasticities['2'].map(row => row.map(cell => cell.value)),
+                elasticities['3'].map(row => row.map(cell => cell.value))
+              ],
+              ratio,
+              rotation,
+          }, worker)}
+        >
+          Submit
+        </Button>
+
+        <hr />
 
         <div className='flex two'>
           <CompositeRotation
@@ -59,45 +78,34 @@ class CompositeContainer extends Component {
             updateRatio={(value) => this.setState({ ratio: value})}
           />
           
-        </div>  
+        </div>
+
+        <hr />
         
         <div className='flex two'>
           <div>
+            <h3>First material</h3>
+            <CrystalSystemSelect />
             <ElasticityInput
               id={'2'}
             />
-          </div>
           
           <MaterialProjectSearch
             elasticityId={'2'}
           />
-        </div>
+          </div>
 
-        <div className='flex two'>
           <div>
+            <h3>Second material</h3>
+            <CrystalSystemSelect />
             <ElasticityInput
               id={'3'}
             />
-            <Button
-              onClick={() =>
-                submitComposite({
-                  elasticities: [
-                    elasticities['2'].map(row => row.map(cell => cell.value)),
-                    elasticities['3'].map(row => row.map(cell => cell.value))
-                  ],
-                  ratio,
-                  rotation,
-              }, worker)}
-            >
-              Submit
-            </Button>
+            <MaterialProjectSearch
+              elasticityId={'3'}
+            />
           </div>
-          <MaterialProjectSearch
-            elasticityId={'3'}
-          />
         </div>
-
-
       </div>
     )
   }

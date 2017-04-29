@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { replaceElasticityWithFound } from '../../actions';
 import Button from '../Button';
 import SearchResult from '../SearchResult';
+import Spinner from 'react-spinner';
 
 class MaterialProjectSearch extends Component {
   constructor(props) {
     super(props);    
     this.state = {
       searchResults : [],
-      keyword: ''
+      keyword: '',
+      searching: false
     }
 
     this.searchMaterial = this.searchMaterial.bind(this);
@@ -19,13 +21,14 @@ class MaterialProjectSearch extends Component {
     fetch(`http://localhost:8080/api/searchMaterialProject/${keyword}`)
     .then(responce => responce.json())
     .then(result => this.setState({
-        searchResults: result
+        searchResults: result,
+        searching: false
     }))
     .catch(e => console.error(e));
   }
 
   render() {
-    const { searchResults, keyword } = this.state; 
+    const { searchResults, keyword, searching } = this.state; 
     const { replaceElasticityWithFound, elasticityId } = this.props; 
     return (
     <div>
@@ -36,14 +39,26 @@ class MaterialProjectSearch extends Component {
           onChange={(e) => this.setState({keyword: e.target.value})}
         />
         <Button
-          onClick={() => this.searchMaterial(keyword)}
+          disabled={searching}
+          onClick={() => {
+            this.searchMaterial(keyword);
+            this.setState({
+              searching: true
+            })
+          }}
         >
-          Search
+          {searching ? 'Searching...' : 'Search'}
         </Button>
       </div>
 
-      {searchResults.length ?
+      {searchResults.length && !searching ?
         <div>
+          <article class="card">
+            <header>
+              <h5>Number of results: {searchResults.length}</h5>
+            </header>
+          </article>
+
           {searchResults.map((material, index) =>
             <SearchResult
               key={index}
@@ -53,7 +68,7 @@ class MaterialProjectSearch extends Component {
             />
           )}
         </div>
-      : <p>No results</p>
+      : <h5>No results</h5>
       }
     </div>
     );

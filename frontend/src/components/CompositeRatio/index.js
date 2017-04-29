@@ -20,6 +20,9 @@ export default class CompositeRatio extends Component {
         onBlur={(e) => updateRatio(e.target.value)}
       />
       <input
+        style={{
+          background: '#bbb'
+        }}
         value={1.0-ratio}
         disabled={true}
       />

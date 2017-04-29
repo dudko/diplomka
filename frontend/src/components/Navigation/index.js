@@ -5,7 +5,7 @@ const Navigation = () => (
   <nav
     style={{
       position: 'static',
-      marginBottom: '10px'
+      marginBottom: '20px'
     }}
   >
     <Link

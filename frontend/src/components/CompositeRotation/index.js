@@ -15,7 +15,12 @@ export default class CompositeRotation extends Component {
     const { updateRotation } = this.props;
 
     return (<div>
-      <h5>Rotation</h5>
+      <h5
+        data-tooltip='This is a great tooltip'
+        className='tooltip-top'
+      >
+        Rotation
+      </h5>
       {['x', 'y', 'z'].map(axis =>
         <input
           key={axis}

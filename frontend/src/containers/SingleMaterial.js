@@ -27,8 +27,8 @@ class SingleMaterial extends Component {
             points={points}
             propertyName={'compressiblity'}
           />
-          {/*<PropertiesContainer />*/}
         </div>
+          <PropertiesContainer />
         <div className='flex two'>
           <div>
             <ElasticityInput
