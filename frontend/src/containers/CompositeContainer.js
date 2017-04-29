@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { submitComposite, processPoints } from '../actions';
 
-import MatrixContainer from './MatrixContainer';
-import CrystalSystemSelect from './CrystalSystemSelect';
+import ElasticityInput from './ElasticityInput';
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
-import CompositeRotation from '../components/CompositeRotation';
 import RangeRun from './RangeRun';
 
 import Chart from '../components/Chart';
@@ -27,7 +25,7 @@ class CompositeContainer extends Component {
   }
 
   render() {
-    const { materialOne, materialTwo, crystalSystem, points, worker, submitComposite } = this.props;
+    const { materialOne, materialTwo, points, worker, submitComposite } = this.props;
     const { ratio, rotation } = this.state;
 
     return (
@@ -58,26 +56,20 @@ class CompositeContainer extends Component {
         
         <div className='flex two'>
           <div>
-            <CrystalSystemSelect />
-            <MatrixContainer
+            <ElasticityInput
               id={'1'}
-              rowCount={6}
-              columnCount={6}
             />
           </div>
           
           <MaterialProjectSearch
-            tensorsId={'1'}            
+            elasticityId={'1'}
           />
         </div>
 
         <div className='flex two'>
           <div>
-            <CrystalSystemSelect />
-            <MatrixContainer
-              id={'2'}          
-              rowCount={6}
-              columnCount={6}
+            <ElasticityInput
+              id={'2'}
             />
             <Button
               onClick={() =>
@@ -92,7 +84,7 @@ class CompositeContainer extends Component {
             </Button>
           </div>
           <MaterialProjectSearch
-            tensorsId={'2'}
+            elasticityId={'2'}
           />
         </div>
 
@@ -105,7 +97,6 @@ class CompositeContainer extends Component {
 const mapStateToProps = (state) => ({
   materialOne: state.inputForTensors['1'],
   materialTwo: state.inputForTensors['2'],
-  crystalSystem: state.reducer.crystalSystem,
   points: state.points,
   worker: state.reducer.worker,
 });

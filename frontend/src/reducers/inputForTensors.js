@@ -1,6 +1,6 @@
 import * as ActionTypes from '../constants/ActionTypes';
 import _ from 'lodash';
-const deepFreeze = require('deep-freeze');
+// const deepFreeze = require('deep-freeze');
 
 const inputForTensor = (state = [], action) => {
   if (action.type === ActionTypes.CHANGE_TENSOR) {
@@ -21,10 +21,10 @@ const inputForTensors = (state = {}, action) => {
         [action.id]: inputForTensor(state[action.id], action)
       }
     }
-    case ActionTypes.TENSORS_FROM_SEARCH_RESULT: {
+    case ActionTypes.ELASTICITY_FROM_SEARCH: {
       return {
         ...state,
-        [action.tensorsId]: action.elasticity.map(row =>
+        [action.elasticityId]: action.elasticity.map(row =>
           row.map(value => ({ value, disabled: false })))
       }
     }

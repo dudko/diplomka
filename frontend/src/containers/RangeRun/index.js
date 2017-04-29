@@ -14,19 +14,6 @@ const RangeRun = ({ rangeRunPoints }) => {
     type: 'scatter'
   }];
 
-  const layout = {
-    autosize: true,
-    width: 200,
-    height: 200,
-    margin: {
-      l: 0,
-      r: 0,
-      b: 20,
-      t: 0,
-      pad: 0
-    }
-  };
-
   const config = {
     displayModeBar: false
   };

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { tensorsToSearchResult } from '../../actions';
-// import './index.css';
+import { replaceElasticityWithFound } from '../../actions';
 import Button from '../Button';
-
+import SearchResult from '../SearchResult';
 
 class MaterialProjectSearch extends Component {
   constructor(props) {
     super(props);    
     this.state = {
       searchResults : [],
-      value: ''
+      keyword: ''
     }
 
     this.searchMaterial = this.searchMaterial.bind(this);
@@ -26,56 +25,43 @@ class MaterialProjectSearch extends Component {
   }
 
   render() {
-    const { searchResults, value } = this.state; 
-    const { dispatch, tensorsId } = this.props; 
+    const { searchResults, keyword } = this.state; 
+    const { replaceElasticityWithFound, elasticityId } = this.props; 
     return (
-    <div
-    >
-      <div className=''>
+    <div>
+      <div>
         <input
           type='text'
-          value={value}
-          onChange={(event) => this.setState({value: event.target.value})}
+          value={keyword}
+          onChange={(e) => this.setState({keyword: e.target.value})}
         />
         <Button
-          onClick={() => this.searchMaterial(value)}
+          onClick={() => this.searchMaterial(keyword)}
         >
           Search
         </Button>
       </div>
+
       {searchResults.length ?
         <div>
-          { searchResults.map((material, index) => 
-            <article key={index} className="card" 
-              onClick={() =>
-                dispatch(tensorsToSearchResult(tensorsId, material['elasticity.elastic_tensor'], material['spacegroup.crystal_system']))}
-            >
-              <header>
-                <h3>
-                  <a
-                    href={`https://www.materialsproject.org/materials/${material.task_ids[0]}`}
-                    target='_blank'
-                  >
-                    {material.task_ids[0]}
-                  </a>
-                </h3>
-                <h3>{material.pretty_formula}</h3>
-                <h3>{material['spacegroup.crystal_system']}</h3>
-              </header>
-              <footer>
-                <table style={{tableLayout:'fixed',width:'100%'}}>
-                  {material['elasticity.elastic_tensor'].map(row =>
-                    <tr>{row.map(cell => <td>{cell}</td>)}</tr>)}
-                </table>          
-              </footer>
-            </article>
+          {searchResults.map((material, index) =>
+            <SearchResult
+              key={index}
+              material={material}
+              onClick={(elasticity, crystalSymetry) =>
+                replaceElasticityWithFound(elasticityId, elasticity, crystalSymetry)}
+            />
           )}
         </div>
-        : <p>No results</p>
+      : <p>No results</p>
       }
     </div>
     );
   }
 }
 
-export default connect()(MaterialProjectSearch);
+const mapDispatchToProps = {
+  replaceElasticityWithFound
+}
+
+export default connect(null, mapDispatchToProps)(MaterialProjectSearch);

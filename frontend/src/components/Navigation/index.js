@@ -1,25 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './index.css';
 
 const Navigation = () => (
   <nav
     style={{position: 'static'}}
   >
-    <a 
-      href='#'
-      className='brand'>
+    <Link
+      to='/'
+      className='brand'
+    >
       <span>Elasticity analysis</span>
-    </a>
+    </Link>
+
     <div
-      className='menu'>
+      className='menu'
+    >
       <Link
         className='button'
-        to="/">Single Material
+        to='/'
+      >
+        Single Material
       </Link>
+
       <Link
         className='button'
-        to="/composite">Composite
+        to='composite'
+      >
+        Composite
       </Link>
     </div>
   </nav>

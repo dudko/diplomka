@@ -1,13 +1,13 @@
-import * as ActionTypes from '../constants/ActionTypes';
+// import * as ActionTypes from '../constants/ActionTypes';
 import _ from 'lodash';
 
-const materialsProjectResult = (state = [], action) => {
-  const { tensorsId, index, value } = action;
-  const nextState = _.cloneDeep(state);
-  nextState[index.row][index.column].value = value;
+// const materialsProjectResult = (state = [], action) => {
+//   const { tensorsId, index, value } = action;
+//   const nextState = _.cloneDeep(state);
+//   nextState[index.row][index.column].value = value;
 
-  return nextState;
-}
+//   return nextState;
+// }
 
 const materialsProjectResults = (state = {}, action) => {
   // if (action.type === ActionTypes.TENSORS_FROM_SEARCH_RESULT) {

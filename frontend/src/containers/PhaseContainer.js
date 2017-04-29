@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { submitPhase, processPoints } from '../actions';
 
-import Matrix from './MatrixContainer';
-import CrystalSystemSelect from './CrystalSystemSelect';
+import ElasticityInput from './ElasticityInput';
+import PropertiesContainer from './PropertiesContainer';
+
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
 import Chart from '../components/Chart';
-import PropertiesContainer from './PropertiesContainer';
 
 class PhaseContainer extends Component {
   render() {
-    const { elasticity, crystalSystem, points, worker, submitPhase } = this.props;
+    const { elasticity, points, worker, submitPhase } = this.props;
 
     return (
       <div>
@@ -24,12 +24,8 @@ class PhaseContainer extends Component {
         </div>
         <div className='flex two'>
           <div>
-            <CrystalSystemSelect />
-            
-            <Matrix
+            <ElasticityInput
               id={'1'}
-              rowCount={6}
-              columnCount={6}
             />
 
             <Button
@@ -41,7 +37,7 @@ class PhaseContainer extends Component {
           </div>
           
           <MaterialProjectSearch
-            tensorsId={'1'}
+            elasticityId={'1'}
           />
         </div>
 
@@ -53,9 +49,8 @@ class PhaseContainer extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   elasticity: state.inputForTensors['1'],
-  crystalSystem: state.reducer.crystalSystem,
   points: state.points,
-  worker: state.reducer.worker,
+  worker: state.worker,
 });
 
 const mapDispatchToProps = {

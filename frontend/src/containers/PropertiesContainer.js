@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Properties from '../components/Properties';
-import { submitPhase } from '../actions';
 
 const PropertiesContainer = ({ tables }) => (
   <Properties
@@ -10,7 +9,6 @@ const PropertiesContainer = ({ tables }) => (
 );
 
 const mapStateToProps = (state) => ({
-  tables: state.reducer.tables
 })
 
 export default connect(mapStateToProps)(PropertiesContainer);
