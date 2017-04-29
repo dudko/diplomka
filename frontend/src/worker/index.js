@@ -20,7 +20,7 @@ function randomPointSphere() {
   return {i, j, k};
 }
 
-const youngsModulus = (tensors, totalCount = 10000, direction) => {
+const youngsModulus = (tensors, totalCount = 10000, orientation) => {
   const S = math.inv(tensors);
 
   const result = {
@@ -31,7 +31,7 @@ const youngsModulus = (tensors, totalCount = 10000, direction) => {
   };
 
   for (let count = 0; count < totalCount; count++) {
-    const {i, j, k} = direction || randomPointSphere();
+    const {i, j, k} = orientation || randomPointSphere();
 
     const pow = math.pow;
 
@@ -68,7 +68,7 @@ const youngsModulus = (tensors, totalCount = 10000, direction) => {
   return result;
 }
 
-const rotateTensors = (c, direction) => {
+const rotateTensors = (c, orientation) => {
   const S = math.inv(c);
   
   const s = [
@@ -113,7 +113,7 @@ const rotateTensors = (c, direction) => {
         }
   }
 
-  let { x: i, y: j, z: k } = direction;
+  let { x: i, y: j, z: k } = orientation;
 
   const length = math.sqrt(i*i + j*j + k*k);
 
@@ -181,14 +181,16 @@ const rotateTensors = (c, direction) => {
   return c2;
 }
 
-const prepareComposite = (matrices, f1 = 0.5, f2 = 0.5, direction) => {
-  let { '1': c1, '2': c2 } = matrices;
+const prepareComposite = (matrices, ratio, orientation) => {
+  let [c1, c2]  = matrices;
+  const f1 = ratio;
+  const f2 = 1-ratio;
 
-  let c3 = rotateTensors(c1, direction);
-  let c4 = rotateTensors(c2, direction);
+  c1 = rotateTensors(c1, orientation);
+  c2 = rotateTensors(c2, orientation);
 
-  let C1 = math.matrix(c3);
-  let C2 = math.matrix(c4);
+  let C1 = math.matrix(c1);
+  let C2 = math.matrix(c2);
 
   
   C1 = math.inv(C1); 
@@ -243,14 +245,13 @@ const prepareComposite = (matrices, f1 = 0.5, f2 = 0.5, direction) => {
   return math.multiply(C, T);
 }
 
-const newYoungsModulus = (tensors, totalCount = 10000, direction) => {
+const newYoungsModulus = (tensors, totalCount = 10000, orientation) => {
   const S = math.inv(tensors);
   const s = [
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
   ];
-
 
   let m, n, coefIJ, coefKL;
 
@@ -295,7 +296,7 @@ const newYoungsModulus = (tensors, totalCount = 10000, direction) => {
   };
 
   for (let count = 0; count < totalCount; count++) {
-    const {i, j, k} = direction || randomPointSphere();
+    const {i, j, k} = orientation || randomPointSphere();
 
     const A = [
       [0, 0, i],
@@ -375,11 +376,12 @@ const newYoungsModulus = (tensors, totalCount = 10000, direction) => {
   return result;
 }
 
-
-
 onmessage = function(event) {
   if (event.data.constructor === Object) {
-    const prepared = prepareComposite(event.data, event.data.ratio, 1-event.data.ratio, event.data.direction);
+    
+    const { elasticities, ratio, rotation } = event.data;
+
+    const prepared = prepareComposite(elasticities, ratio, rotation);
     const calculated = youngsModulus(prepared);
     calculated.compositeElasticity = prepared._data;
 
@@ -388,12 +390,12 @@ onmessage = function(event) {
       Y: []
     };
 
-    for (let f = 0; f <= 1; f = f + 0.01) {
-      const prepared = prepareComposite(event.data, f, 1-f, event.data.direction);
-      const calculated = youngsModulus(prepared, 1, { i: 0, j: 0, k: 1 });
-      rangeRun.x.push(f);
-      rangeRun.Y.push(calculated.Y.pop());
-    }
+    // for (let f = 0; f <= 1; f = f + 0.01) {
+    //   const prepared = prepareComposite(event.data, f, 1-f, event.data.orientation);
+    //   const calculated = youngsModulus(prepared, 1, { i: 0, j: 0, k: 1 });
+    //   rangeRun.x.push(f);
+    //   rangeRun.Y.push(calculated.Y.pop());
+    // }
     calculated.rangeRun = rangeRun;
     postMessage(calculated);  
   } else {

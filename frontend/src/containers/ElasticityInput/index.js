@@ -25,7 +25,7 @@ class ElasticityInput extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  elasticity: state.inputForTensors[ownProps.id]
+  elasticity: state.elasticities[ownProps.id]
 })
 
 const mapDispatchToProps = {

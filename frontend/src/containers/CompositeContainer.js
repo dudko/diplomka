@@ -6,6 +6,10 @@ import { submitComposite, processPoints } from '../actions';
 import ElasticityInput from './ElasticityInput';
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
+import CompositeRatio from '../components/CompositeRatio';
+import CompositeRotation from '../components/CompositeRotation';
+
+
 import RangeRun from './RangeRun';
 
 import Chart from '../components/Chart';
@@ -25,7 +29,7 @@ class CompositeContainer extends Component {
   }
 
   render() {
-    const { materialOne, materialTwo, points, worker, submitComposite } = this.props;
+    const { elasticities, points, worker, submitComposite } = this.props;
     const { ratio, rotation } = this.state;
 
     return (
@@ -39,52 +43,51 @@ class CompositeContainer extends Component {
         <RangeRun />
 
         <div className='flex two'>
-          <div>
-            <h5>Orientation of components</h5>
-            <input type="text" value={rotation.x} onChange={(e) => this.setState({ rotation: {...rotation, x: e.target.value }})} />
-            <input type="text" value={rotation.y} onChange={(e) => this.setState({ rotation: {...rotation, y: e.target.value }})} />
-            <input type="text" value={rotation.z} onChange={(e) => this.setState({ rotation: {...rotation, z: e.target.value }})} />
-            <p></p>
-          </div>
-          <div>
-            <h5>Composite ratio</h5>
-            <input value={ratio} onChange={(e) => this.setState({ ratio: e.target.value })} />
-            <input value={1.0-ratio} disabled={true} />
-            <p></p>
-          </div>
+          <CompositeRotation
+            updateRotation={(axis) => this.setState({
+              ...rotation,
+              ...axis
+            })}
+          />
+          <CompositeRatio
+            updateRatio={(value) => this.setState({ ratio: value})}
+          />
+          
         </div>  
         
         <div className='flex two'>
           <div>
             <ElasticityInput
-              id={'1'}
+              id={'2'}
             />
           </div>
           
           <MaterialProjectSearch
-            elasticityId={'1'}
+            elasticityId={'2'}
           />
         </div>
 
         <div className='flex two'>
           <div>
             <ElasticityInput
-              id={'2'}
+              id={'3'}
             />
             <Button
               onClick={() =>
                 submitComposite({
-                  '1': materialOne.map(row => row.map(cell => cell.value)),
-                  '2': materialTwo.map(row => row.map(cell => cell.value)),
+                  elasticities: [
+                    elasticities['2'].map(row => row.map(cell => cell.value)),
+                    elasticities['3'].map(row => row.map(cell => cell.value))
+                  ],
                   ratio,
-                  direction: rotation,
+                  rotation,
               }, worker)}
             >
               Submit
             </Button>
           </div>
           <MaterialProjectSearch
-            elasticityId={'2'}
+            elasticityId={'3'}
           />
         </div>
 
@@ -95,10 +98,9 @@ class CompositeContainer extends Component {
 } 
 
 const mapStateToProps = (state) => ({
-  materialOne: state.inputForTensors['1'],
-  materialTwo: state.inputForTensors['2'],
+  elasticities: state.elasticities,
   points: state.points,
-  worker: state.reducer.worker,
+  worker: state.worker,
 });
 
 const mapDispatchToProps = {

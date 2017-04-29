@@ -46,8 +46,8 @@ export const submitPhase = (elasticity, worker) => (dispatch) => {
   api.elateAnalyse((tables) => {dispatch(processTables(tables))}, elasticity);
 }
 
-export const submitComposite = (elasticity, worker) => (dispatch) => {
-  worker.postMessage(elasticity);
+export const submitComposite = (dataToSend, worker) => (dispatch) => {
+  worker.postMessage(dataToSend);
   worker.onmessage = msg => {
     dispatch(processPoints(msg.data));
     dispatch(processRangeRunPoints(msg.data.rangeRun));

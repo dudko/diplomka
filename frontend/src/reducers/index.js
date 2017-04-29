@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import points from './points';
-import inputForTensors from './inputForTensors';
-import materialsProjectResults from './materialsProjectResults';
+import elasticities from './elasticities';
 import rangeRun from './rangeRun';
 import worker from './worker';
 
@@ -9,9 +8,8 @@ import worker from './worker';
 import _ from 'lodash';
 
 const reducer = combineReducers({
+  elasticities,
   points,
-  inputForTensors,
-  materialsProjectResults,
   rangeRun,
   worker,
 });

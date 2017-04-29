@@ -12,7 +12,7 @@ const initialState = {
     z: [],
     Y: [],
   },
-  inputForTensors: {
+  elasticities: {
     '1': [0, 1, 2, 3, 4, 5].map(row =>
           [0, 1, 2, 3, 4, 5].map(cell =>
             ({ value: 0, disabled: false })
@@ -20,7 +20,11 @@ const initialState = {
     '2': [0, 1, 2, 3, 4, 5].map(row =>
           [0, 1, 2, 3, 4, 5].map(cell =>
             ({ value: 0, disabled: false })
-        ))
+        )),
+    '3': [0, 1, 2, 3, 4, 5].map(row =>
+      [0, 1, 2, 3, 4, 5].map(cell =>
+        ({ value: 0, disabled: false })
+      )),
   }
 }
 
