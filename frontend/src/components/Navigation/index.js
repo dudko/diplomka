@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 
 const Navigation = () => (
   <nav
-    style={{position: 'static'}}
+    style={{
+      position: 'static',
+      marginBottom: '10px'
+    }}
   >
     <Link
       to='/'

@@ -70,8 +70,23 @@ const youngsModulus = (tensors, totalCount = 10000, orientation) => {
 
 const rotateTensors = (c, orientation) => {
   const S = math.inv(c);
+
+  // Normalize direction vector
+  let { x: i, y: j, z: k } = orientation;
+  
+  const length = math.sqrt(i*i + j*j + k*k);
+
+  i = i / length;
+  j = j / length;
+  k = k / length;
   
   const s = [
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
+    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+  ];
+
+  const s2 = [
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
@@ -113,14 +128,6 @@ const rotateTensors = (c, orientation) => {
         }
   }
 
-  let { x: i, y: j, z: k } = orientation;
-
-  const length = math.sqrt(i*i + j*j + k*k);
-
-  i = i / length;
-  j = j / length;
-  k = k / length;
-  
   const theta = math.acos(k);
   const sinTheta = math.sin(theta);
 
@@ -132,19 +139,13 @@ const rotateTensors = (c, orientation) => {
 
   A = math.transpose(A);
 
-  const s2 = [
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
-  ];
-
-  let MI = [
+  const MI = [
     [0, 5, 4],
     [5, 1, 3],
     [4, 3, 2],
   ];
 
-  let MK = [
+  const MK = [
     [1, 0.5, 0.5],
     [0.5, 1, 0.5],
     [0.5, 0.5, 1],
@@ -191,7 +192,6 @@ const prepareComposite = (matrices, ratio, orientation) => {
 
   let C1 = math.matrix(c1);
   let C2 = math.matrix(c2);
-
   
   C1 = math.inv(C1); 
   C2 = math.inv(C2);
@@ -247,6 +247,7 @@ const prepareComposite = (matrices, ratio, orientation) => {
 
 const newYoungsModulus = (tensors, totalCount = 10000, orientation) => {
   const S = math.inv(tensors);
+
   const s = [
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
@@ -292,7 +293,8 @@ const newYoungsModulus = (tensors, totalCount = 10000, orientation) => {
     x: [],
     y: [],
     z: [],
-    Y: []
+    Y: [],
+    compressiblity: [],
   };
 
   for (let count = 0; count < totalCount; count++) {
@@ -310,67 +312,21 @@ const newYoungsModulus = (tensors, totalCount = 10000, orientation) => {
       [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
     ];
 
-    let sum = 0;
+    let sumYoung = 0;
+    let sumCompressibility = 0;
     for (let i = 0; i < 3; i++)
       for (let j = 0; j < 3; j++)
         for (let k = 0; k < 3; k++)
           for (let l = 0; l < 3; l++) {
-            sum = sum + A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
-            // sum = sum + A[i][2] * A[j][2] * s[i][j][k][k];
-            // for (let a = 0; a < 3; a++)
-            //   for (let b = 0; b < 3; b++)
-            //     for (let c = 0; c < 3; c++)
-            //       for (let d = 0; d < 3; d++) {
-            //         s2[i][j][k][l] = s2[i][j][k][l] + A[a][i] * A[b][j] * A[c][k] * A[d][l] * s[a][b][c][d];
-            //       }
+            sumYoung = sumYoung + A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
+            sumCompressibility = sumCompressibility + A[i][2] * A[j][2] * s[i][j][k][k];
          }
     
-    // let M = [
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0],
-    //   [0, 0, 0, 0, 0, 0, 0]
-    // ];
-
-    // for (let i = 0; i < 5; i++)
-    //   for (let j = 0; j < 5; j++) {
-    //     if (i === j) {
-    //         m = i;
-    //         coefIJ = 1;
-    //       } else {
-    //         coefIJ = 0.5;
-    //         if ((i === 0) && (j === 1)) m = 5;
-    //         if ((i === 0) && (j === 2)) m = 4;
-    //         if ((i === 1) && (j === 2)) m = 3;
-    //         if ((i === 1) && (j === 0)) m = 5;
-    //         if ((i === 2) && (j === 0)) m = 4;
-    //         if ((i === 2) && (j === 1)) m = 3;
-    //       }
-
-    //       if (k === l) {
-    //         n = k;
-    //         coefKL = 1;
-    //       }
-    //       else {
-    //         coefKL = 0.5;
-    //         if ((k === 0) && (l === 1)) n = 5;
-    //         if ((k === 0) && (l === 2)) n = 4;
-    //         if ((k === 1) && (l === 2)) n = 3;
-    //         if ((k === 1) && (l === 0)) n = 5;
-    //         if ((k === 2) && (l === 0)) n = 4;
-    //         if ((k === 2) && (l === 1)) n = 3;
-    //       }
-    //   }
-
-    // let Y = Math.round(Math.abs(1/sum) * 100) / 100;
-    let Y = sum.toFixed(10);
-
-    result.x.push(Y * i);
-    result.y.push(Y * j);
-    result.z.push(Y * k);
-    result.Y.push(Y);
+    result.x.push(i);
+    result.y.push(j);
+    result.z.push(k);
+    result.Y.push(Math.round(Math.abs(1/sumYoung) * 100) / 100);
+    result.compressiblity.push(sumCompressibility.toFixed(10))
   }
 
   return result;

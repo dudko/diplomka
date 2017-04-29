@@ -4,17 +4,24 @@ import Plotly from 'plotly.js/dist/plotly-gl3d';
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-const Chart = ({ points }) => {
-  const { x, y, z, Y } = points;
+const Chart = ({ points, propertyName }) => {
+  let { x, y, z } = points;
+
+  let property = points[propertyName];
+
+  x = x.map((x, index) => x*property[index]);
+  y = y.map((y, index) => y*property[index]);
+  z = z.map((z, index) => z*property[index]);
+
   const data = [{
     x,
     y,
     z,
     mode: 'markers',
-    text: Y,
+    text: property,
     marker: {
       size: 12,
-      color: Y,
+      color: property,
       colorscale: 'Jet',
       opacity: 1,
       colorbar: {}
@@ -23,7 +30,7 @@ const Chart = ({ points }) => {
   }];
 
   const layout = {
-    autosize: false,
+    autosize: true,
     width: 600,
     height: 600,
     margin: {

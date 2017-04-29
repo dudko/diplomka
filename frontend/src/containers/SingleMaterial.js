@@ -10,7 +10,7 @@ import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
 import Chart from '../components/Chart';
 
-class PhaseContainer extends Component {
+class SingleMaterial extends Component {
   render() {
     const { elasticity, points, worker, submitPhase } = this.props;
 
@@ -18,9 +18,16 @@ class PhaseContainer extends Component {
       <div>
         <div className='flex two'>
           <Chart
+            key={'youngs'}
             points={points}
+            propertyName={'Y'}
           />
-          <PropertiesContainer />
+          <Chart
+            key={'compressiblity'}
+            points={points}
+            propertyName={'compressiblity'}
+          />
+          {/*<PropertiesContainer />*/}
         </div>
         <div className='flex two'>
           <div>
@@ -58,4 +65,4 @@ const mapDispatchToProps = {
   processPoints
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PhaseContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleMaterial);

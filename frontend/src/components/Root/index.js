@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import PhaseContainer from '../../containers/PhaseContainer';
+import SingleMaterial from '../../containers/SingleMaterial';
 import CompositeContainer from '../../containers/CompositeContainer';
 import Navigation from '../Navigation';
 
@@ -14,7 +14,7 @@ const Root = ({ store }) => (
             className='flex four-fifth'
             style={{margin: '0 auto'}}
           >
-            <Route exact path='/' component={PhaseContainer} />
+            <Route exact path='/' component={SingleMaterial} />
             <Route path='/composite' component={CompositeContainer} />
           </section>
         </main>

@@ -36,9 +36,15 @@ class CompositeContainer extends Component {
       <div>
         <div className='flex two'>
           <Chart
+            key={'youngs'}
             points={points}
+            propertyName={'Y'}
           />
-          <PropertiesContainer />
+          <Chart
+            key={'compressiblity'}
+            points={points}
+            propertyName={'compressiblity'}
+          />
         </div>
         <RangeRun />
 
