@@ -1,10 +1,10 @@
 import React from 'react';
 import { MATERIALS_PROJECT } from '../../constants/URLs';
 
-const SearchResult = ({material, onClick}) => (
+const SearchResult = ({material, setElasticity}) => (
   <article className="card"
     onClick={() =>
-      onClick(material['elasticity.elastic_tensor'], material['spacegroup.crystal_system'])}
+      setElasticity(material['elasticity.elastic_tensor'], material['spacegroup.crystal_system'])}
   >
     <header>
       <h3>

@@ -1,14 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { crystalSystemChanged } from'../../actions';
 
-const crystalSystems = ['unknown', 'cubic', 'hexagonal', 'triclinic',
+const crystalSystems = ['any', 'cubic', 'hexagonal', 'triclinic',
   'orthotropic', 'trigonal', 'tetragonal', 'isotropic', 'monoclinic'];
 
-const CrystalSystemSelect = ({ selectedCrytalSystem, dispatch }) => (
+const CrystalSystemSelect = ({ crystalSystem, setSelectedCrystalSystem }) => (
   <select
-    onChange={(event) => dispatch(crystalSystemChanged(event.target.value))}
-    value={selectedCrytalSystem}
+    onChange={(event) => setSelectedCrystalSystem(event.target.value)}
+    value={crystalSystem}
   >
     {crystalSystems.map(system =>
       <option
@@ -20,8 +18,4 @@ const CrystalSystemSelect = ({ selectedCrytalSystem, dispatch }) => (
   </select>
 )
 
-const mapStateToProps = state => ({
-  selectedCrytalSystem: state.crystalSystem
-});
-
-export default connect(mapStateToProps)(CrystalSystemSelect);
+export default CrystalSystemSelect;

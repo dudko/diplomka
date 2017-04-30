@@ -1,50 +1,119 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
-import { submitPhase, processPoints } from '../actions';
-
 import ElasticityInput from './ElasticityInput';
 import PropertiesContainer from './PropertiesContainer';
-
 import MaterialProjectSearch from '../components/MaterialProjectSearch';
 import Button from '../components/Button';
-import Chart from '../components/Chart';
+import Properties from '../components/Properties';
 
-class SingleMaterial extends Component {
+import Chart from '../components/Chart';
+import CrystalSystemSelect from './CrystalSystemSelect';
+
+import _ from 'lodash';
+import * as api from '../api';
+
+const createWorker = require('worker-loader!../worker');
+
+export default class SingleMaterial extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      elasticity: [0, 1, 2, 3, 4, 5].map(row =>
+        [0, 1, 2, 3, 4, 5].map(cell =>
+          ({ value: 0, disabled: false })
+      )),
+      crystalSystem: 'any',
+      results: {
+        x: [],
+        y: [],
+        z: [],
+        youngs: [],
+        compress: []
+      },
+      worker: new createWorker(),
+      elateAnalysis: [],
+      redraw: false,
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.redraw) {
+      this.setState({
+        redraw: false
+      });
+    }
+  }
+
   render() {
-    const { elasticity, points, worker, submitPhase } = this.props;
+    const { elasticity, crystalSystem, results, worker, elateAnalysis, redraw } = this.state;
 
     return (
       <div>
         <div className='flex two'>
           <Chart
             key={'youngs'}
-            points={points}
-            propertyName={'Y'}
+            points={results}
+            redraw={redraw}
+            propertyName={'youngs'}
           />
           <Chart
-            key={'compressiblity'}
-            points={points}
-            propertyName={'compressiblity'}
+            key={'compress'}
+            points={results}
+            redraw={redraw}
+            propertyName={'compress'}
           />
         </div>
-          <PropertiesContainer />
+
+        <Properties
+          tables={elateAnalysis}
+        />
+
+        <hr />
+        <button
+          type='button'
+          onClick={() => {
+            const elasticityValues = elasticity.map(row => row.map(cell => cell.value));
+            worker.postMessage(elasticityValues);
+            worker.onmessage = msg => this.setState({ results: msg.data, redraw: true });
+            api.sendToElate(elasticityValues, (tables) =>
+              this.setState({ elateAnalysis: tables }))
+          }}
+        >
+          Submit
+        </button>
+        <hr />
+
         <div className='flex two'>
           <div>
-            <ElasticityInput
-              id={'1'}
+            <CrystalSystemSelect
+              crystalSystem={crystalSystem}
+              setSelectedCrystalSystem={(value) => this.setState({
+                crystalSystem: value
+              })}
             />
 
-            <Button
-              onClick={() =>
-                submitPhase(elasticity.map(row => row.map(cell => cell.value)), worker)}
-            >
-              Submit
-            </Button>
+            <ElasticityInput
+              elasticity={elasticity}
+              setConstant={(value, index) => {
+                const nextElasticity = _.cloneDeep(elasticity);
+                nextElasticity[index.row][index.cell].value = value; 
+                this.setState({
+                  elasticity: nextElasticity
+                });
+              }}
+            />
           </div>
           
           <MaterialProjectSearch
-            elasticityId={'1'}
+            setElasticity={(foundElasticity, foundCrystalSystem) => {
+              this.setState({
+                elasticity: elasticity.map((row, rowIndex) =>
+                  row.map((cell, cellIndex) =>
+                    ({...cell, value: foundElasticity[rowIndex][cellIndex]})
+                )),
+                crystalSystem: foundCrystalSystem
+              })
+            }}
           />
         </div>
 
@@ -52,17 +121,4 @@ class SingleMaterial extends Component {
       </div>
     )
   }
-} 
-
-const mapStateToProps = (state, ownProps) => ({
-  elasticity: state.elasticities['1'],
-  points: state.points,
-  worker: state.worker,
-});
-
-const mapDispatchToProps = {
-  submitPhase,
-  processPoints
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleMaterial);

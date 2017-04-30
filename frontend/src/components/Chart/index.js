@@ -4,7 +4,12 @@ import Plotly from 'plotly.js/dist/plotly-gl3d';
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-const Chart = ({ points, propertyName }) => {
+
+PlotlyComponent.prototype.shouldComponentUpdate = (nextProps) => {
+  return nextProps.config.redraw;
+}
+
+const Chart = ({ points, propertyName, redraw }) => {
   let { x, y, z } = points;
 
   let property = points[propertyName];
@@ -30,7 +35,7 @@ const Chart = ({ points, propertyName }) => {
   }];
 
   const layout = {
-    autosize: true,
+    autosize: false,
     width: 600,
     height: 600,
     margin: {
@@ -43,7 +48,8 @@ const Chart = ({ points, propertyName }) => {
   };
 
   const config = {
-    displayModeBar: false
+    displayModeBar: false,
+    redraw
   };
 
   return (

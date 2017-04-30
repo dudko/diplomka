@@ -181,7 +181,7 @@ router.get('/searchMaterialProject/:keyword', (req, res) => {
 });
 
 router.post('/elateAnalyse', (req, res, next) => {
-  const matrix = req.body.matrix;
+  const matrix = req.body;
 
   let body = matrix.map(row => row.join('+')).join('%0D%0A');
   body = `matrix=${body}`;

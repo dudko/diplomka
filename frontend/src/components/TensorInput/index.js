@@ -16,14 +16,14 @@ export default class TensorInput extends Component {
   }
 
   render() {
+    const { setConstant } = this.props;
     const { value } = this.state;
-    const { updateConst } = this.props;
 
     return (<input
       value={value}
       style={{textAlign: 'center'}}
       onChange={(e) => this.setState({ value: e.target.value })}
-      onBlur={(e) => updateConst(e.target.value)}
+      onBlur={(e) => setConstant(e.target.value)}
     />);
   }
 }

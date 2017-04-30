@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { replaceElasticityWithFound } from '../../actions';
 import Button from '../Button';
 import SearchResult from '../SearchResult';
-import Spinner from 'react-spinner';
+import { BASE_URL } from '../../constants/URLs';
 
-class MaterialProjectSearch extends Component {
+export default class MaterialProjectSearch extends Component {
   constructor(props) {
     super(props);    
     this.state = {
@@ -18,53 +16,64 @@ class MaterialProjectSearch extends Component {
   }
 
   searchMaterial(keyword) {
-    fetch(`http://localhost:8080/api/searchMaterialProject/${keyword}`)
-    .then(responce => responce.json())
+    fetch(`${BASE_URL}/api/searchMaterialProject/${keyword}`)
+    .then(response => response.status !== 200 ? [] : response.json())
     .then(result => this.setState({
         searchResults: result,
         searching: false
     }))
-    .catch(e => console.error(e));
+    .catch((e) => {
+      console.error(e);
+      this.setState({
+        searchResults: [],
+        searching: false
+      });
+    });
   }
 
   render() {
     const { searchResults, keyword, searching } = this.state; 
-    const { replaceElasticityWithFound, elasticityId } = this.props; 
+    const { setElasticity } = this.props; 
     return (
     <div>
       <div>
-        <input
-          type='text'
-          value={keyword}
-          onChange={(e) => this.setState({keyword: e.target.value})}
-        />
-        <Button
-          disabled={searching}
-          onClick={() => {
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
             this.searchMaterial(keyword);
             this.setState({
               searching: true
-            })
+            });
           }}
         >
-          {searching ? 'Searching...' : 'Search'}
-        </Button>
+          <input
+            type='text'
+            value={keyword}
+            onChange={(e) => this.setState({keyword: e.target.value})}
+          />
+          <button
+            type='button'
+            disabled={searching}
+            onClick={() => {
+              this.searchMaterial(keyword);
+              this.setState({
+                searching: true
+              })
+            }}
+          >
+            {searching ? 'Searching...' : 'Search'}
+          </button>
+        </form>
       </div>
 
       {searchResults.length && !searching ?
         <div>
-          <article class="card">
-            <header>
-              <h5>Number of results: {searchResults.length}</h5>
-            </header>
-          </article>
-
+          <h2><span className='label success'>Number of results: {searchResults.length}</span></h2>
           {searchResults.map((material, index) =>
             <SearchResult
               key={index}
               material={material}
-              onClick={(elasticity, crystalSymetry) =>
-                replaceElasticityWithFound(elasticityId, elasticity, crystalSymetry)}
+              setElasticity={setElasticity}
             />
           )}
         </div>
@@ -74,9 +83,3 @@ class MaterialProjectSearch extends Component {
     );
   }
 }
-
-const mapDispatchToProps = {
-  replaceElasticityWithFound
-}
-
-export default connect(null, mapDispatchToProps)(MaterialProjectSearch);

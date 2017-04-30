@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import TensorInput from '../../components/TensorInput'
-import { updateConst } from '../../actions';
 
-class ElasticityInput extends Component {
+export default class ElasticityInput extends Component {
   render() {
-    const { id, elasticity, updateConst } = this.props;
+    const { elasticity, setConstant } = this.props;
     
     return (
       <div 
         className='six'
       >
       {elasticity.map((row, rowIndex) =>
-        row.map((cell, columnIndex) => 
+        row.map((cell, cellIndex) => 
           <TensorInput
-            key={`${rowIndex}${columnIndex}`}
+            key={`${rowIndex}${cellIndex}`}
             value={cell.value}
-            updateConst={(value) =>
-              updateConst(id, { row: rowIndex, column: columnIndex }, value)}
+            setConstant={(value) =>
+              setConstant(value, { row: rowIndex, cell: cellIndex })}
           />
       ))}
     </div>
   )}
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  elasticity: state.elasticities[ownProps.id]
-})
 
-const mapDispatchToProps = {
-  updateConst
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ElasticityInput);

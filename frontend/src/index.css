@@ -1,4 +1,8 @@
-body {
-  color: #222;
-  font: 400 14px CoreSans, Arial, sans-serif;
+th {
+  color: #000;
+  background-color: #fff;
+}
+
+.label {
+  margin-left: 0;
 }

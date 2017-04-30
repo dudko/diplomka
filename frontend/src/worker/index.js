@@ -293,8 +293,8 @@ const newYoungsModulus = (tensors, totalCount = 10000, orientation) => {
     x: [],
     y: [],
     z: [],
-    Y: [],
-    compressiblity: [],
+    youngs: [],
+    compress: [],
   };
 
   for (let count = 0; count < totalCount; count++) {
@@ -313,20 +313,20 @@ const newYoungsModulus = (tensors, totalCount = 10000, orientation) => {
     ];
 
     let sumYoung = 0;
-    let sumCompressibility = 0;
+    let sumCompress = 0;
     for (let i = 0; i < 3; i++)
       for (let j = 0; j < 3; j++)
         for (let k = 0; k < 3; k++)
           for (let l = 0; l < 3; l++) {
             sumYoung = sumYoung + A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
-            sumCompressibility = sumCompressibility + A[i][2] * A[j][2] * s[i][j][k][k];
+            sumCompress = sumCompress + A[i][2] * A[j][2] * s[i][j][k][k];
          }
     
     result.x.push(i);
     result.y.push(j);
     result.z.push(k);
-    result.Y.push(Math.round(Math.abs(1/sumYoung) * 100) / 100);
-    result.compressiblity.push(sumCompressibility.toFixed(10))
+    result.youngs.push(Math.round(Math.abs(1/sumYoung) * 100) / 100);
+    result.compress.push(sumCompress.toFixed(10))
   }
 
   return result;
