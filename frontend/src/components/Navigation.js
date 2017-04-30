@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 const Navigation = () => (
   <nav
     style={{
-      position: 'static',
       marginBottom: '20px'
     }}
   >
@@ -31,6 +30,14 @@ const Navigation = () => (
       >
         Composite
       </Link>
+
+      <Link
+        className='button warning'
+        to='/comparator'
+      >
+        Comparator
+      </Link>
+
     </div>
   </nav>
 );

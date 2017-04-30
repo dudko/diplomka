@@ -8,7 +8,7 @@ PlotlyComponent.prototype.shouldComponentUpdate = (nextProps) => {
   return nextProps.config.redraw;
 }
 
-const Plot = ({ points, propertyName, redraw, title }) => {
+const Plot = ({ points, propertyName, redraw, title, cmin, cmax, colorScheme }) => {
   let { x, y, z } = points;
 
   let property = points[propertyName];
@@ -26,9 +26,14 @@ const Plot = ({ points, propertyName, redraw, title }) => {
     marker: {
       size: 12,
       color: property,
-      colorscale: 'Jet',
+      colorscale: colorScheme || 'Jet',
       opacity: 1,
-      colorbar: {}
+      colorbar: {
+        lenmode: 'fraction',
+        len: 0.9
+      },
+      cmin,
+      cmax
     },
     type: 'scatter3d'
   }];
@@ -47,8 +52,14 @@ const Plot = ({ points, propertyName, redraw, title }) => {
   };
 
   const config = {
-    displayModeBar: false,
-    redraw
+    displayModeBar: true,
+    displaylogo: false,
+    redraw,
+    modeBarButtons: [[
+      'toImage', 
+      'resetViews'
+    ]]
+
   };
 
   return (

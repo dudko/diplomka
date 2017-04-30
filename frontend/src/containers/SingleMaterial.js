@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+
 import InputElasticity from './InputElasticity';
 import MaterialProjectSearch from './MaterialProjectSearch';
 import Properties from '../components/Properties';
 
 import Plot from '../components/Plot';
 import CrystalSystemSelect from '../components/CrystalSystemSelect';
+import ColorScheme from '../components/ColorScheme';
+import ColorbarRange from '../components/ColorbarRange';
+
 
 import _ from 'lodash';
 import * as api from '../api';
+import { addToCompare } from '../actions';
 
 const createWorker = require('worker-loader!../worker');
 
-export default class SingleMaterial extends Component {
+class SingleMaterial extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,6 +37,11 @@ export default class SingleMaterial extends Component {
       worker: new createWorker(),
       elateAnalysis: [],
       redraw: false,
+      colorScheme: 'Jet',
+      colorbarRange: {
+        min: undefined,
+        max: undefined
+      }
     };
   }
 
@@ -43,7 +54,10 @@ export default class SingleMaterial extends Component {
   }
 
   render() {
-    const { elasticity, crystalSystem, results, worker, elateAnalysis, redraw } = this.state;
+    const { elasticity, crystalSystem, results, worker, elateAnalysis, 
+      redraw, colorScheme, colorbarRange } = this.state;
+    const { addToCompare } = this.props;
+
 
     return (
       <div>
@@ -53,12 +67,16 @@ export default class SingleMaterial extends Component {
             points={results}
             redraw={redraw}
             propertyName={'youngs'}
+            colorScheme={colorScheme}
+            cmin={colorbarRange.min}
+            cmax={colorbarRange.max}            
           />
           <Plot
             key={'compress'}
             points={results}
             redraw={redraw}
             propertyName={'compress'}
+            colorScheme={colorScheme}
           />
         </div>
 
@@ -66,21 +84,50 @@ export default class SingleMaterial extends Component {
           tables={elateAnalysis}
         />
 
-        <hr />
-        <button
-          type='button'
-          onClick={() => {
-            const elasticityValues = elasticity.map(row => row.map(cell => cell.value));
-            worker.postMessage(elasticityValues);
-            worker.onmessage = msg => this.setState({ results: msg.data, redraw: true });
-            api.sendToElate(elasticityValues, (tables) =>
-              this.setState({ elateAnalysis: tables }))
-          }}
+        <div
+          className='card'
         >
-          Submit
-        </button>
-        <hr />
+          <header>
+            <div
+              className='flex half'
+            >
+              <ColorScheme
+                colorScheme={colorScheme}
+                setColorScheme={(colorScheme) => this.setState({ colorScheme })}
+              />
+              <ColorbarRange
+                setColorbarRange={(range) => this.setState({
+                  colorbarRange: {...colorbarRange, ...range }})}
+              />
+            </div>
 
+            <button
+              type='button'
+              className='success'
+              onClick={() => {
+                const elasticityValues = elasticity.map(row => row.map(cell => cell.value));
+                worker.postMessage(elasticityValues);
+                worker.onmessage = msg => this.setState({ results: msg.data, redraw: true });
+                api.sendToElate(elasticityValues, (tables) =>
+                  this.setState({ elateAnalysis: tables }))
+              }}
+            >
+              Submit
+            </button>
+
+            <button
+              type='button'
+              className='warning'
+              onClick={() => addToCompare(results)}
+            >
+              Add to Comparator
+            </button>
+
+          </header>
+        </div>
+
+        
+  
         <div className='flex two'>
           <div>
             <CrystalSystemSelect
@@ -120,3 +167,5 @@ export default class SingleMaterial extends Component {
     )
   }
 }
+
+export default connect(null, { addToCompare })(SingleMaterial);
