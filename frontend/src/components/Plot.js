@@ -8,7 +8,7 @@ PlotlyComponent.prototype.shouldComponentUpdate = (nextProps) => {
   return nextProps.config.redraw;
 }
 
-const Plot = ({ points, propertyName, redraw }) => {
+const Plot = ({ points, propertyName, redraw, title }) => {
   let { x, y, z } = points;
 
   let property = points[propertyName];
@@ -34,7 +34,7 @@ const Plot = ({ points, propertyName, redraw }) => {
   }];
 
   const layout = {
-    autosize: false,
+    autosize: true,
     width: 600,
     height: 600,
     margin: {
@@ -52,12 +52,15 @@ const Plot = ({ points, propertyName, redraw }) => {
   };
 
   return (
-    <PlotlyComponent
-      className='Plot'
-      data={data}
-      layout={layout}
-      config={config}
-    />
+    <div>
+      <h3>{title}</h3>
+      <PlotlyComponent
+        className='Plot'
+        data={data}
+        layout={layout}
+        config={config}
+      />
+    </div>
   );
 };
 

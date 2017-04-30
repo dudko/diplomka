@@ -1,6 +1,12 @@
 th {
   color: #000;
   background-color: #fff;
+  padding: 0.1em;
+}
+
+td {
+  line-height: normal;
+  padding: 0.1em;
 }
 
 .label {

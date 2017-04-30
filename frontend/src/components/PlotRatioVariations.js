@@ -5,10 +5,10 @@ import Plotly from 'plotly.js/dist/plotly-gl2d';
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
 const RangeRun = ({ results }) => {
-  const { x, Y: y } = results;
+  const { x, youngs } = results;
   const data = [{
     x,
-    y,
+    y: youngs,
     line: {shape: 'spline'},
     type: 'scatter'
   }];
@@ -18,10 +18,13 @@ const RangeRun = ({ results }) => {
   };
 
   return (
-    <PlotlyComponent
-      data={data}
-      config={config}
-    />
+    <div>
+      <h3>{'Varying materials ratios'}</h3>
+      <PlotlyComponent
+        data={data}
+        config={config}
+      />
+    </div>
   );
 };
 

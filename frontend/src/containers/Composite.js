@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import * as api from '../api';
 
 import InputElasticity from './InputElasticity';
 import MaterialProjectSearch from './MaterialProjectSearch';
@@ -10,7 +11,7 @@ import CrystalSystemSelect from '../components/CrystalSystemSelect';
 import Properties from '../components/Properties';
 
 import Plot from '../components/Plot';
-import RangeRun from './RangeRun';
+import PlotRatioVariations from '../components/PlotRatioVariations';
 
 const createWorker = require('worker-loader!../worker');
 
@@ -28,24 +29,22 @@ export default class Composite extends Component {
         y: [],
         z: [],
         youngs: [],
-        compress: []
+        compress: [],
+        ratioVariations: {},
+        compositeElasticity: []
       },
       worker: new createWorker(),
       elateAnalysis: [],
       redraw: false,
       ratio: 0.5,
-      ratioVariations: {},
-      rotation: {
-        x: 0,
-        y: 0,
-        z: 1,
-      }
+      
+      rotation: [0, 0, 1]
     }
   }
 
   render() {
     const { elasticities, crystalSystems, results, worker, elateAnalysis,
-      redraw, rotation, ratioVariations } = this.state;
+      redraw, rotation, ratio, ratioVariations } = this.state;
 
     return (
       <div>
@@ -55,43 +54,55 @@ export default class Composite extends Component {
             points={results}
             redraw={redraw}
             propertyName={'youngs'}
+            title={'Young\'s modulus'}
           />
           <Plot
             key={'compress'}
             points={results}
             redraw={redraw}
             propertyName={'compress'}
+            title={'Linear compressibility'}
           />
         </div>
-        <RangeRun
-          results={ratioVariations}
-        />
+        <div className='flex two'>
+          <PlotRatioVariations
+            results={results.ratioVariations}
+          />
 
-        <Properties
-          tables={elateAnalysis}
-        />
-
-        <button
-          type='button'
-          className='success'
-          onClick={() => {
-            const elasticityValues = elasticities.map(elasticity =>
-              elasticity.map(row => row.map(cell => cell.value)));
-            worker.postMessage(elasticityValues);
-            worker.onmessage = msg => this.setState({ results: msg.data, redraw: true });
-          }}
+          <Properties
+            tables={elateAnalysis}
+          />
+        </div>
+        <div
+          className='card'
         >
-          Submit
-        </button>
-
-        <hr />
+          <header>
+            <button
+              type='button'
+              className='success'
+              onClick={() => {
+                const elasticityValues = elasticities.map(elasticity =>
+                  elasticity.map(row => row.map(cell => cell.value)));
+                worker.postMessage({
+                  elasticities: elasticityValues,
+                  ratio,
+                  rotation
+                });
+                worker.onmessage = msg => {
+                  this.setState({ results: msg.data, redraw: true });
+                  api.sendToElate(msg.data.compositeElasticity,
+                    (tables) => this.setState({ elateAnalysis: tables })
+                )};
+              }}
+            >
+              Submit
+            </button>
+          </header>
+        </div>
 
         <div className='flex two'>
           <CompositeRotation
-            updateRotation={(axis) => this.setState({
-              ...rotation,
-              ...axis
-            })}
+            updateRotation={(rotation) => this.setState({ rotation })}
           />
           <CompositeRatio
             updateRatio={(value) => this.setState({ ratio: value})}
@@ -100,14 +111,20 @@ export default class Composite extends Component {
 
         <div className='flex two'>
           {['First', 'Second'].map((name, materialIndex) =>          
-            <div>
+            <div
+              key={materialIndex}
+            >
               <h3>{`${name} material`}</h3>
 
               <CrystalSystemSelect
                 crystalSystem={crystalSystems[materialIndex]}
-                setSelectedCrystalSystem={(value) => this.setState({
-                  crystalSystem: value
-                })}
+                setSelectedCrystalSystem={(value) => {
+                  const nextCrystalSystems = [...crystalSystems];
+                  nextCrystalSystems[materialIndex] = value;
+                  this.setState({
+                    crystalSystems: nextCrystalSystems
+                  });
+                }}
               />
 
               <InputElasticity
@@ -128,7 +145,8 @@ export default class Composite extends Component {
                     row.map((cell, cellIndex) =>
                       ({...cell, value: foundElasticity[rowIndex][cellIndex]})
                   ));
-                  const nextCrystalSystems = _.cloneDeep(crystalSystems)
+                  const nextCrystalSystems = _.cloneDeep(crystalSystems);
+                  nextCrystalSystems[materialIndex] = foundCrystalSystem;
                   this.setState({
                     elasticities: nextElasticities,
                     crystalSystems: nextCrystalSystems
