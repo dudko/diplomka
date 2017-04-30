@@ -4,12 +4,11 @@ import Plotly from 'plotly.js/dist/plotly-gl3d';
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-
 PlotlyComponent.prototype.shouldComponentUpdate = (nextProps) => {
   return nextProps.config.redraw;
 }
 
-const Chart = ({ points, propertyName, redraw }) => {
+const Plot = ({ points, propertyName, redraw }) => {
   let { x, y, z } = points;
 
   let property = points[propertyName];
@@ -54,7 +53,7 @@ const Chart = ({ points, propertyName, redraw }) => {
 
   return (
     <PlotlyComponent
-      className='chart'
+      className='Plot'
       data={data}
       layout={layout}
       config={config}
@@ -62,4 +61,4 @@ const Chart = ({ points, propertyName, redraw }) => {
   );
 };
 
-export default Chart;
+export default Plot;

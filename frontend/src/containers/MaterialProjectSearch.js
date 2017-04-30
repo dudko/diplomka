@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Button from '../Button';
-import SearchResult from '../SearchResult';
-import { BASE_URL } from '../../constants/URLs';
+import SearchResult from '../components/SearchResult';
+import { BASE_URL } from '../constants/URLs';
 
 export default class MaterialProjectSearch extends Component {
   constructor(props) {

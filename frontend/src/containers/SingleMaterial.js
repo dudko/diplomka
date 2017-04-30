@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 
-import ElasticityInput from './ElasticityInput';
-import PropertiesContainer from './PropertiesContainer';
-import MaterialProjectSearch from '../components/MaterialProjectSearch';
-import Button from '../components/Button';
+import InputElasticity from './InputElasticity';
+import MaterialProjectSearch from './MaterialProjectSearch';
 import Properties from '../components/Properties';
 
-import Chart from '../components/Chart';
-import CrystalSystemSelect from './CrystalSystemSelect';
+import Plot from '../components/Plot';
+import CrystalSystemSelect from '../components/CrystalSystemSelect';
 
 import _ from 'lodash';
 import * as api from '../api';
@@ -50,13 +48,13 @@ export default class SingleMaterial extends Component {
     return (
       <div>
         <div className='flex two'>
-          <Chart
+          <Plot
             key={'youngs'}
             points={results}
             redraw={redraw}
             propertyName={'youngs'}
           />
-          <Chart
+          <Plot
             key={'compress'}
             points={results}
             redraw={redraw}
@@ -92,7 +90,7 @@ export default class SingleMaterial extends Component {
               })}
             />
 
-            <ElasticityInput
+            <InputElasticity
               elasticity={elasticity}
               setConstant={(value, index) => {
                 const nextElasticity = _.cloneDeep(elasticity);

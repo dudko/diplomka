@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class TensorInput extends Component {
+export default class InputConstant extends Component {
   constructor(props) {
     super(props);
 

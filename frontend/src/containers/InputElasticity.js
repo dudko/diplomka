@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import TensorInput from '../../components/TensorInput'
+import InputConstant from '../components/InputConstant'
 
-export default class ElasticityInput extends Component {
+export default class InputElasticity extends Component {
   render() {
     const { elasticity, setConstant } = this.props;
     
@@ -11,7 +11,7 @@ export default class ElasticityInput extends Component {
       >
       {elasticity.map((row, rowIndex) =>
         row.map((cell, cellIndex) => 
-          <TensorInput
+          <InputConstant
             key={`${rowIndex}${cellIndex}`}
             value={cell.value}
             setConstant={(value) =>

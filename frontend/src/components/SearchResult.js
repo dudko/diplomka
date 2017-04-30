@@ -1,5 +1,5 @@
 import React from 'react';
-import { MATERIALS_PROJECT } from '../../constants/URLs';
+import { MATERIALS_PROJECT } from '../constants/URLs';
 
 const SearchResult = ({material, setElasticity}) => (
   <article className="card"
