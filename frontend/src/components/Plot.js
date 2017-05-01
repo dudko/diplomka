@@ -29,6 +29,7 @@ const Plot = ({ points, propertyName, redraw, title, cmin, cmax, colorScheme }) 
       colorscale: colorScheme || 'Jet',
       opacity: 1,
       colorbar: {
+        title: 'GPa',
         lenmode: 'fraction',
         len: 0.9
       },

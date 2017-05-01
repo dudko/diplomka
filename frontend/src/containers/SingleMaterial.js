@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import * as api from '../api';
+import { addToCompare } from '../actions';
 
 import InputElasticity from './InputElasticity';
 import MaterialProjectSearch from './MaterialProjectSearch';
@@ -12,9 +14,6 @@ import ColorScheme from '../components/ColorScheme';
 import ColorbarRange from '../components/ColorbarRange';
 
 
-import _ from 'lodash';
-import * as api from '../api';
-import { addToCompare } from '../actions';
 
 const createWorker = require('worker-loader!../worker');
 
@@ -41,7 +40,8 @@ class SingleMaterial extends Component {
       colorbarRange: {
         min: undefined,
         max: undefined
-      }
+      },
+      processing: false,
     };
   }
 
@@ -55,9 +55,8 @@ class SingleMaterial extends Component {
 
   render() {
     const { elasticity, crystalSystem, results, worker, elateAnalysis, 
-      redraw, colorScheme, colorbarRange } = this.state;
+      redraw, colorScheme, colorbarRange, processing } = this.state;
     const { addToCompare } = this.props;
-
 
     return (
       <div>
@@ -67,6 +66,7 @@ class SingleMaterial extends Component {
             points={results}
             redraw={redraw}
             propertyName={'youngs'}
+            title={'Young\'s modulus'}
             colorScheme={colorScheme}
             cmin={colorbarRange.min}
             cmax={colorbarRange.max}            
@@ -76,6 +76,7 @@ class SingleMaterial extends Component {
             points={results}
             redraw={redraw}
             propertyName={'compress'}
+            title={'Linear compressibility'}
             colorScheme={colorScheme}
           />
         </div>
@@ -104,15 +105,18 @@ class SingleMaterial extends Component {
             <button
               type='button'
               className='success'
+              disabled={processing}              
               onClick={() => {
+                this.setState({ processing: true });
                 const elasticityValues = elasticity.map(row => row.map(cell => cell.value));
                 worker.postMessage(elasticityValues);
-                worker.onmessage = msg => this.setState({ results: msg.data, redraw: true });
+                worker.onmessage = msg => this.setState({ results: msg.data, redraw: true,
+                  processing: false });
                 api.sendToElate(elasticityValues, (tables) =>
                   this.setState({ elateAnalysis: tables }))
               }}
             >
-              Submit
+              {processing ? 'Processing..' : 'Process'}
             </button>
 
             <button

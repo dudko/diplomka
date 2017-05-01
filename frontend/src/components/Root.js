@@ -14,7 +14,7 @@ const Root = ({ store }) => (
           <Navigation />
           <section
             className='flex four-fifth'
-            style={{margin: '40px auto'}}
+            style={{margin: '60px auto'}}
           >
             <Route exact path='/' component={SingleMaterial} />
             <Route path='/composite' component={CompositeContainer} />

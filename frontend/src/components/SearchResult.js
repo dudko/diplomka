@@ -2,9 +2,12 @@ import React from 'react';
 import { MATERIALS_PROJECT } from '../constants/URLs';
 
 const SearchResult = ({material, setElasticity}) => (
-  <article className="card"
+  <article className='card'
     onClick={() =>
       setElasticity(material['elasticity.elastic_tensor'], material['spacegroup.crystal_system'])}
+    style={{
+      cursor: 'pointer'
+    }}
   >
     <header>
       <h3>
@@ -21,6 +24,8 @@ const SearchResult = ({material, setElasticity}) => (
     <footer>
       <table
         style={{tableLayout:'fixed',width:'100%'}}
+        className='tooltip-top'
+        data-tooltip='Use this result by clicking on it.'
       >
         <tbody>
           {material['elasticity.elastic_tensor'].map((row, index) =>
