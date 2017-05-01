@@ -20,10 +20,15 @@ const rotateTensor = (c, direction) => {
   // Normalize vector
   let [i, j, k] = direction;
   
-  const length = math.sqrt(i*i + j*j + k*k);
+  let length = math.sqrt(i*i + j*j + k*k);
   i = i / length;
   j = j / length;
   k = k / length;
+
+  length = math.sqrt(i*i + j*j);
+
+  i = i / length;
+  j = j / length;
   
   const s = [
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
@@ -49,10 +54,10 @@ const rotateTensor = (c, direction) => {
   const theta = math.acos(k);
   const sinTheta = math.sin(theta);
 
-  let A = [ 
-    [ k + (1 - k) * i * i, (1 - k) * i * j + sinTheta * -k, (1 - k) * i * k + j * sinTheta],
-    [ (1 - k) * i * j + sinTheta * k, k + (1 - k) * j *j, (1 - k) * j * k + sinTheta * -i],
-    [ (1 - k) * i * k + sinTheta * -j, (1 - k) * k * j + sinTheta * i, k + (1 - k) * k * k]
+  let A = [
+    [ k + (1 - k) * j * j, -(1 - k) * i * j, -i * sinTheta],
+    [ -(1 - k) * i * j, k + (1 - k) * i *i, -sinTheta *j],
+    [sinTheta * i, sinTheta * j, k]
   ];
 
   A = math.transpose(A);
@@ -75,8 +80,8 @@ const rotateTensor = (c, direction) => {
             for (let b = 0; b < 3; b++)
               for (let c = 0; c < 3; c++)
                 for (let d = 0; d < 3; d++) {
-                  s2[i][j][k][l] = s2[i][j][k][l] + A[a][i] * A[b][j] * A[c][k] * A[d][l] * s[a][b][c][d];
-                  // s2[i][j][k][l] = s2[i][j][k][l] + A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];  
+                  // s2[i][j][k][l] = s2[i][j][k][l] + A[a][i] * A[b][j] * A[c][k] * A[d][l] * s[a][b][c][d];
+                  s2[i][j][k][l] = s2[i][j][k][l] + A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];  
                 }
           
           const m = MI[i][j];

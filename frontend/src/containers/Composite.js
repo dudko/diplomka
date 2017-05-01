@@ -74,6 +74,7 @@ class Composite extends Component {
             redraw={redraw}
             propertyName={'compress'}
             title={'Linear compressibility'}
+            colorScheme={colorScheme}            
           />
         </div>
         <div className='flex two'>

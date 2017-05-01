@@ -13,8 +13,6 @@ import CrystalSystemSelect from '../components/CrystalSystemSelect';
 import ColorScheme from '../components/ColorScheme';
 import ColorbarRange from '../components/ColorbarRange';
 
-
-
 const createWorker = require('worker-loader!../worker');
 
 class SingleMaterial extends Component {
@@ -116,7 +114,7 @@ class SingleMaterial extends Component {
                   this.setState({ elateAnalysis: tables }))
               }}
             >
-              {processing ? 'Processing..' : 'Process'}
+              {processing ? 'Processing...' : 'Process'}
             </button>
 
             <button
