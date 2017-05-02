@@ -26,9 +26,8 @@ const rotateTensor = (c, direction) => {
   k = k / length;
 
   length = math.sqrt(i*i + j*j);
-
-  i = i / length;
-  j = j / length;
+  i = length === 0 ? 0 : i / length;
+  j = length === 0 ? 0 : j / length;
   
   const s = [
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
