@@ -23,7 +23,10 @@ const SearchResult = ({material, setElasticity}) => (
     </header>
     <footer>
       <table
-        style={{tableLayout:'fixed',width:'100%'}}
+        style={{
+          tableLayout:'fixed',
+          width:'100%'
+        }}
         className='tooltip-top'
         data-tooltip='Use this result by clicking on it.'
       >

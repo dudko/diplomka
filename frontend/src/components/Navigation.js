@@ -1,19 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Navigation = () => (
+const Navigation = ({ count }) => (
   <nav
     style={{
       marginBottom: '20px'
     }}
   >
-    <Link
-      to='/'
-      className='brand'
-    >
-      <span>Elasticity analysis</span>
-    </Link>
-
     <div
       className='menu'
     >
@@ -32,8 +26,9 @@ const Navigation = () => (
       </Link>
 
       <Link
-        className='button warning'
+        className='button warning badge'
         to='/comparator'
+        data-badge={count}
       >
         Comparator
       </Link>
@@ -42,4 +37,8 @@ const Navigation = () => (
   </nav>
 );
 
-export default Navigation;
+const mapStateToProps = (state) => ({
+  count: state.length
+})
+
+export default connect(mapStateToProps)(Navigation);

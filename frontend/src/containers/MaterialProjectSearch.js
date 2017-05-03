@@ -47,6 +47,7 @@ export default class MaterialProjectSearch extends Component {
         >
           <input
             type='text'
+            placeholder='FeO'
             value={keyword}
             onChange={(e) => this.setState({keyword: e.target.value})}
           />
@@ -60,7 +61,7 @@ export default class MaterialProjectSearch extends Component {
               })
             }}
           >
-            {searching ? 'Searching...' : 'Search'}
+            {searching ? '🔎 Searching...' : '🔎 Search'}
           </button>
         </form>
       </div>

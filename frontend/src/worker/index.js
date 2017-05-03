@@ -91,11 +91,8 @@ const rotateTensor = (c, direction) => {
   return math.inv(c2);
 }
 
-const prepareCompositeElasticity = (elasticities, ratio, rotation) => {
+const prepareCompositeElasticity = (elasticities, ratio) => {
   let [C1, C2] = elasticities;
-
-  C1 = rotateTensor(C1, rotation);
-  C2 = rotateTensor(C2, rotation);
 
   let P1 = math.matrix([
     [1, 0, 0, 0, 0, 0],
@@ -209,11 +206,15 @@ const calculate = (tensors, totalCount = 10000, direction) => {
 onmessage = function(event) {
   // Composite is sent as Object
   if (event.data.constructor === Object) {    
-    const { elasticities, ratio, rotation } = event.data;
+    let { elasticities, ratio, rotation } = event.data;
+
+    elasticities = elasticities.map(e => rotateTensor(e, rotation));
+
 
     const compositeElasticity = prepareCompositeElasticity(elasticities, ratio, rotation);
     const results = calculate(compositeElasticity);
     results.compositeElasticity = compositeElasticity;
+    results.rotatedTensors = elasticities;
 
     const ratioVariations = {
       x: [],

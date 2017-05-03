@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import * as api from '../api';
 import { addToCompare } from '../actions';
+import { DEFAULT_ELATE, DEFAULT_ELASTICITY } from '../constants/defaults';
 
 import InputElasticity from './InputElasticity';
 import MaterialProjectSearch from './MaterialProjectSearch';
@@ -22,10 +23,7 @@ class Composite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      elasticities: [0, 1].map(() => [0, 1, 2, 3, 4, 5].map(row =>
-        [0, 1, 2, 3, 4, 5].map(cell =>
-          ({ value: 0, disabled: false })
-      ))),
+      elasticities: [0, 1].map(() => DEFAULT_ELASTICITY),
       crystalSystems: ['any', 'any'],
       results: {
         x: [],
@@ -34,10 +32,11 @@ class Composite extends Component {
         youngs: [],
         compress: [],
         ratioVariations: {},
-        compositeElasticity: []
+        compositeElasticity: [],
+        rotatedTensors: [],
       },
       worker: new createWorker(),
-      elateAnalysis: [],
+      elateAnalysis: DEFAULT_ELATE,
       redraw: false,
       ratio: 0.5,
       rotation: [0, 0, 1],
@@ -47,16 +46,29 @@ class Composite extends Component {
         max: undefined
       },
       processing: false,
+      advanceInput: false,
+      error: '',
+    }
+  }
+
+  /* Prevent plotly to update frequently */
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.redraw) {
+      this.setState({
+        redraw: false
+      });
     }
   }
 
   render() {
     const { elasticities, crystalSystems, results, worker, elateAnalysis,
-      redraw, rotation, ratio, colorScheme, colorbarRange, processing } = this.state;
+      redraw, rotation, ratio, colorScheme, colorbarRange, processing,
+      advenceInput, error } = this.state;
     const { addToCompare } = this.props;
 
     return (
       <div>
+        {/* visualization */}
         <div className='flex two'>
           <Plot
             key={'youngs'}
@@ -64,6 +76,7 @@ class Composite extends Component {
             redraw={redraw}
             propertyName={'youngs'}
             title={'Young\'s modulus'}
+            unit={'GPa'}
             colorScheme={colorScheme}
             cmin={colorbarRange.min}
             cmax={colorbarRange.max}  
@@ -76,33 +89,76 @@ class Composite extends Component {
             title={'Linear compressibility'}
             colorScheme={colorScheme}            
           />
-        </div>
-        <div className='flex two'>
+
           <PlotRatioVariations
             results={results.ratioVariations}
           />
 
-          <Properties
-            tables={elateAnalysis}
-          />
-        </div>
-        <div
-          className='card'
-        >
-          <header>
-            <div
-              className='flex half'
-            >
-              <ColorScheme
-                colorScheme={colorScheme}
-                setColorScheme={(colorScheme) => this.setState({ colorScheme })}
-              />
-              <ColorbarRange
-                setColorbarRange={(range) => this.setState({
-                  colorbarRange: {...colorbarRange, ...range }})}
-              />
-            </div>
+          <div>
             <div>
+              {results.compositeElasticity.length > 0 && <h5>Calculated elasticty</h5>}
+              <table
+              style={{
+                tableLayout:'fixed',
+                width:'100%'
+              }}
+              >
+                <tbody>
+                  {results.compositeElasticity.map((row, index) =>
+                    <tr key={index}>
+                      {row.map((cell, index) =>
+                      <td key={index}>{cell.toFixed(3)}</td>)}
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <div>
+              {results.rotatedTensors.length > 0 && <h5>Rotated elasticities</h5>}
+              {results.rotatedTensors.map(rotated =>
+                <table
+                style={{
+                  tableLayout:'fixed',
+                  width:'100%',
+                  marginBottom: '15px',
+                }}
+                >
+                  <tbody>
+                    {rotated.map((row, index) =>
+                      <tr key={index}>
+                        {row.map((cell, index) =>
+                        <td key={index}>{cell.toFixed(3)}</td>)}
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Properties calculated with elate */}
+        <Properties
+          tables={elateAnalysis}
+        />
+
+        {/* Main panel */}
+        <div className='card'>
+          <header>
+            <div style={{
+              float: 'right',
+              fontSize: '1.1em'
+            }}>
+              <button
+                type='button'
+                className='warning'
+                disabled={!results.youngs.length}
+                onClick={() => addToCompare(results)}
+              >
+                ➕ Compare
+              </button>
+            
               <button
                 type='button'
                 className='success'
@@ -121,37 +177,57 @@ class Composite extends Component {
                     api.sendToElate(msg.data.compositeElasticity,
                       (tables) => this.setState({ elateAnalysis: tables })
                   )};
+                  worker.addEventListener('error', () => {
+                    this.setState({ processing: false });
+                  });
                 }}
               >
-                {processing ? 'Processing...' : 'Process'}
+                {processing ? '⚙️ Processing...' : ' ⚙️ Process'}
               </button>
-              
-              <button
-                type='button'
-                className='warning'
-                onClick={() => addToCompare(results)}
+            </div>
+
+            <div
+              className='flex half'
+            >
+              <ColorScheme
+                colorScheme={colorScheme}
+                setColorScheme={(colorScheme) => this.setState({ colorScheme })}
+              />
+              <ColorbarRange
+                setColorbarRange={(range) => this.setState({
+                  colorbarRange: {...colorbarRange, ...range }})}
+              />
+
+              <div
+                className='flex two'
               >
-                Add to Comparator
-              </button>
+                <CompositeRotation
+                  updateRotation={(rotation) => this.setState({ rotation })}
+                />
+                <CompositeRatio
+                  updateRatio={(value) => this.setState({ ratio: value})}
+                />
+              </div>
             </div>
           </header>
         </div>
-
+            
+        {/* Main inputs */}
         <div className='flex two'>
-          <CompositeRotation
-            updateRotation={(rotation) => this.setState({ rotation })}
-          />
-          <CompositeRatio
-            updateRatio={(value) => this.setState({ ratio: value})}
-          />
-        </div>
 
-        <div className='flex two'>
+
           {['First', 'Second'].map((name, materialIndex) =>          
-            <div
-              key={materialIndex}
-            >
-              <h3>{`${name} material`}</h3>
+            <div key={materialIndex}>
+              <h1>
+                <span
+                  className='label'
+                  style={{
+                    background: '#85144b'                  
+                  }}
+                  >
+                    {`${name} material`}
+                  </span>
+              </h1>
 
               <CrystalSystemSelect
                 crystalSystem={crystalSystems[materialIndex]}

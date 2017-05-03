@@ -8,7 +8,7 @@ PlotlyComponent.prototype.shouldComponentUpdate = (nextProps) => {
   return nextProps.config.redraw;
 }
 
-const Plot = ({ points, propertyName, redraw, title, cmin, cmax, colorScheme }) => {
+const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorScheme }) => {
   let { x, y, z } = points;
 
   let property = points[propertyName];
@@ -29,7 +29,7 @@ const Plot = ({ points, propertyName, redraw, title, cmin, cmax, colorScheme }) 
       colorscale: colorScheme || 'Jet',
       opacity: 1,
       colorbar: {
-        title: 'GPa', 
+        title: unit, 
         lenmode: 'fraction',
         len: 0.9
       },

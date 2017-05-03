@@ -13,19 +13,23 @@ export default class CompositeRatio extends Component {
     const { updateRatio } = this.props;
 
     return (<div>
-      <h5>Composite ratio</h5>
-      <input
-        value={ratio}
-        onChange={(e) => this.setState({ ratio: e.target.value })}
-        onBlur={(e) => updateRatio(e.target.value)}
-      />
-      <input
-        style={{
-          background: '#bbb'
-        }}
-        value={1.0-ratio}
-        disabled={true}
-      />
+      <h4>Composite ratio:</h4>
+      <div className='two'>
+        <input
+          value={ratio}
+          type='number'
+          onChange={(e) => this.setState({ ratio: e.target.value })}
+          onBlur={(e) => updateRatio(e.target.value)}
+        />
+        <input
+          style={{
+            background: '#bbb'
+          }}
+          type='number'
+          value={1.0-ratio}
+          disabled={true}
+        />
+      </div>
     </div>);
   }
 }

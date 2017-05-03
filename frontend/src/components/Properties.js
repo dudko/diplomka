@@ -8,7 +8,8 @@ const Properties = ({ tables }) => (
           key={index}
           style={{
             background: '#fff',
-            margin: '20px 0'
+            margin: '20px 0',
+            width:'100%'
           }}
           dangerouslySetInnerHTML={{__html: table}}
         />

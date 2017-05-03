@@ -25,13 +25,12 @@ export default class ColorbarRange extends Component {
           {'Colorbar range:'}
         </span>
         <div className='half'>
-          <div className='flex'>
+          <div className='two'>
             <input
               type='number'              
               value={min}
               onChange={(e) => this.setState({ min : e.target.value })}
               onBlur={(e) => setColorbarRange({ min : e.target.value })}
-              className='half'
               placeholder='min'
             />
             <input
@@ -39,7 +38,6 @@ export default class ColorbarRange extends Component {
               value={max}
               onChange={(e) => this.setState({ max : e.target.value })}
               onBlur={(e) => setColorbarRange({ max : e.target.value })}              
-              className='half'
               placeholder='max'     
             />
           </div>
