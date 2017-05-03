@@ -164,7 +164,10 @@ class Composite extends Component {
                 className='success'
                 disabled={processing}
                 onClick={() => {
-                  this.setState({ processing: true });
+                  this.setState({
+                    processing: true,
+                    error: ''
+                  });
                   const elasticityValues = elasticities.map(elasticity =>
                     elasticity.map(row => row.map(cell => cell.value)));
                   worker.postMessage({
@@ -177,8 +180,11 @@ class Composite extends Component {
                     api.sendToElate(msg.data.compositeElasticity,
                       (tables) => this.setState({ elateAnalysis: tables })
                   )};
-                  worker.addEventListener('error', () => {
-                    this.setState({ processing: false });
+                  worker.addEventListener('error', (e) => {
+                    this.setState({
+                      processing: false,
+                      error: e.message
+                    });
                   });
                 }}
               >
@@ -210,6 +216,10 @@ class Composite extends Component {
               </div>
             </div>
           </header>
+          {error &&
+            <footer>
+            {`⚠️ ${error.split(':').pop()}.`}
+          </footer>}
         </div>
             
         {/* Main inputs */}

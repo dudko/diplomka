@@ -90,8 +90,6 @@ class SingleMaterial extends Component {
         {/* Main panel */}
         <div className='card'>
           <header>
-
-
             <div style={{
               float: 'right',
               fontSize: '1.1em'
@@ -118,7 +116,6 @@ class SingleMaterial extends Component {
                   worker.onmessage = msg => this.setState({ results: msg.data, redraw: true,
                     processing: false });
                   worker.addEventListener('error', (e) => {
-                    console.log(e);
                     this.setState({
                       processing: false,
                       error: e.message
