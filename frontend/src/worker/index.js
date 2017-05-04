@@ -1,5 +1,5 @@
 import math from 'mathjs';
-import randomPointOnSphere from '../calculations/randomPointOnSphere';
+import randomPointOnSphere from './randomPointOnSphere';
 
 // Matrices used for faster tensor conversion
 export const MI = [
@@ -19,16 +19,16 @@ const rotateTensor = (c, direction) => {
 
   // Normalize vector
   let [i, j, k] = direction;
-  
-  let length = math.sqrt(i*i + j*j + k*k);
-  i = i / length;
-  j = j / length;
-  k = k / length;
 
-  length = math.sqrt(i*i + j*j);
+  let length = math.sqrt((i * i) + (j * j) + (k * k));
+  i /= length;
+  j /= length;
+  k /= length;
+
+  length = math.sqrt((i * i) + (j * j));
   i = length === 0 ? 0 : i / length;
   j = length === 0 ? 0 : j / length;
-  
+
   const s = [
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
     [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
@@ -45,8 +45,8 @@ const rotateTensor = (c, direction) => {
     for (let j = 0; j < 3; j++)
       for (let k = 0; k < 3; k++)
         for (let l = 0; l < 3; l++) {
-          const m = MI[i][j]
-          const n = MI[k][l]
+          const m = MI[i][j];
+          const n = MI[k][l];
           s[i][j][k][l] = MK[i][j] * MK[k][l] * S[m][n];
         }
 
@@ -54,8 +54,8 @@ const rotateTensor = (c, direction) => {
   const sinTheta = math.sin(theta);
 
   let A = [
-    [ k + (1 - k) * j * j, -(1 - k) * i * j, -i * sinTheta],
-    [ -(1 - k) * i * j, k + (1 - k) * i *i, -sinTheta *j],
+    [k + (1 - k) * j * j, -(1 - k) * i * j, -i * sinTheta],
+    [-(1 - k) * i * j, k + (1 - k) * i *i, -sinTheta *j],
     [sinTheta * i, sinTheta * j, k]
   ];
 
@@ -74,22 +74,21 @@ const rotateTensor = (c, direction) => {
     for (let j = 0; j < 3; j++)
       for (let k = 0; k < 3; k++)
         for (let l = 0; l < 3; l++) {
-          
+
           for (let a = 0; a < 3; a++)
             for (let b = 0; b < 3; b++)
               for (let c = 0; c < 3; c++)
                 for (let d = 0; d < 3; d++) {
-                  // s2[i][j][k][l] = s2[i][j][k][l] + A[a][i] * A[b][j] * A[c][k] * A[d][l] * s[a][b][c][d];
-                  s2[i][j][k][l] = s2[i][j][k][l] + A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];  
+                  s2[i][j][k][l] += A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];
                 }
-          
+
           const m = MI[i][j];
           const n = MI[k][l];
-          c2[m][n] = (1/MK[i][j]) * (1/MK[k][l]) * s2[i][j][k][l];
+          c2[m][n] = (1 / MK[i][j]) * (1 / MK[k][l]) * s2[i][j][k][l];
         }
 
   return math.inv(c2);
-}
+};
 
 const prepareCompositeElasticity = (elasticities, ratio) => {
   let [C1, C2] = elasticities;
@@ -128,7 +127,7 @@ const prepareCompositeElasticity = (elasticities, ratio) => {
   ]);
 
   const f1 = ratio;
-  const f2 = 1-ratio;
+  const f2 = 1 - ratio;
 
   C1 = math.multiply(f1, C1);
   C1 = math.multiply(C1, M);
@@ -164,7 +163,7 @@ const calculate = (tensors, totalCount = 10000, direction) => {
           const n = MI[k][l]
           s[i][j][k][l] = MK[i][j] * MK[k][l] * S[m][n];
         }
-        
+
   const result = {
     x: [],
     y: [],
@@ -189,28 +188,26 @@ const calculate = (tensors, totalCount = 10000, direction) => {
       for (let j = 0; j < 3; j++)
         for (let k = 0; k < 3; k++)
           for (let l = 0; l < 3; l++) {
-            sumYoung = sumYoung + A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
-            sumCompress = sumCompress + A[i][2] * A[j][2] * s[i][j][k][k];
-         }
-    
+            sumYoung += A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
+            sumCompress += A[i][2] * A[j][2] * s[i][j][k][k];
+          }
+
     result.x.push(i);
     result.y.push(j);
     result.z.push(k);
-    result.youngs.push(Math.round(Math.abs(1/sumYoung) * 100) / 100);
+    result.youngs.push(Math.round(Math.abs(1 / sumYoung) * 100) / 100);
     result.compress.push(sumCompress.toFixed(10));
   }
 
   return result;
-}
+};
 
-onmessage = function(event) {
+onmessage = (event) => {
   // Composite is sent as Object
-  if (event.data.constructor === Object) {    
+  if (event.data.constructor === Object) {
     let { elasticities, ratio, rotation } = event.data;
 
     elasticities = elasticities.map(e => rotateTensor(e, rotation));
-
-
     const compositeElasticity = prepareCompositeElasticity(elasticities, ratio, rotation);
     const results = calculate(compositeElasticity);
     results.compositeElasticity = compositeElasticity;
@@ -231,10 +228,10 @@ onmessage = function(event) {
 
     results.ratioVariations = ratioVariations;
 
-    postMessage(results);  
+    postMessage(results);
   } else {
     postMessage(calculate(event.data));
   }
-}
+};
 
 onerror = e => console.log(e);

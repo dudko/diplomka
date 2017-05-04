@@ -10,14 +10,14 @@ import MaterialProjectSearch from './MaterialProjectSearch';
 
 import CompositeRatio from '../components/CompositeRatio';
 import CompositeRotation from '../components/CompositeRotation';
-import CrystalSystemSelect from '../components/CrystalSystemSelect';
 import ColorScheme from '../components/ColorScheme';
 import ColorbarRange from '../components/ColorbarRange';
 import Properties from '../components/Properties';
 import Plot from '../components/Plot';
 import PlotRatioVariations from '../components/PlotRatioVariations';
+import TextAreaElasticity from './TextAreaElasticity';
 
-const createWorker = require('worker-loader!../worker');
+const CreateWorker = require('worker-loader!../worker');
 
 class Composite extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class Composite extends Component {
         compositeElasticity: [],
         rotatedTensors: [],
       },
-      worker: new createWorker(),
+      worker: new CreateWorker(),
       elateAnalysis: DEFAULT_ELATE,
       redraw: false,
       ratio: 0.5,
@@ -43,19 +43,19 @@ class Composite extends Component {
       colorScheme: 'Jet',
       colorbarRange: {
         min: undefined,
-        max: undefined
+        max: undefined,
       },
       processing: false,
-      advanceInput: false,
       error: '',
-    }
+      advanceInput: [false, false],
+    };
   }
 
   /* Prevent plotly to update frequently */
   componentDidUpdate(prevProps, prevState) {
     if (prevState.redraw) {
       this.setState({
-        redraw: false
+        redraw: false,
       });
     }
   }
@@ -63,13 +63,13 @@ class Composite extends Component {
   render() {
     const { elasticities, crystalSystems, results, worker, elateAnalysis,
       redraw, rotation, ratio, colorScheme, colorbarRange, processing,
-      advenceInput, error } = this.state;
+      error, advanceInput } = this.state;
     const { addToCompare } = this.props;
 
     return (
       <div>
         {/* visualization */}
-        <div className='flex two'>
+        <div className="flex two">
           <Plot
             key={'youngs'}
             points={results}
@@ -79,7 +79,7 @@ class Composite extends Component {
             unit={'GPa'}
             colorScheme={colorScheme}
             cmin={colorbarRange.min}
-            cmax={colorbarRange.max}  
+            cmax={colorbarRange.max}
           />
           <Plot
             key={'compress'}
@@ -87,7 +87,7 @@ class Composite extends Component {
             redraw={redraw}
             propertyName={'compress'}
             title={'Linear compressibility'}
-            colorScheme={colorScheme}            
+            colorScheme={colorScheme}
           />
 
           <PlotRatioVariations
@@ -98,17 +98,17 @@ class Composite extends Component {
             <div>
               {results.compositeElasticity.length > 0 && <h5>Calculated elasticty</h5>}
               <table
-              style={{
-                tableLayout:'fixed',
-                width:'100%'
-              }}
+                style={{
+                  tableLayout: 'fixed',
+                  width: '100%',
+                }}
               >
                 <tbody>
                   {results.compositeElasticity.map((row, index) =>
                     <tr key={index}>
                       {row.map((cell, index) =>
-                      <td key={index}>{cell.toFixed(3)}</td>)}
-                    </tr>
+                        <td key={index}>{cell.toFixed(3)}</td>)}
+                    </tr>,
                   )}
                 </tbody>
               </table>
@@ -118,21 +118,21 @@ class Composite extends Component {
               {results.rotatedTensors.length > 0 && <h5>Rotated elasticities</h5>}
               {results.rotatedTensors.map(rotated =>
                 <table
-                style={{
-                  tableLayout:'fixed',
-                  width:'100%',
-                  marginBottom: '15px',
-                }}
+                  style={{
+                    tableLayout: 'fixed',
+                    width: '100%',
+                    marginBottom: '15px',
+                  }}
                 >
                   <tbody>
                     {rotated.map((row, index) =>
                       <tr key={index}>
                         {row.map((cell, index) =>
-                        <td key={index}>{cell.toFixed(3)}</td>)}
-                      </tr>
+                          <td key={index}>{cell.toFixed(3)}</td>)}
+                      </tr>,
                     )}
                   </tbody>
-                </table>
+                </table>,
               )}
             </div>
           </div>
@@ -144,46 +144,49 @@ class Composite extends Component {
         />
 
         {/* Main panel */}
-        <div className='card'>
+        <div className="card">
           <header>
-            <div style={{
-              float: 'right',
-              fontSize: '1.1em'
-            }}>
+            <div
+              style={{
+                float: 'right',
+                fontSize: '1.1em',
+              }}
+            >
               <button
-                type='button'
-                className='warning'
+                type="button"
+                className="warning"
                 disabled={!results.youngs.length}
                 onClick={() => addToCompare(results)}
               >
                 ➕ Compare
               </button>
-            
+
               <button
-                type='button'
-                className='success'
+                type="button"
+                className="success tooltip-left"
                 disabled={processing}
+                data-tooltip="With linear-elasticity method by M. Grimsditch and F. Nizzoli"
                 onClick={() => {
                   this.setState({
                     processing: true,
-                    error: ''
+                    error: '',
                   });
                   const elasticityValues = elasticities.map(elasticity =>
                     elasticity.map(row => row.map(cell => cell.value)));
                   worker.postMessage({
                     elasticities: elasticityValues,
                     ratio,
-                    rotation
+                    rotation,
                   });
-                  worker.onmessage = msg => {
+                  worker.onmessage = (msg) => {
                     this.setState({ results: msg.data, redraw: true, processing: false });
                     api.sendToElate(msg.data.compositeElasticity,
-                      (tables) => this.setState({ elateAnalysis: tables })
-                  )};
+                      tables => this.setState({ elateAnalysis: tables }));
+                  };
                   worker.addEventListener('error', (e) => {
                     this.setState({
                       processing: false,
-                      error: e.message
+                      error: e.message,
                     });
                   });
                 }}
@@ -193,95 +196,123 @@ class Composite extends Component {
             </div>
 
             <div
-              className='flex half'
+              className="flex half"
             >
               <ColorScheme
                 colorScheme={colorScheme}
-                setColorScheme={(colorScheme) => this.setState({ colorScheme })}
+                setColorScheme={colorScheme => this.setState({ colorScheme })}
               />
               <ColorbarRange
-                setColorbarRange={(range) => this.setState({
-                  colorbarRange: {...colorbarRange, ...range }})}
+                setColorbarRange={range => this.setState({
+                  colorbarRange: { ...colorbarRange, ...range } })}
               />
 
               <div
-                className='flex two'
+                className="flex two"
               >
                 <CompositeRotation
-                  updateRotation={(rotation) => this.setState({ rotation })}
+                  updateRotation={rotation => this.setState({ rotation })}
                 />
                 <CompositeRatio
-                  updateRatio={(value) => this.setState({ ratio: value})}
+                  updateRatio={value => this.setState({ ratio: value })}
                 />
               </div>
             </div>
           </header>
           {error &&
             <footer>
-            {`⚠️ ${error.split(':').pop()}.`}
-          </footer>}
+              {`⚠️ ${error.replace(/^(.+?):/, '')}.`}
+            </footer>}
         </div>
-            
+
         {/* Main inputs */}
-        <div className='flex two'>
+        <div className="flex two">
 
-
-          {['First', 'Second'].map((name, materialIndex) =>          
+          {['First', 'Second'].map((name, materialIndex) =>
             <div key={materialIndex}>
               <h1>
                 <span
-                  className='label'
+                  className="label"
                   style={{
-                    background: '#85144b'                  
+                    background: '#85144b',
                   }}
-                  >
-                    {`${name} material`}
-                  </span>
+                >
+                  {`${name} material`}
+                </span>
               </h1>
 
-              <CrystalSystemSelect
-                crystalSystem={crystalSystems[materialIndex]}
-                setSelectedCrystalSystem={(value) => {
-                  const nextCrystalSystems = [...crystalSystems];
-                  nextCrystalSystems[materialIndex] = value;
-                  this.setState({
-                    crystalSystems: nextCrystalSystems
-                  });
-                }}
-              />
+              <div>
+                <label
+                  style={{
+                    float: 'right',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={advanceInput[materialIndex]}
+                    onChange={() => {
+                      const nextAdvanceInput = _.cloneDeep(advanceInput);
+                      const nextCrystalSystems = [...crystalSystems];
+                      nextCrystalSystems[materialIndex] = 'any';
+                      nextAdvanceInput[materialIndex] = !nextAdvanceInput[materialIndex];
+                      this.setState({
+                        advanceInput: nextAdvanceInput,
+                        crystalSystems: nextCrystalSystems,
+                      });
+                    }}
+                  />
+                  <span className="checkable">Advance input</span>
+                </label>
 
-              <InputElasticity
-                elasticity={elasticities[materialIndex]}
-                setConstant={(value, index) => {
-                  const nextElasticities = _.cloneDeep(elasticities);
-                  nextElasticities[materialIndex][index.row][index.cell].value = value; 
-                  this.setState({
-                    elasticities: nextElasticities
-                  });
-                }}
-              />
-            
+                {advanceInput[materialIndex] ?
+                  <div>
+                    <TextAreaElasticity
+                      elasticity={elasticities[materialIndex]}
+                      setElasticity={(elasticity) => {
+                        const nextElasticity = _.cloneDeep(elasticities);
+                        nextElasticity[materialIndex] = elasticity;
+                        this.setState({ elasticities: nextElasticity });
+                      }}
+                    />
+                  </div>
+                :
+                  <div>
+                    <InputElasticity
+                      elasticity={elasticities[materialIndex]}
+                      crystalSystem={crystalSystems[materialIndex]}
+                      setElasticity={(elasticity) => {
+                        const nextElasticity = _.cloneDeep(elasticities);
+                        nextElasticity[materialIndex] = elasticity;
+                        this.setState({ elasticities: nextElasticity });
+                      }}
+                      setCrystalSystem={(crystalSystem) => {
+                        const nextCrystalSystems = [...crystalSystems];
+                        nextCrystalSystems[materialIndex] = crystalSystem;
+                        this.setState({ crystalSystems: nextCrystalSystems });
+                      }}
+                    />
+                  </div>
+                }
+              </div>
+
               <MaterialProjectSearch
                 setElasticity={(foundElasticity, foundCrystalSystem) => {
                   const nextElasticities = _.cloneDeep(elasticities);
-                  nextElasticities[materialIndex] = nextElasticities[materialIndex].map((row, rowIndex) =>
-                    row.map((cell, cellIndex) =>
-                      ({...cell, value: foundElasticity[rowIndex][cellIndex]})
-                  ));
+                  nextElasticities[materialIndex] = foundElasticity;
                   const nextCrystalSystems = _.cloneDeep(crystalSystems);
                   nextCrystalSystems[materialIndex] = foundCrystalSystem;
                   this.setState({
                     elasticities: nextElasticities,
-                    crystalSystems: nextCrystalSystems
-                  })
+                    crystalSystems: nextCrystalSystems,
+                  });
                 }}
-            />
-            </div>
+              />
+            </div>,
           )}
 
         </div>
       </div>
-    )
+    );
   }
 }
 

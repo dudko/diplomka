@@ -17,16 +17,18 @@ class Comparator extends Component {
       colorScheme: 'Jet',
       colorbarRange: {
         min: undefined,
-        max: undefined
+        max: undefined,
       },
-    }
+    };
   }
 
   componentWillMount() {
-    let minYoung = this.props.toCompare.map(result => Math.min(...result.youngs));
+    const { toCompare } = this.props;
+
+    let minYoung = toCompare.map(result => Math.min(...result.youngs));
     minYoung = Math.min(...minYoung);
 
-    let maxYoung = this.props.toCompare.map(result => Math.max(...result.youngs));
+    let maxYoung = toCompare.map(result => Math.max(...result.youngs));
     maxYoung = Math.max(...maxYoung);
 
     this.setState({
@@ -36,7 +38,6 @@ class Comparator extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     const { toCompare } = nextProps;
 
     let minYoung = toCompare.map(result => Math.min(...result.youngs));
@@ -48,7 +49,7 @@ class Comparator extends Component {
     this.setState({
       minYoung,
       maxYoung,
-      toCompare,      
+      toCompare,
     });
   }
 
@@ -57,86 +58,86 @@ class Comparator extends Component {
     const { minYoung, maxYoung, toCompare, colorScheme, colorbarRange } = this.state;
 
     return (
-    <div
-      className='flex'
-    >  
-      {toCompare.length > 0 ?
-        <div
-          className='flex two'
-        >
+      <div
+        className="flex"
+      >
+        {toCompare.length > 0 ?
           <div
-            className='card full'
+            className="flex two"
           >
-            <header>
-              <button
-                type='button'
-                className='error'
-                onClick={() => updateCompared([])}
-                style={{
-                  float: 'right'
-                }}
-              >
-                ❌ Remove all
-              </button>
-
-              <div
-                className='flex half'
-              >
-                <ColorScheme
-                  colorScheme={colorScheme}
-                  setColorScheme={(colorScheme) => this.setState({ colorScheme })}
-                />
-                <ColorbarRange
-                  setColorbarRange={(range) => this.setState({
-                    colorbarRange: {...colorbarRange, ...range }})}
-                />
-              </div>
-
-            </header>
-          </div>          
-          {toCompare.map((result, index) =>
             <div
-              key={index}
+              className="card full"
             >
-              <button
-                className='button error'
-                key={index}                
-                onClick={() => updateCompared(toCompare.filter((result, resultIndex) => resultIndex !== index))}
-                style={{
-                  fontSize: '.75em'
-                }}
-              >
-                ❌
-              </button>
-              <Plot
-                key={`${index}-youngs`}
-                points={result}
-                redraw={true}
-                propertyName={'youngs'}
-                unit={'GPa'}
-                cmin={colorbarRange.min || minYoung}
-                cmax={colorbarRange.max || maxYoung}
-                colorScheme={colorScheme}
-              />
+              <header>
+                <button
+                  type="button"
+                  className="error"
+                  onClick={() => updateCompared([])}
+                  style={{
+                    float: 'right',
+                  }}
+                >
+                  ❌ Remove all
+                </button>
+
+                <div
+                  className="flex half"
+                >
+                  <ColorScheme
+                    colorScheme={colorScheme}
+                    setColorScheme={colorScheme => this.setState({ colorScheme })}
+                  />
+                  <ColorbarRange
+                    setColorbarRange={range => this.setState({
+                      colorbarRange: { ...colorbarRange, ...range } })}
+                  />
+                </div>
+
+              </header>
             </div>
-          )}
-        </div>
-      : 
-        <h3 
-          style={{
-            textAlign: 'center'
-          }}
-        >
-          Nothing to compare. Add results with <span className='label warning'>➕ Compare</span>.
-        </h3>
-      }
-    </div>
-    )
+            {toCompare.map((result, index) =>
+              <div
+                key={index}
+              >
+                <button
+                  className="button error"
+                  key={index}
+                  onClick={() => updateCompared(toCompare.filter((result, resultIndex) => resultIndex !== index))}
+                  style={{
+                    fontSize: '.75em',
+                  }}
+                >
+                  ❌
+                </button>
+                <Plot
+                  key={`${index}-youngs`}
+                  points={result}
+                  redraw
+                  propertyName={'youngs'}
+                  unit={'GPa'}
+                  cmin={colorbarRange.min || minYoung}
+                  cmax={colorbarRange.max || maxYoung}
+                  colorScheme={colorScheme}
+                />
+              </div>,
+            )}
+          </div>
+        :
+          <h3
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            Nothing to compare. Add results with <span className="label warning">➕ Compare</span>.
+          </h3>
+        }
+      </div>
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
-  toCompare: state
+const mapStateToProps = state => ({
+  toCompare: state,
 });
 
 export default connect(mapStateToProps, { updateCompared })(Comparator);

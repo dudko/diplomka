@@ -5,29 +5,29 @@ import { connect } from 'react-redux';
 const Navigation = ({ count }) => (
   <nav
     style={{
-      marginBottom: '20px'
+      marginBottom: '20px',
     }}
   >
     <div
-      className='menu'
+      className="menu"
     >
       <Link
-        className='button'
-        to='/'
+        className="button"
+        to="/"
       >
         Single Material
       </Link>
 
       <Link
-        className='button'
-        to='composite'
+        className="button"
+        to="composite"
       >
         Composite
       </Link>
 
       <Link
-        className='button warning badge'
-        to='/comparator'
+        className="button warning badge"
+        to="/comparator"
         data-badge={count}
       >
         Comparator
@@ -37,8 +37,8 @@ const Navigation = ({ count }) => (
   </nav>
 );
 
-const mapStateToProps = (state) => ({
-  count: state.length
-})
+const mapStateToProps = state => ({
+  count: state.length,
+});
 
 export default connect(mapStateToProps)(Navigation);

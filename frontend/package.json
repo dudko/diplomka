@@ -1,5 +1,5 @@
 {
-  "name": "todos",
+  "name": "elasticity-app",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
@@ -18,13 +18,14 @@
     "detect-port": "1.0.1",
     "dotenv": "2.0.0",
     "enzyme": "^2.4.1",
-    "eslint": "3.8.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
     "eslint-config-react-app": "^0.5.2",
     "eslint-loader": "1.6.0",
     "eslint-plugin-flowtype": "2.21.0",
-    "eslint-plugin-import": "2.0.1",
-    "eslint-plugin-jsx-a11y": "2.2.3",
-    "eslint-plugin-react": "6.4.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.10.0",
     "filesize": "3.3.0",
@@ -52,6 +53,7 @@
     "deep-freeze": "^0.0.1",
     "gl-plot3d": "^1.5.4",
     "gl-scatter3d": "^1.0.10",
+    "lodash": "^4.17.4",
     "mathjs": "^3.12.0",
     "picnic": "^6.3.2",
     "plotly": "^1.0.6",
@@ -69,7 +71,13 @@
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
     "shortid": "^2.2.8",
-    "worker-loader": "^0.8.0"
+    "worker-loader": "^0.8.0",
+    "body-parser": "^1.16.0",
+    "cheerio": "^0.22.0",
+    "compression": "^1.6.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "morgan": "^1.8.0"
   },
   "scripts": {
     "start": "node scripts/start.js",

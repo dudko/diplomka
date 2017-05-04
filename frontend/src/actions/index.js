@@ -1,9 +1,9 @@
-export const addToCompare = (results) => ({
+export const addToCompare = results => ({
   type: 'ADD_TO_COMPARE',
-  results
+  results,
 });
 
-export const updateCompared = (results) => ({
+export const updateCompared = results => ({
   type: 'UPDATE_COMPARED',
-  results
+  results,
 });

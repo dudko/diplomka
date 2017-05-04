@@ -8,20 +8,20 @@ import Comparator from '../containers/Comparator';
 import Navigation from './Navigation';
 
 const Root = ({ store }) => (
-    <Provider store={store}>
+  <Provider store={store}>
       <Router>
         <main>
           <Navigation />
           <section
-            className='flex four-fifth'
-            style={{margin: '60px auto'}}
+            className="flex four-fifth"
+            style={{ margin: '60px auto' }}
           >
-            <Route exact path='/' component={SingleMaterial} />
-            <Route path='/composite' component={CompositeContainer} />
-            <Route path='/comparator' component={Comparator} />
+            <Route exact path="/" component={SingleMaterial} />
+            <Route path="/composite" component={CompositeContainer} />
+            <Route path="/comparator" component={Comparator} />
           </section>
         </main>
-      </Router>  
+      </Router>
     </Provider>
 );
 

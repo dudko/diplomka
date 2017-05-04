@@ -1,0 +1,2 @@
+export const ADD_TO_COMPARE = 'ADD_TO_COMPARE';
+export const UPDATE_COMPARED = 'UPDATE_COMPARED';

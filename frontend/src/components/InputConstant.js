@@ -6,13 +6,13 @@ export default class InputConstant extends Component {
 
     this.state = {
       value: this.props.value,
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      value: nextProps.value
-    })
+      value: nextProps.value,
+    });
   }
 
   render() {
@@ -21,9 +21,9 @@ export default class InputConstant extends Component {
 
     return (<input
       value={value}
-      style={{textAlign: 'center'}}
-      onChange={(e) => this.setState({ value: e.target.value })}
-      onBlur={(e) => setConstant(e.target.value)}
+      style={{ textAlign: 'center' }}
+      onChange={e => this.setState({ value: e.target.value })}
+      onBlur={e => setConstant(e.target.value)}
     />);
   }
 }

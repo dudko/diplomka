@@ -30,3 +30,7 @@ td {
   font-size: 0.6em;
   border-radius: .2em;
 }
+
+input[disabled] {
+  background: #dcdcdc
+}

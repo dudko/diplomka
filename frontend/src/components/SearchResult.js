@@ -1,19 +1,21 @@
 import React from 'react';
 import { MATERIALS_PROJECT } from '../constants/URLs';
 
-const SearchResult = ({material, setElasticity}) => (
-  <article className='card'
+const SearchResult = ({ material, setElasticity }) => (
+  <article
+    className="card"
     onClick={() =>
       setElasticity(material['elasticity.elastic_tensor'], material['spacegroup.crystal_system'])}
     style={{
-      cursor: 'pointer'
+      cursor: 'pointer',
     }}
   >
     <header>
       <h3>
         <a
           href={`${MATERIALS_PROJECT}/materials/${material.task_ids[0]}`}
-          target='_blank'
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {material.task_ids[0]}
         </a>
@@ -24,21 +26,21 @@ const SearchResult = ({material, setElasticity}) => (
     <footer>
       <table
         style={{
-          tableLayout:'fixed',
-          width:'100%'
+          tableLayout: 'fixed',
+          width: '100%',
         }}
-        className='tooltip-top'
-        data-tooltip='Use this result by clicking on it.'
+        className="tooltip-top"
+        data-tooltip="Use this result by clicking on it."
       >
         <tbody>
           {material['elasticity.elastic_tensor'].map((row, index) =>
             <tr key={index}>
               {row.map((cell, index) =>
-              <td key={index}>{cell}</td>)}
-            </tr>
+                <td key={index}>{cell}</td>)}
+            </tr>,
           )}
         </tbody>
-      </table>          
+      </table>
     </footer>
   </article>
 );

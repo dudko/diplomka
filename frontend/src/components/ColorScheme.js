@@ -1,29 +1,25 @@
 import React from 'react';
-
-const availableColorSchemes = [ 'pairs', 'Greys', 'Greens', 'Bluered',
-  'Hot', 'Picnic', 'Portland', 'Jet', 'RdBu', 'Blackbody', 'Earth',
-  'Electric', 'YIOrRd', 'YIGnBu'
-]
+import { SCHEMES } from '../constants/defaults';
 
 const ColorScheme = ({ colorScheme, setColorScheme }) => (
   <div
-    className='flex fourth'
+    className="flex fourth"
     style={{
-      alignItems: 'baseline'
+      alignItems: 'baseline',
     }}
   >
-    
+
     <span
-      className='half'
+      className="half"
     >
       {'Color scheme:'}
     </span>
     <select
-      className='half'
-      onChange={(event) => setColorScheme(event.target.value)}
+      className="half"
+      onChange={event => setColorScheme(event.target.value)}
       value={colorScheme}
     >
-      {availableColorSchemes.map(scheme =>
+      {SCHEMES.map(scheme =>
         <option
           key={scheme}
           value={scheme}

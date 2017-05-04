@@ -4,18 +4,16 @@ import Plotly from 'plotly.js/dist/plotly-gl3d';
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-PlotlyComponent.prototype.shouldComponentUpdate = (nextProps) => {
-  return nextProps.config.redraw;
-}
+PlotlyComponent.prototype.shouldComponentUpdate = nextProps => nextProps.config.redraw;
 
 const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorScheme }) => {
   let { x, y, z } = points;
 
-  let property = points[propertyName];
+  const property = points[propertyName];
 
-  x = x.map((x, index) => x*property[index]);
-  y = y.map((y, index) => y*property[index]);
-  z = z.map((z, index) => z*property[index]);
+  x = x.map((x, index) => x * property[index]);
+  y = y.map((y, index) => y * property[index]);
+  z = z.map((z, index) => z * property[index]);
 
   const data = [{
     x,
@@ -29,14 +27,14 @@ const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorSche
       colorscale: colorScheme || 'Jet',
       opacity: 1,
       colorbar: {
-        title: unit, 
+        title: unit,
         lenmode: 'fraction',
-        len: 0.9
+        len: 0.9,
       },
       cmin,
-      cmax
+      cmax,
     },
-    type: 'scatter3d'
+    type: 'scatter3d',
   }];
 
   const layout = {
@@ -48,8 +46,8 @@ const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorSche
       r: 0,
       b: 10,
       t: 0,
-      pad: 0
-    }
+      pad: 0,
+    },
   };
 
   const config = {
@@ -57,9 +55,9 @@ const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorSche
     displaylogo: false,
     redraw,
     modeBarButtons: [[
-      'toImage', 
-      'resetViews'
-    ]]
+      'toImage',
+      'resetViews',
+    ]],
 
   };
 
@@ -67,7 +65,7 @@ const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorSche
     <div>
       <h3>{title}</h3>
       <PlotlyComponent
-        className='Plot'
+        className="Plot"
         data={data}
         layout={layout}
         config={config}

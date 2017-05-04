@@ -9,12 +9,12 @@ const RangeRun = ({ results }) => {
   const data = [{
     x,
     y: youngs,
-    line: {shape: 'spline'},
-    type: 'scatter'
+    line: { shape: 'spline' },
+    type: 'scatter',
   }];
 
   const config = {
-    displayModeBar: false
+    displayModeBar: false,
   };
 
   return (

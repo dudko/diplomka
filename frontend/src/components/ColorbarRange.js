@@ -6,7 +6,7 @@ export default class ColorbarRange extends Component {
     this.state = {
       min: '',
       max: '',
-    }
+    };
   }
 
   render() {
@@ -15,34 +15,34 @@ export default class ColorbarRange extends Component {
 
     return (
       <div
-        className='flex fourth'
+        className="flex fourth"
         style={{
-          alignItems: 'baseline'
+          alignItems: 'baseline',
         }}
       >
-        
-        <span className='half'>
+
+        <span className="half">
           {'Colorbar range:'}
         </span>
-        <div className='half'>
-          <div className='two'>
+        <div className="half">
+          <div className="two">
             <input
-              type='number'              
+              type="number"
               value={min}
-              onChange={(e) => this.setState({ min : e.target.value })}
-              onBlur={(e) => setColorbarRange({ min : e.target.value })}
-              placeholder='min'
+              onChange={e => this.setState({ min: e.target.value })}
+              onBlur={e => setColorbarRange({ min: e.target.value })}
+              placeholder="min"
             />
             <input
-              type='number'
+              type="number"
               value={max}
-              onChange={(e) => this.setState({ max : e.target.value })}
-              onBlur={(e) => setColorbarRange({ max : e.target.value })}              
-              placeholder='max'     
+              onChange={e => this.setState({ max: e.target.value })}
+              onBlur={e => setColorbarRange({ max: e.target.value })}
+              placeholder="max"
             />
           </div>
         </div>
-        
+
       </div>
     );
   }

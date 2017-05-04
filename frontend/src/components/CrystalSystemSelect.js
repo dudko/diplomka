@@ -7,7 +7,7 @@ const CrystalSystemSelect = ({ crystalSystem, setSelectedCrystalSystem }) => (
   <div>
     <h4>Select crystal symmetry:</h4>
     <select
-      onChange={(event) => setSelectedCrystalSystem(event.target.value)}
+      onChange={event => setSelectedCrystalSystem(event.target.value)}
       value={crystalSystem}
     >
       {crystalSystems.map(system =>
@@ -19,6 +19,6 @@ const CrystalSystemSelect = ({ crystalSystem, setSelectedCrystalSystem }) => (
         </option>)}
     </select>
   </div>
-)
+);
 
 export default CrystalSystemSelect;
