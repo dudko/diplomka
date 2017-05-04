@@ -171,10 +171,8 @@ class Composite extends Component {
                     processing: true,
                     error: '',
                   });
-                  const elasticityValues = elasticities.map(elasticity =>
-                    elasticity.map(row => row.map(cell => cell.value)));
                   worker.postMessage({
-                    elasticities: elasticityValues,
+                    elasticities,
                     ratio,
                     rotation,
                   });
