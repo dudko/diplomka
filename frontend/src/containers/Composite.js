@@ -17,6 +17,7 @@ import Plot from '../components/Plot';
 import PlotRatioVariations from '../components/PlotRatioVariations';
 import TextAreaElasticity from './TextAreaElasticity';
 
+// eslint-disable-next-line
 const CreateWorker = require('worker-loader!../worker');
 
 class Composite extends Component {
@@ -259,7 +260,7 @@ class Composite extends Component {
                       });
                     }}
                   />
-                  <span className="checkable">Advance input</span>
+                  <span className="checkable">Advanced input</span>
                 </label>
 
                 {advanceInput[materialIndex] ?

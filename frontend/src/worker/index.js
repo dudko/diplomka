@@ -146,7 +146,7 @@ const prepareCompositeElasticity = (elasticities, ratio) => {
   return result;
 }
 
-const calculate = (tensors, totalCount = 10000, direction) => {
+const calculate = (tensors, totalCount = 40000, direction) => {
   const S = math.inv(tensors);
 
   const s = [
@@ -186,17 +186,18 @@ const calculate = (tensors, totalCount = 10000, direction) => {
 
     for (let i = 0; i < 3; i++)
       for (let j = 0; j < 3; j++)
-        for (let k = 0; k < 3; k++)
+        for (let k = 0; k < 3; k++) {
+          sumCompress += A[i][2] * A[j][2] * s[i][j][k][k];
           for (let l = 0; l < 3; l++) {
             sumYoung += A[i][2] * A[j][2] * A[k][2] * A[l][2] * s[i][j][k][l];
-            sumCompress += A[i][2] * A[j][2] * s[i][j][k][k];
           }
+        }
 
     result.x.push(i);
     result.y.push(j);
     result.z.push(k);
     result.youngs.push(Math.round(Math.abs(1 / sumYoung) * 100) / 100);
-    result.compress.push(sumCompress.toFixed(10));
+    result.compress.push(sumCompress.toFixed(10) * 1000);
   }
 
   return result;

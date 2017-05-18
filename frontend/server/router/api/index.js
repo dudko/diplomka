@@ -145,7 +145,7 @@ router.get('/searchMaterialProject/:keyword', (req, res) => {
     path: '/rest/v2/query',
     method: 'POST',
     headers: {
-      'X-API-KEY': 'KtCgAZa0MTWiO5cr',
+      'X-API-KEY': process.env.XAPIKEY,
       'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': body.length,
       'Cache-Control': 'no-cache',

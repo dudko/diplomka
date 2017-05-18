@@ -49,7 +49,7 @@ export default class MaterialProjectSearch extends Component {
               className="tooltip-bottom"
               data-tooltip="materialsproject.org"
             >
-              Search external database:
+              Search in external database:
             </h4>
             <input
               type="text"

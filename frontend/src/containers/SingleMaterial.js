@@ -14,6 +14,7 @@ import Plot from '../components/Plot';
 import ColorScheme from '../components/ColorScheme';
 import ColorbarRange from '../components/ColorbarRange';
 
+// eslint-disable-next-line
 const CreateWorker = require('worker-loader!../worker');
 
 class SingleMaterial extends Component {
@@ -168,7 +169,7 @@ class SingleMaterial extends Component {
                   });
                 }}
               />
-              <span className="checkable">Advance input</span>
+              <span className="checkable">Advanced input</span>
             </label>
 
             {advanceInput ?

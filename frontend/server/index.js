@@ -5,7 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.load({ path: path.join(__dirname, '.env') });
+  dotenv.load({ path: path.join(__dirname, '../.env') });
 }
 
 /**
