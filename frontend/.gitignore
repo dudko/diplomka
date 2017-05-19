@@ -6,3 +6,5 @@ build
 
 # misc
 npm-debug.log
+
+.env

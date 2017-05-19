@@ -146,7 +146,7 @@ const prepareCompositeElasticity = (elasticities, ratio) => {
   return result;
 }
 
-const calculate = (tensors, totalCount = 40000, direction) => {
+const calculate = (tensors, totalCount = 20000, direction) => {
   const S = math.inv(tensors);
 
   const s = [

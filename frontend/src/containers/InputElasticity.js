@@ -310,7 +310,7 @@ export default class InputElasticity extends Component {
             </option>)}
         </select>
 
-        <h4>Enter elastic constants (stiffness tensor):</h4>
+        <h4>Enter elastic constants (stiffness matrix):</h4>
         <div
           className="six"
         >

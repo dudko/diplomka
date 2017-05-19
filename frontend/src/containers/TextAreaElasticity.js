@@ -25,7 +25,7 @@ export default class TextAreaElasticity extends Component {
 
     return (
       <div>
-        <h4>Enter elasticity (stiffness tensor)</h4>
+        <h4>Enter elasticity (stiffness matrix)</h4>
         <div
           className="flex"
         >

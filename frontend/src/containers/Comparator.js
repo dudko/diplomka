@@ -109,6 +109,12 @@ class Comparator extends Component {
                 >
                   ❌
                 </button>
+                <input 
+                  style={{
+                    width: '120px',
+                    marginLeft: '10px'
+                  }}
+                />
                 <Plot
                   key={`${index}-youngs`}
                   points={result}
