@@ -5,8 +5,6 @@ import * as api from '../api';
 import { addToCompare } from '../actions';
 import { DEFAULT_ELATE, DEFAULT_ELASTICITY } from '../constants/defaults';
 
-import InputElasticity from './InputElasticity';
-import MaterialProjectSearch from './MaterialProjectSearch';
 
 import CompositeRatio from '../components/CompositeRatio';
 import CompositeRotation from '../components/CompositeRotation';
@@ -15,7 +13,6 @@ import ColorbarRange from '../components/ColorbarRange';
 import Properties from '../components/Properties';
 import Plot from '../components/Plot';
 import PlotRatioVariations from '../components/PlotRatioVariations';
-import TextAreaElasticity from './TextAreaElasticity';
 
 // eslint-disable-next-line
 const CreateWorker = require('worker-loader!../worker');
@@ -62,9 +59,9 @@ class Composite extends Component {
   }
 
   render() {
-    const { elasticities, crystalSystems, results, worker, elateAnalysis,
+    const { elasticities, results, worker, elateAnalysis,
       redraw, rotation, ratio, colorScheme, colorbarRange, processing,
-      error, advanceInput } = this.state;
+      error } = this.state;
     const { addToCompare } = this.props;
 
     return (
@@ -224,92 +221,6 @@ class Composite extends Component {
             </footer>}
         </div>
 
-        {/* Main inputs */}
-        <div className="flex two">
-
-          {['First', 'Second'].map((name, materialIndex) =>
-            <div key={materialIndex}>
-              <h1>
-                <span
-                  className="label"
-                  style={{
-                    background: '#85144b',
-                  }}
-                >
-                  {`${name} material`}
-                </span>
-              </h1>
-
-              <div>
-                <label
-                  style={{
-                    float: 'right',
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={advanceInput[materialIndex]}
-                    onChange={() => {
-                      const nextAdvanceInput = _.cloneDeep(advanceInput);
-                      const nextCrystalSystems = [...crystalSystems];
-                      nextCrystalSystems[materialIndex] = 'any';
-                      nextAdvanceInput[materialIndex] = !nextAdvanceInput[materialIndex];
-                      this.setState({
-                        advanceInput: nextAdvanceInput,
-                        crystalSystems: nextCrystalSystems,
-                      });
-                    }}
-                  />
-                  <span className="checkable">Advanced input</span>
-                </label>
-
-                {advanceInput[materialIndex] ?
-                  <div>
-                    <TextAreaElasticity
-                      elasticity={elasticities[materialIndex]}
-                      setElasticity={(elasticity) => {
-                        const nextElasticity = _.cloneDeep(elasticities);
-                        nextElasticity[materialIndex] = elasticity;
-                        this.setState({ elasticities: nextElasticity });
-                      }}
-                    />
-                  </div>
-                :
-                  <div>
-                    <InputElasticity
-                      elasticity={elasticities[materialIndex]}
-                      crystalSystem={crystalSystems[materialIndex]}
-                      setElasticity={(elasticity) => {
-                        const nextElasticity = _.cloneDeep(elasticities);
-                        nextElasticity[materialIndex] = elasticity;
-                        this.setState({ elasticities: nextElasticity });
-                      }}
-                      setCrystalSystem={(crystalSystem) => {
-                        const nextCrystalSystems = [...crystalSystems];
-                        nextCrystalSystems[materialIndex] = crystalSystem;
-                        this.setState({ crystalSystems: nextCrystalSystems });
-                      }}
-                    />
-                  </div>
-                }
-              </div>
-
-              <MaterialProjectSearch
-                setElasticity={(foundElasticity, foundCrystalSystem) => {
-                  const nextElasticities = _.cloneDeep(elasticities);
-                  nextElasticities[materialIndex] = foundElasticity;
-                  const nextCrystalSystems = _.cloneDeep(crystalSystems);
-                  nextCrystalSystems[materialIndex] = foundCrystalSystem;
-                  this.setState({
-                    elasticities: nextElasticities,
-                    crystalSystems: nextCrystalSystems,
-                  });
-                }}
-              />
-            </div>,
-          )}
-
-        </div>
       </div>
     );
   }

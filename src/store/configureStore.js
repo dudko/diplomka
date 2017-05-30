@@ -7,9 +7,9 @@ import _ from 'lodash';
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-    case ActionTypes.ADD_TO_COMPARE: {
+    case ActionTypes.ADD_TO_COMPOSITE: {
       const nextState = _.cloneDeep(state);
-      nextState.push(action.results);
+      nextState.push(action.matrix);
       return nextState;
     }
     case ('UPDATE_COMPARED'): {

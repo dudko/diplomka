@@ -1,6 +1,6 @@
-export const addToCompare = results => ({
-  type: 'ADD_TO_COMPARE',
-  results,
+export const addToComposite = matrix => ({
+  type: 'ADD_TO_COMPOSITE',
+  matrix,
 });
 
 export const updateCompared = results => ({

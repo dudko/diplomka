@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-export default class TextAreaElasticity extends Component {
+export default class TextArea extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      elasticity: this.props.elasticity
+      stiffness: this.props.stiffness
         .map(row => `${row.join(' ')}`)
         .join('\n'),
       rowDelimiter: /\n/,
@@ -14,18 +14,28 @@ export default class TextAreaElasticity extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      elasticity: nextProps.elasticity
+      stiffness: nextProps.stiffness
         .map(row => `${row.join(' ')}`).join('\n'),
     });
   }
 
   render() {
-    const { elasticity, rowDelimiter, cellDelimiter } = this.state;
+    const { stiffness, rowDelimiter, cellDelimiter } = this.state;
     const { setElasticity } = this.props;
 
     return (
       <div>
-        <h4>Enter elasticity (stiffness matrix)</h4>
+        <h4>Enter stiffness matrix:</h4>
+        <textarea
+          rows={6}
+          value={stiffness}
+          onChange={e => this.setState({ stiffness: e.target.value })}
+          onBlur={e => setElasticity(e.target.value
+            .split(rowDelimiter)
+            .map(row => row.trim().split(cellDelimiter),
+          ))}
+        />
+        
         <div
           className="flex"
         >
@@ -64,15 +74,6 @@ export default class TextAreaElasticity extends Component {
             />
           </div>
         </div>
-        <textarea
-          rows={6}
-          value={elasticity}
-          onChange={e => this.setState({ elasticity: e.target.value })}
-          onBlur={e => setElasticity(e.target.value
-            .split(rowDelimiter)
-            .map(row => row.trim().split(cellDelimiter),
-          ))}
-        />
       </div>
     );
   }

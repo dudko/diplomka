@@ -15,24 +15,22 @@ const Navigation = ({ count }) => (
         className="button"
         to="/"
       >
-        Single Material
+        Enter Materials
       </Link>
 
       <Link
         className="button"
-        to="composite"
+        to="adjust"
       >
-        Composite
+        Adjust
       </Link>
 
       <Link
-        className="button warning badge"
-        to="/comparator"
-        data-badge={count}
+        className="button"
+        to="calculate"
       >
-        Comparator
-      </Link>
-
+        Calculate
+      </Link>      
     </div>
   </nav>
 );

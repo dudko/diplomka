@@ -1,2 +1,2 @@
-export const ADD_TO_COMPARE = 'ADD_TO_COMPARE';
+export const ADD_TO_COMPOSITE = 'ADD_TO_COMPOSITE';
 export const UPDATE_COMPARED = 'UPDATE_COMPARED';

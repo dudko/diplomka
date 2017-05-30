@@ -51,40 +51,50 @@ export default class MaterialProjectSearch extends Component {
             >
               Search in external database:
             </h4>
-            <input
-              type="text"
-              placeholder='Search by formula (etc. "Fe" or "AlFe3")'
-              value={keyword}
-              onChange={e => this.setState({ keyword: e.target.value })}
-            />
-            <button
-              type="button"
-              disabled={searching}
-              onClick={() => {
-                this.searchMaterial(keyword);
-                this.setState({
-                  searching: true,
-                });
-              }}
-            >
+            <div>
+              <input
+                className='two-third'
+                type="text"
+                placeholder='Search by formula (etc. "Fe" or "AlFe3")'
+                value={keyword}
+                onChange={e => this.setState({ keyword: e.target.value })}
+              />
+              <button
+                className='third'
+                style={{
+                  margin: 0
+                }}             
+                type="button"
+                disabled={searching}
+                onClick={() => {
+                  this.searchMaterial(keyword);
+                  this.setState({
+                    searching: true,
+                  });
+                }}
+              >
               {searching ? '🔎 Searching...' : '🔎 Search'}
             </button>
+          </div>
           </form>
         </div>
 
-        {searchResults.length && !searching ?
-          <div>
-            <h2><span className="label success">Number of results: {searchResults.length}</span></h2>
-            {searchResults.map((material, index) =>
-              <SearchResult
-                key={index}
-                material={material}
-                setElasticity={setElasticity}
-              />,
-            )}
-          </div>
-        : <h5>No results</h5>
-        }
+        <div
+          style={{
+            overflow: 'scroll',
+            overflowX: 'hidden',
+            maxHeight: '220px'
+          }}        
+        >
+
+          {searchResults.map((material, index) =>
+            <SearchResult
+              key={index}
+              material={material}
+              setElasticity={setElasticity}
+            />,
+          )}
+        </div>
       </div>
     );
   }

@@ -90,8 +90,7 @@ const rotateTensor = (c, direction) => {
   return math.inv(c2);
 };
 
-const prepareCompositeElasticity = (elasticities, ratio) => {
-  let [C1, C2] = elasticities;
+const createComposite = (C1, C2, ratio) => {
 
   let P1 = math.matrix([
     [1, 0, 0, 0, 0, 0],
@@ -204,34 +203,24 @@ const calculate = (tensors, totalCount = 20000, direction) => {
 };
 
 onmessage = (event) => {
-  // Composite is sent as Object
-  if (event.data.constructor === Object) {
-    let { elasticities, ratio, rotation } = event.data;
+  let materials = event.data;
 
-    elasticities = elasticities.map(e => rotateTensor(e, rotation));
-    const compositeElasticity = prepareCompositeElasticity(elasticities, ratio, rotation);
-    const results = calculate(compositeElasticity);
-    results.compositeElasticity = compositeElasticity;
-    results.rotatedTensors = elasticities;
+  if (materials.length == 1) {
+    postMessage(calculate(materials.pop()));
+  } else {
+    let composite = createComposite(materials.pop(), materials.pop(), 0.5);
+    composite = materials.reduce((result, material) => {
+      return createComposite(material, result, 0.5)
+    }, composite);
 
-    const ratioVariations = {
-      x: [],
-      youngs: [],
-      compress: []
-    };
+    // elasticities = elasticities.map(e => rotateTensor(e, rotation));
+    const results = calculate(composite);
+    // results.compositeElasticity = compositeElasticity;
+    // results.rotatedTensors = elasticities;
 
-    for (let ratio = 0; ratio <= 1; ratio += 0.01) {
-      const prepared = prepareCompositeElasticity(elasticities, ratio, [0, 0, 1]);
-      const result = calculate(prepared, 1, [0, 0, 1]);
-      ratioVariations.x.push(ratio);
-      ratioVariations.youngs.push(result.youngs[0]);
-    }
-
-    results.ratioVariations = ratioVariations;
+    // results.ratioVariations = ratioVariations;
 
     postMessage(results);
-  } else {
-    postMessage(calculate(event.data));
   }
 };
 

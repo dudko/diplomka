@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import SingleMaterial from '../containers/SingleMaterial';
-import CompositeContainer from '../containers/Composite';
-import Comparator from '../containers/Comparator';
+import MaterialInput from '../containers/MaterialInput';
+import Adjust from '../containers/Adjust';
+import Calculate from '../containers/Calculate';
 
 import Navigation from './Navigation';
 
@@ -13,12 +13,15 @@ const Root = ({ store }) => (
         <main>
           <Navigation />
           <section
-            className="flex four-fifth"
-            style={{ margin: '60px auto' }}
+            className='flex'
+            style={{
+              margin: '60px auto',
+              width: '950px'
+            }}
           >
-            <Route exact path="/" component={SingleMaterial} />
-            <Route path="/composite" component={CompositeContainer} />
-            <Route path="/comparator" component={Comparator} />
+            <Route exact path="/" component={MaterialInput} />
+            <Route exact path="/adjust" component={Adjust} />
+            <Route path="/calculate" component={Calculate} />
           </section>
         </main>
       </Router>
