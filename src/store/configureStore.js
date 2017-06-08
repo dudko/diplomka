@@ -1,29 +1,16 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-import * as ActionTypes from '../constants/ActionTypes';
+import { createStore, applyMiddleware } from "redux";
+import createWorkerMiddleware from "redux-worker-middleware";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
 
-import _ from 'lodash';
+import reducer from "../reducers";
 
-const reducer = (state = [], action) => {
-  switch (action.type) {
-    case ActionTypes.ADD_TO_COMPOSITE: {
-      const nextState = _.cloneDeep(state);
-      nextState.push(action.matrix);
-      return nextState;
-    }
-    case ('UPDATE_COMPARED'): {
-      return action.results;
-    }
-    default: {
-      return state;
-    }
-  }
-};
+// eslint-disable-next-line
+const CreateWorker = require("worker-loader!../worker");
 
-const configureStore = () => createStore(
-  reducer,
-  applyMiddleware(logger, thunk)
-);
+const workerMiddleware = createWorkerMiddleware(new CreateWorker());
+
+const configureStore = () =>
+  createStore(reducer, applyMiddleware(workerMiddleware, logger, thunk));
 
 export default configureStore;

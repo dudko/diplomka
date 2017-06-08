@@ -1,78 +1,113 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import { DEFAULT_ELASTICITY } from '../constants/defaults';
-import { addToComposite } from '../actions';
+import { DEFAULT_ELASTICITY } from "../constants/defaults";
+import { addToComposite, removeAdded } from "../actions";
 
-import TextArea from './TextArea';
-import MaterialProjectSearch from './MaterialProjectSearch';
-
+import TextArea from "./TextArea";
+import MaterialProjectSearch from "./MaterialProjectSearch";
 
 // eslint-disable-next-line
-const CreateWorker = require('worker-loader!../worker');
+const CreateWorker = require("worker-loader!../worker");
 
 class MaterialInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stiffness: DEFAULT_ELASTICITY
-    }
+      matrix: DEFAULT_ELASTICITY
+    };
   }
 
   render() {
-    const { stiffness } = this.state;
-    const { materials, addToComposite } = this.props;
- 
+    const { matrix } = this.state;
+    const { materials, addToComposite, removeAdded } = this.props;
+
     return (
       <div>
-        <button
-          onClick={() => {
-            addToComposite(stiffness);
-            this.setState({
-              stiffness: DEFAULT_ELASTICITY
-            });
-          }}
-        >
-          Add
-        </button>
+        <div className="half">
+          <button
+            onClick={() => {
+              addToComposite(matrix);
+            }}
+          >
+            <i className="fa fa-plus" /> Add
+          </button>
+          <button
+            onClick={() => {
+              this.setState({
+                matrix: DEFAULT_ELASTICITY
+              });
+            }}
+          >
+            <i className="fa fa-eraser" /> Clear
+          </button>
+
+          {/*<label
+            style={{
+              float: "right"
+            }}
+          >
+            <input type="checkbox" onChange={() => {}} />
+            <span className="checkable">Advanced input</span>
+          </label>*/}
+        </div>
 
         <div className="flex two">
           <div>
-            <TextArea
-              stiffness={stiffness}
-              setElasticity={stiffness => this.setState({ stiffness })}
-            />
-          </div>          
-          
-          <MaterialProjectSearch
-            setElasticity={(stiffness, crystalSystem) => this.setState({
-              stiffness,
-              crystalSystem,
-            })}
-          />
-
-          {materials.map((matrix, index) => 
-            <div
-              key={index}            
-            >
-              <h3><span className="label success">{`# ${index}`}</span></h3>
-              <table
-                style={{
-                  tableLayout: 'fixed',
-                  width: '100%'
-                }}
-              >
-                <tbody>
-                  {matrix.map((row, index) =>
-                    <tr key={index}>
-                      {row.map((cell, index) =>
-                        <td key={index}>{cell}</td>)}
-                    </tr>,
-                  )}
-                </tbody>
-              </table>
+            <div>
+              <TextArea
+                matrix={matrix}
+                setElasticity={matrix => this.setState({ matrix })}
+              />
             </div>
-          )}
+
+            <MaterialProjectSearch
+              setMatrix={matrix =>
+                this.setState({
+                  matrix
+                })}
+            />
+          </div>
+
+          <div>
+            <h4>Composite elements:</h4>
+            {materials.map((material, key) =>
+              <div className="card" key={key}>
+                <header
+                  style={{
+                    textAlign: "right"
+                  }}
+                >
+                  <button
+                    className="label error"
+                    onClick={() => removeAdded(key)}
+                  >
+                    <i className="fa fa-remove" />
+                  </button>
+                </header>
+
+                <footer>
+                  <table
+                    style={{
+                      tableLayout: "fixed",
+                      width: "100%"
+                    }}
+                  >
+                    <tbody>
+                      {material.matrix.map((row, index) =>
+                        <tr key={`mat-${index}`}>
+                          {row.map((cell, index) =>
+                            <td key={index}>{cell}</td>
+                          )}
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </footer>
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
     );
@@ -80,7 +115,9 @@ class MaterialInput extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  materials: state
-})
+  materials: state.materials
+});
 
-export default connect(mapStateToProps, { addToComposite })(MaterialInput);
+export default connect(mapStateToProps, { addToComposite, removeAdded })(
+  MaterialInput
+);

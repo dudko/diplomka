@@ -1,9 +1,22 @@
+import * as actionTypes from "./actionTypes";
+
 export const addToComposite = matrix => ({
-  type: 'ADD_TO_COMPOSITE',
-  matrix,
+  type: actionTypes.ADD_MATERIAL,
+  matrix
 });
 
 export const updateCompared = results => ({
-  type: 'UPDATE_COMPARED',
-  results,
+  type: actionTypes.UPDATE_COMPARED,
+  results
+});
+
+export const removeAdded = index => ({
+  type: actionTypes.REMOVE_MATERIAL,
+  index
+});
+
+export const setRotation = (index, rotation) => ({
+  type: actionTypes.SET_ROTATION,
+  index,
+  rotation
 });
