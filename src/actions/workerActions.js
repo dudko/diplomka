@@ -1,9 +1,13 @@
-export const add1Action = n => ({
-  type: "ADD_1",
+import * as ActionTypes from "./actionTypes";
+
+export const rotateMatrix = (key, matrix, rotation) => ({
+  type: ActionTypes.ROTATE_MATRIX,
   meta: {
-    WebWorker: true // This line specifies that the worker should show up and do the job
+    WebWorker: true
   },
   payload: {
-    num: n
+    key,
+    matrix,
+    rotation
   }
 });

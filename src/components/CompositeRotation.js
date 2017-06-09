@@ -8,9 +8,15 @@ export default class CompositeRotation extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.state = {
+      rotation: nextProps.rotation
+    };
+  }
+
   render() {
     const { rotation } = this.state;
-    const { setRotation } = this.props;
+    const { setRotation, rotateMatrix } = this.props;
 
     return (
       <div>
@@ -35,6 +41,7 @@ export default class CompositeRotation extends Component {
             style={{
               margin: 0
             }}
+            onClick={() => rotateMatrix(rotation)}
           >
             <i className="fa fa-refresh" />
           </button>

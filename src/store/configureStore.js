@@ -8,7 +8,8 @@ import reducer from "../reducers";
 // eslint-disable-next-line
 const CreateWorker = require("worker-loader!../worker");
 
-const workerMiddleware = createWorkerMiddleware(new CreateWorker());
+// prettier-ignore
+const workerMiddleware = createWorkerMiddleware(new CreateWorker);
 
 const configureStore = () =>
   createStore(reducer, applyMiddleware(workerMiddleware, logger, thunk));

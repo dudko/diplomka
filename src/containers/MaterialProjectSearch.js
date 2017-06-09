@@ -52,7 +52,7 @@ export default class MaterialProjectSearch extends Component {
             }}
           >
             <h4>
-              Search in external database:
+              Search in external database
             </h4>
             <div>
               <input

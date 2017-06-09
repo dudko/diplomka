@@ -1,18 +1,10 @@
-import math from 'mathjs';
-import randomPointOnSphere from './randomPointOnSphere';
+import math from "mathjs";
+import randomPointOnSphere from "./randomPointOnSphere";
 
 // Matrices used for faster tensor conversion
-export const MI = [
-  [0, 5, 4],
-  [5, 1, 3],
-  [4, 3, 2],
-];
+export const MI = [[0, 5, 4], [5, 1, 3], [4, 3, 2]];
 
-export const MK = [
-  [1, 0.5, 0.5],
-  [0.5, 1, 0.5],
-  [0.5, 0.5, 1],
-];
+export const MK = [[1, 0.5, 0.5], [0.5, 1, 0.5], [0.5, 0.5, 1]];
 
 const rotateTensor = (c, direction) => {
   const S = math.inv(c);
@@ -20,25 +12,49 @@ const rotateTensor = (c, direction) => {
   // Normalize vector
   let [i, j, k] = direction;
 
-  let length = math.sqrt((i * i) + (j * j) + (k * k));
+  let length = math.sqrt(i * i + j * j + k * k);
   i /= length;
   j /= length;
   k /= length;
 
-  length = math.sqrt((i * i) + (j * j));
+  length = math.sqrt(i * i + j * j);
   i = length === 0 ? 0 : i / length;
   j = length === 0 ? 0 : j / length;
 
   const s = [
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ]
   ];
 
   const s2 = [
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ]
   ];
 
   for (let i = 0; i < 3; i++)
@@ -55,7 +71,7 @@ const rotateTensor = (c, direction) => {
 
   let A = [
     [k + (1 - k) * j * j, -(1 - k) * i * j, -i * sinTheta],
-    [-(1 - k) * i * j, k + (1 - k) * i *i, -sinTheta *j],
+    [-(1 - k) * i * j, k + (1 - k) * i * i, -sinTheta * j],
     [sinTheta * i, sinTheta * j, k]
   ];
 
@@ -74,24 +90,23 @@ const rotateTensor = (c, direction) => {
     for (let j = 0; j < 3; j++)
       for (let k = 0; k < 3; k++)
         for (let l = 0; l < 3; l++) {
-
           for (let a = 0; a < 3; a++)
             for (let b = 0; b < 3; b++)
               for (let c = 0; c < 3; c++)
                 for (let d = 0; d < 3; d++) {
-                  s2[i][j][k][l] += A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];
+                  s2[i][j][k][l] +=
+                    A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];
                 }
 
           const m = MI[i][j];
           const n = MI[k][l];
-          c2[m][n] = (1 / MK[i][j]) * (1 / MK[k][l]) * s2[i][j][k][l];
+          c2[m][n] = 1 / MK[i][j] * (1 / MK[k][l]) * s2[i][j][k][l];
         }
 
   return math.inv(c2);
 };
 
 const createComposite = (C1, C2, ratio) => {
-
   let P1 = math.matrix([
     [1, 0, 0, 0, 0, 0],
     [0, 1, 0, 0, 0, 0],
@@ -143,23 +158,35 @@ const createComposite = (C1, C2, ratio) => {
   const result = math.multiply(C, T)._data;
 
   return result;
-}
+};
 
 const calculate = (tensors, totalCount = 20000, direction) => {
   const S = math.inv(tensors);
 
   const s = [
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]],
-    [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ]
   ];
 
   for (let i = 0; i < 3; i++)
     for (let j = 0; j < 3; j++)
       for (let k = 0; k < 3; k++)
         for (let l = 0; l < 3; l++) {
-          const m = MI[i][j]
-          const n = MI[k][l]
+          const m = MI[i][j];
+          const n = MI[k][l];
           s[i][j][k][l] = MK[i][j] * MK[k][l] * S[m][n];
         }
 
@@ -168,17 +195,13 @@ const calculate = (tensors, totalCount = 20000, direction) => {
     y: [],
     z: [],
     youngs: [],
-    compress: [],
+    compress: []
   };
 
   for (let count = 0; count < totalCount; count++) {
     const [i, j, k] = direction || randomPointOnSphere();
 
-    const A = [
-      [0, 0, i],
-      [0, 0, j],
-      [0, 0, k]
-    ];
+    const A = [[0, 0, i], [0, 0, j], [0, 0, k]];
 
     let sumYoung = 0;
     let sumCompress = 0;
@@ -202,26 +225,33 @@ const calculate = (tensors, totalCount = 20000, direction) => {
   return result;
 };
 
-onmessage = (event) => {
-  let materials = event.data;
+onmessage = event => {
+  let { key, matrix, rotation } = event.data;
+  matrix = rotateTensor(matrix, [0, 0, 1]);
+  console.log(matrix);
 
-  if (materials.length == 1) {
-    postMessage(calculate(materials.pop()));
-  } else {
-    let composite = createComposite(materials.pop(), materials.pop(), 0.5);
-    composite = materials.reduce((result, material) => {
-      return createComposite(material, result, 0.5)
-    }, composite);
+  matrix = rotateTensor(matrix, rotation);
+  console.log(matrix);
 
-    // elasticities = elasticities.map(e => rotateTensor(e, rotation));
-    const results = calculate(composite);
-    // results.compositeElasticity = compositeElasticity;
-    // results.rotatedTensors = elasticities;
+  postMessage({ key, matrix });
 
-    // results.ratioVariations = ratioVariations;
+  // if (materials.length == 1) {
+  //   postMessage(calculate(materials.pop()));
+  // } else {
+  //   let composite = createComposite(materials.pop(), materials.pop(), 0.5);
+  //   composite = materials.reduce((result, material) => {
+  //     return createComposite(material, result, 0.5);
+  //   }, composite);
 
-    postMessage(results);
-  }
+  //   // elasticities = elasticities.map(e => rotateTensor(e, rotation));
+  //   const results = calculate(composite);
+  //   // results.compositeElasticity = compositeElasticity;
+  //   // results.rotatedTensors = elasticities;
+
+  //   // results.ratioVariations = ratioVariations;
+
+  //   postMessage(results);
+  // }
 };
 
 onerror = e => console.log(e);

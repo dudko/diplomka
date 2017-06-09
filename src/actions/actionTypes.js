@@ -3,3 +3,5 @@ export const UPDATE_COMPARED = "UPDATE_COMPARED";
 export const REMOVE_MATERIAL = "REMOVE_MATERIAL";
 export const SET_ROTATION = "SET_ROTATION";
 export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const ROTATE_MATRIX = "ROTATE_MATRIX";
+export const SET_MATRIX = "SET_MATRIX";

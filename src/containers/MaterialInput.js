@@ -72,7 +72,7 @@ class MaterialInput extends Component {
           </div>
 
           <div>
-            <h4>Composite elements:</h4>
+            <h4>Composite elements</h4>
             {materials.map((material, key) =>
               <div className="card" key={key}>
                 <header>
@@ -93,7 +93,7 @@ class MaterialInput extends Component {
                       {material.matrix.map((row, index) =>
                         <tr key={`mat-${index}`}>
                           {row.map((cell, index) =>
-                            <td key={index}>{cell}</td>
+                            <td key={index}>{cell.toFixed(2)}</td>
                           )}
                         </tr>
                       )}

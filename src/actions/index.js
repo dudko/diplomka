@@ -20,3 +20,9 @@ export const setRotation = (index, rotation) => ({
   index,
   rotation
 });
+
+export const setMatrix = (index, matrix) => ({
+  type: actionTypes.SET_MATRIX,
+  index,
+  matrix
+});
