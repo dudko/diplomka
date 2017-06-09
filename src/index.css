@@ -32,5 +32,10 @@ td {
 }
 
 input[disabled] {
-  background: #dcdcdc
+  background: #dcdcdc;
+}
+
+.handPointer {
+  cursor: pointer;
+  cursor: hand;
 }

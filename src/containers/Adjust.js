@@ -21,12 +21,10 @@ class Adjust extends Component {
                   textAlign: "right"
                 }}
               >
-                <button
-                  className="label error"
-                  onClick={() => removeAdded(key)}
-                >
-                  <i className="fa fa-remove" />
-                </button>
+                <h3 />
+                <label className="close" onClick={() => removeAdded(key)}>
+                  &times;
+                </label>
               </header>
 
               <footer>

@@ -18,11 +18,18 @@ export default class TextArea extends Component {
 
   render() {
     const { matrix, rowDelimiter, cellDelimiter } = this.state;
-    const { setElasticity } = this.props;
+    const { setElasticity, toggleModal } = this.props;
 
     return (
       <div>
-        <h4>Enter matrix matrix:</h4>
+
+        <h4>
+          Enter stiffness matrix
+          {" "}<a
+            className="handPointer fa fa-info-circle"
+            onClick={() => toggleModal("stiffnessMatrix")}
+          />
+        </h4>
         <textarea
           style={{
             resize: "none"

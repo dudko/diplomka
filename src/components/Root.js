@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import MaterialInput from "../containers/MaterialInput";
 import Adjust from "../containers/Adjust";
 import Calculate from "../containers/Calculate";
+import Modal from "../containers/Modal";
 
 import Navigation from "./Navigation";
 
@@ -12,6 +13,7 @@ const Root = ({ store }) =>
     <Router>
       <main>
         <Navigation />
+        <Modal title="Stiffness matrix" content="Some text" show={true} />
         <section
           className="flex"
           style={{

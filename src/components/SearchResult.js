@@ -3,11 +3,8 @@ import { MATERIALS_PROJECT } from "../constants/URLs";
 
 const SearchResult = ({ material, setMatrix }) =>
   <article
-    className="card"
+    className="card handPointer"
     onClick={() => setMatrix(material["elasticity.elastic_tensor"])}
-    style={{
-      cursor: "pointer"
-    }}
   >
     <header>
       <h3>

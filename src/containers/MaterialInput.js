@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { DEFAULT_ELASTICITY } from "../constants/defaults";
 import { addToComposite, removeAdded } from "../actions";
+import { toggleModal } from "../actions/modalActions";
 
 import TextArea from "./TextArea";
 import MaterialProjectSearch from "./MaterialProjectSearch";
@@ -20,7 +21,7 @@ class MaterialInput extends Component {
 
   render() {
     const { matrix } = this.state;
-    const { materials, addToComposite, removeAdded } = this.props;
+    const { materials, addToComposite, removeAdded, toggleModal } = this.props;
 
     return (
       <div>
@@ -58,6 +59,7 @@ class MaterialInput extends Component {
               <TextArea
                 matrix={matrix}
                 setElasticity={matrix => this.setState({ matrix })}
+                toggleModal={toggleModal}
               />
             </div>
 
@@ -73,17 +75,11 @@ class MaterialInput extends Component {
             <h4>Composite elements:</h4>
             {materials.map((material, key) =>
               <div className="card" key={key}>
-                <header
-                  style={{
-                    textAlign: "right"
-                  }}
-                >
-                  <button
-                    className="label error"
-                    onClick={() => removeAdded(key)}
-                  >
-                    <i className="fa fa-remove" />
-                  </button>
+                <header>
+                  <h3 />
+                  <label className="close" onClick={() => removeAdded(key)}>
+                    &times;
+                  </label>
                 </header>
 
                 <footer>
@@ -118,6 +114,8 @@ const mapStateToProps = (state, ownProps) => ({
   materials: state.materials
 });
 
-export default connect(mapStateToProps, { addToComposite, removeAdded })(
-  MaterialInput
-);
+export default connect(mapStateToProps, {
+  addToComposite,
+  removeAdded,
+  toggleModal
+})(MaterialInput);
