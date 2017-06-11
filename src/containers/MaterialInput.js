@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { DEFAULT_ELASTICITY } from "../constants/defaults";
-import { addToComposite, removeAdded } from "../actions";
+import { addToComposite, removeMatrix } from "../actions";
 import { toggleModal } from "../actions/modalActions";
 
 import TextArea from "./TextArea";
@@ -21,7 +21,7 @@ class MaterialInput extends Component {
 
   render() {
     const { matrix } = this.state;
-    const { materials, addToComposite, removeAdded, toggleModal } = this.props;
+    const { materials, addToComposite, removeMatrix, toggleModal } = this.props;
 
     return (
       <div>
@@ -76,8 +76,8 @@ class MaterialInput extends Component {
             {materials.map((material, key) =>
               <div className="card" key={key}>
                 <header>
-                  <h3 />
-                  <label className="close" onClick={() => removeAdded(key)}>
+                  <h3><span className="label success">{`# ${key}`}</span></h3>
+                  <label className="close" onClick={() => removeMatrix(key)}>
                     &times;
                   </label>
                 </header>
@@ -90,10 +90,14 @@ class MaterialInput extends Component {
                     }}
                   >
                     <tbody>
-                      {material.matrix.map((row, index) =>
+                      {material.get("matrix").map((row, index) =>
                         <tr key={`mat-${index}`}>
                           {row.map((cell, index) =>
-                            <td key={index}>{cell.toFixed(2)}</td>
+                            <td key={index}>
+                              {Number(cell) % 1
+                                ? Number(cell).toFixed(3)
+                                : Number(cell)}
+                            </td>
                           )}
                         </tr>
                       )}
@@ -116,6 +120,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps, {
   addToComposite,
-  removeAdded,
+  removeMatrix,
   toggleModal
 })(MaterialInput);

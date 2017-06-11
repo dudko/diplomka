@@ -1,5 +1,6 @@
 import math from "mathjs";
 import randomPointOnSphere from "./randomPointOnSphere";
+import * as types from "../actions/actionTypes";
 
 // Matrices used for faster tensor conversion
 export const MI = [[0, 5, 4], [5, 1, 3], [4, 3, 2]];
@@ -225,15 +226,16 @@ const calculate = (tensors, totalCount = 20000, direction) => {
   return result;
 };
 
-onmessage = event => {
-  let { key, matrix, rotation } = event.data;
-  matrix = rotateTensor(matrix, [0, 0, 1]);
-  console.log(matrix);
-
+onmessage = ({ data: action }) => {
+  let { index, matrix, rotation } = action.payload;
   matrix = rotateTensor(matrix, rotation);
-  console.log(matrix);
 
-  postMessage({ key, matrix });
+  postMessage({
+    type: types.SET_ROTATED,
+    index,
+    matrix,
+    rotation
+  });
 
   // if (materials.length == 1) {
   //   postMessage(calculate(materials.pop()));

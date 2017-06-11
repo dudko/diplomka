@@ -16,12 +16,12 @@ export default class CompositeRotation extends Component {
 
   render() {
     const { rotation } = this.state;
-    const { setRotation, rotateMatrix } = this.props;
+    const { rotateMatrix, resetMatrix, rotated } = this.props;
 
     return (
       <div>
         <h4>
-          Rotation:
+          Rotation
         </h4>
         <div className="four">
           {rotation.map((value, index) =>
@@ -33,18 +33,27 @@ export default class CompositeRotation extends Component {
                 nextRotation[index] = e.target.value;
                 this.setState({ rotation: nextRotation });
               }}
-              onBlur={() => setRotation(rotation)}
             />
           )}
-          <button
-            className="sixth"
-            style={{
-              margin: 0
-            }}
-            onClick={() => rotateMatrix(rotation)}
-          >
-            <i className="fa fa-refresh" />
-          </button>
+
+          {rotated
+            ? <button
+                className="warning"
+                style={{
+                  margin: 0
+                }}
+                onClick={() => resetMatrix()}
+              >
+                <i className="fa fa-undo" /> Reset
+              </button>
+            : <button
+                style={{
+                  margin: 0
+                }}
+                onClick={() => rotateMatrix(rotation)}
+              >
+                <i className="fa fa-refresh" /> Rotate
+              </button>}
         </div>
       </div>
     );

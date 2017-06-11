@@ -1,85 +1,71 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { removeAdded, setRotation, setMatrix } from "../actions";
+import { removeMatrix, resetMatrix } from "../actions";
 import { rotateMatrix } from "../actions/workerActions";
 
 import CompositeRotation from "../components/CompositeRotation";
 
-// eslint-disable-next-line
-const CreateWorker = require("worker-loader!../worker");
-
 class Adjust extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      worker: new CreateWorker(),
-      materials: props.materials
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      materials: nextProps.materials
-    });
-  }
-
   render() {
-    const { worker, materials } = this.state;
-    const { removeAdded, setRotation, setMatrix } = this.props;
-
-    worker.onmessage = ({ data }) => {
-      const { key, matrix } = data;
-      setMatrix(key, matrix);
-    };
-
+    const { materials, removeMatrix, rotateMatrix, resetMatrix } = this.props;
     return (
       <div>
-        {materials.map((material, key) =>
-          <div className="flex two" key={key}>
-            <div className="card">
-              <header
-                style={{
-                  textAlign: "right"
-                }}
-              >
-                <h3 />
-                <label className="close" onClick={() => removeAdded(key)}>
-                  &times;
-                </label>
-              </header>
+        {materials.size
+          ? materials.map((material, key) =>
+              <div className="flex two" key={key}>
+                <div className="card">
+                  <header
+                    style={{
+                      textAlign: "right"
+                    }}
+                  >
+                    <h3 />
+                    <label className="close" onClick={() => removeMatrix(key)}>
+                      &times;
+                    </label>
+                  </header>
 
-              <footer>
-                <table
-                  style={{
-                    tableLayout: "fixed",
-                    width: "100%"
-                  }}
-                >
-                  <tbody>
-                    {material.matrix.map((row, index) =>
-                      <tr key={index}>
-                        {row.map((cell, index) =>
-                          <td key={index}>{cell.toFixed(2)}</td>
+                  <footer>
+                    <table
+                      style={{
+                        tableLayout: "fixed",
+                        width: "100%"
+                      }}
+                    >
+                      <tbody>
+                        {material.get("matrix").map((row, index) =>
+                          <tr key={index}>
+                            {row.map((cell, index) =>
+                              <td key={index}>
+                                {Number(cell) % 1
+                                  ? Number(cell).toFixed(3)
+                                  : Number(cell)}
+                              </td>
+                            )}
+                          </tr>
                         )}
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      </tbody>
+                    </table>
 
-              </footer>
-            </div>
-            <CompositeRotation
-              rotation={material.rotation}
-              setRotation={rotation => setRotation(key, rotation)}
-              rotateMatrix={rotation =>
-                worker.postMessage({
-                  key,
-                  matrix: material.matrix,
-                  rotation
-                })}
-            />
-          </div>
-        )}
+                  </footer>
+                </div>
+                <CompositeRotation
+                  rotated={material.get("rotated")}
+                  rotation={material.get("rotation")}
+                  matrix={material.get("matrix")}
+                  rotateMatrix={rotation =>
+                    rotateMatrix(key, material.get("matrix"), rotation)}
+                  resetMatrix={() => resetMatrix(key)}
+                />
+              </div>
+            )
+          : <h3
+              style={{
+                textAlign: "center"
+              }}
+            >
+              Nothing to adjust. Add materials first.
+            </h3>}
 
       </div>
     );
@@ -91,8 +77,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  removeAdded,
-  setRotation,
-  setMatrix,
-  rotateMatrix
+  removeMatrix,
+  rotateMatrix,
+  resetMatrix
 })(Adjust);

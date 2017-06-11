@@ -1,28 +1,23 @@
-import * as actionTypes from "./actionTypes";
+import * as types from "./actionTypes";
 
 export const addToComposite = matrix => ({
-  type: actionTypes.ADD_MATERIAL,
+  type: types.ADD_MATERIAL,
   matrix
 });
 
-export const updateCompared = results => ({
-  type: actionTypes.UPDATE_COMPARED,
-  results
-});
-
-export const removeAdded = index => ({
-  type: actionTypes.REMOVE_MATERIAL,
+export const removeMatrix = index => ({
+  type: types.REMOVE_MATRIX,
   index
 });
 
-export const setRotation = (index, rotation) => ({
-  type: actionTypes.SET_ROTATION,
+export const setRotated = (index, matrix, rotation) => ({
+  type: types.SET_ROTATED,
   index,
+  matrix,
   rotation
 });
 
-export const setMatrix = (index, matrix) => ({
-  type: actionTypes.SET_MATRIX,
-  index,
-  matrix
+export const resetMatrix = index => ({
+  type: types.RESET_MATRIX,
+  index
 });
