@@ -81,6 +81,7 @@ module.exports = {
   module: {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
+    noParse: /node_modules\/plotly.js\/dist\/plotly-gl3d.js/,
     preLoaders: [
       {
         test: /\.(js|jsx)$/,
@@ -98,7 +99,15 @@ module.exports = {
       // "url" loader embeds assets smaller than specified size as data URLs to avoid requests.
       // Otherwise, it acts like the "file" loader.
       {
-        exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.json$/, /\.svg$/],
+        exclude: [
+          /\.html$/,
+          /\.(js|jsx)$/,
+          /\.css$/,
+          /\.json$/,
+          /\.svg$/,
+          /\.woff(2)$/,
+          /\.(ttf|eot|svg)$/
+        ],
         loader: "url",
         query: {
           limit: 10000,
@@ -145,12 +154,8 @@ module.exports = {
       // the url-loader uses DataUrls.
       // the file-loader emits files.
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
+        test: /\.(woff(2)?|ttf|eot|svg)$/,
+        loader: "url?limit=10000"
       }
     ]
   },
