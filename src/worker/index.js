@@ -227,15 +227,35 @@ const calculate = (tensors, totalCount = 20000, direction) => {
 };
 
 onmessage = ({ data: action }) => {
-  let { index, matrix, rotation } = action.payload;
-  matrix = rotateTensor(matrix, rotation);
+  switch (action.type) {
+    case types.ROTATE_MATRIX: {
+      let { index, matrix, rotation } = action.payload;
+      matrix = rotateTensor(matrix, rotation);
 
-  postMessage({
-    type: types.SET_ROTATED,
-    index,
-    matrix,
-    rotation
-  });
+      postMessage({
+        type: types.SET_ROTATED,
+        index,
+        matrix,
+        rotation
+      });
+      break;
+    }
+    case types.CALCULATE: {
+      let { materials } = action.payload;
+      let results = {};
+      if (materials.length === 1) {
+        results = calculate(materials.pop());
+      }
+
+      postMessage({
+        type: types.SET_RESULTS,
+        results
+      });
+      break;
+    }
+    default:
+      postMessage();
+  }
 
   // if (materials.length == 1) {
   //   postMessage(calculate(materials.pop()));

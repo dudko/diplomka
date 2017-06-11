@@ -1,12 +1,22 @@
-import React from 'react';
-import createPlotlyComponent from 'react-plotlyjs';
-import Plotly from 'plotly.js/dist/plotly-gl3d';
+import React from "react";
+import createPlotlyComponent from "react-plotlyjs";
+import Plotly from "plotly.js/dist/plotly-gl3d";
 
 const PlotlyComponent = createPlotlyComponent(Plotly);
 
-PlotlyComponent.prototype.shouldComponentUpdate = nextProps => nextProps.config.redraw;
+PlotlyComponent.prototype.shouldComponentUpdate = nextProps =>
+  nextProps.config.redraw;
 
-const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorScheme }) => {
+const Plot = ({
+  points,
+  propertyName,
+  redraw,
+  title,
+  unit,
+  cmin,
+  cmax,
+  colorScheme
+}) => {
   let { x, y, z } = points;
 
   const property = points[propertyName];
@@ -15,27 +25,29 @@ const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorSche
   y = y.map((y, index) => y * property[index]);
   z = z.map((z, index) => z * property[index]);
 
-  const data = [{
-    x,
-    y,
-    z,
-    mode: 'markers',
-    text: property,
-    marker: {
-      size: 12,
-      color: property,
-      colorscale: colorScheme || 'Jet',
-      opacity: 1,
-      colorbar: {
-        title: unit,
-        lenmode: 'fraction',
-        len: 0.9,
+  const data = [
+    {
+      x,
+      y,
+      z,
+      mode: "markers",
+      text: property,
+      marker: {
+        size: 12,
+        color: property,
+        colorscale: colorScheme || "Jet",
+        opacity: 1,
+        colorbar: {
+          title: unit,
+          lenmode: "fraction",
+          len: 0.9
+        },
+        cmin,
+        cmax
       },
-      cmin,
-      cmax,
-    },
-    type: 'scatter3d',
-  }];
+      type: "scatter3d"
+    }
+  ];
 
   const layout = {
     autosize: true,
@@ -46,19 +58,15 @@ const Plot = ({ points, propertyName, redraw, title, unit, cmin, cmax, colorSche
       r: 0,
       b: 10,
       t: 0,
-      pad: 0,
-    },
+      pad: 0
+    }
   };
 
   const config = {
     displayModeBar: true,
     displaylogo: false,
     redraw,
-    modeBarButtons: [[
-      'toImage',
-      'resetViews',
-    ]],
-
+    modeBarButtons: [["toImage", "resetViews"]]
   };
 
   return (

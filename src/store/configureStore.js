@@ -9,7 +9,7 @@ import reducer from "../reducers";
 const CreateWorker = require("worker-loader!../worker");
 
 // prettier-ignore
-const workerMiddleware = createWorkerMiddleware(new CreateWorker);
+const workerMiddleware = createWorkerMiddleware(new CreateWorker());
 
 const configureStore = () =>
   createStore(reducer, applyMiddleware(workerMiddleware, logger, thunk));
