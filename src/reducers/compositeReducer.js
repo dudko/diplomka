@@ -26,6 +26,10 @@ const compositeReducer = (state = List([]), action) => {
         .set("rotated", true);
       return state.set(action.index, material);
     }
+    case types.SET_FRACTION: {
+      const material = state.get(action.index).set("fraction", action.fraction);
+      return state.set(action.index, material);
+    }
     case types.RESET_MATRIX: {
       let material = state.get(action.index);
       const matrixOriginal = material.get("matrixOriginal");

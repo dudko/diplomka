@@ -61,11 +61,23 @@ class MaterialInput extends Component {
                 this.setState({
                   matrix
                 })}
+              toggleModal={toggleModal}
             />
           </div>
 
           <div>
-            <h3>Composite elements</h3>
+            <h3
+              style={{
+                textAlign: "center"
+              }}
+            >
+              Composite elements
+              {" "}
+              <a
+                className="handPointer fa fa-info-circle"
+                onClick={() => toggleModal("stiffnessMatrix")}
+              />
+            </h3>
             {materials.map((material, key) =>
               <div className="card" key={key}>
                 <header>

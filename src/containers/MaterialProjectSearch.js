@@ -34,7 +34,7 @@ export default class MaterialProjectSearch extends Component {
 
   render() {
     const { searchResults, keyword, searching } = this.state;
-    const { setMatrix } = this.props;
+    const { setMatrix, toggleModal } = this.props;
     return (
       <div>
         <div
@@ -53,6 +53,11 @@ export default class MaterialProjectSearch extends Component {
           >
             <h4>
               Search in external database
+              {" "}
+              <a
+                className="handPointer fa fa-info-circle"
+                onClick={() => toggleModal("stiffnessMatrix")}
+              />
             </h4>
             <div>
               <input

@@ -17,6 +17,12 @@ export const setRotated = (index, matrix, rotation) => ({
   rotation
 });
 
+export const setFraction = (index, fraction) => ({
+  type: types.SET_FRACTION,
+  index,
+  fraction
+});
+
 export const resetMatrix = index => ({
   type: types.RESET_MATRIX,
   index
