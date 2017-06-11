@@ -23,13 +23,14 @@ export default class TextArea extends Component {
     return (
       <div>
 
-        <h4>
-          Enter stiffness matrix
-          {" "}<a
+        <h3>
+          Stiffness matrix
+          {" "}
+          <a
             className="handPointer fa fa-info-circle"
             onClick={() => toggleModal("stiffnessMatrix")}
           />
-        </h4>
+        </h3>
         <textarea
           style={{
             resize: "none"
@@ -44,35 +45,6 @@ export default class TextArea extends Component {
                 .map(row => row.trim().split(cellDelimiter))
             )}
         />
-
-        <div className="flex">
-          <div className="half">
-            <h5 className="tooltip-bottom" data-tooltip="regular expression">
-              {"Row delimiter"}
-            </h5>
-            <input
-              type="text"
-              placeholder="default new line (\n)"
-              onChange={e =>
-                this.setState({
-                  rowDelimeter: e.target.value
-                })}
-            />
-          </div>
-          <div className="half">
-            <h5 className="tooltip-bottom" data-tooltip="regular expression">
-              {"Cell delimiter"}
-            </h5>
-            <input
-              type="text"
-              placeholder="default space (\s+)"
-              onChange={e =>
-                this.setState({
-                  cellDelimiter: new RegExp(e.target.value)
-                })}
-            />
-          </div>
-        </div>
       </div>
     );
   }

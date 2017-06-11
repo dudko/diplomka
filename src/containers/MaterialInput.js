@@ -25,33 +25,6 @@ class MaterialInput extends Component {
 
     return (
       <div>
-        <div className="half">
-          <button
-            onClick={() => {
-              addToComposite(matrix);
-            }}
-          >
-            <i className="fa fa-plus" /> Add
-          </button>
-          <button
-            onClick={() => {
-              this.setState({
-                matrix: DEFAULT_ELASTICITY
-              });
-            }}
-          >
-            <i className="fa fa-eraser" /> Clear
-          </button>
-
-          {/*<label
-            style={{
-              float: "right"
-            }}
-          >
-            <input type="checkbox" onChange={() => {}} />
-            <span className="checkable">Advanced input</span>
-          </label>*/}
-        </div>
 
         <div className="flex two">
           <div>
@@ -63,6 +36,26 @@ class MaterialInput extends Component {
               />
             </div>
 
+            <div>
+              <button
+                onClick={() => {
+                  addToComposite(matrix);
+                }}
+              >
+                <i className="fa fa-plus" /> Add
+              </button>
+              <button
+                onClick={() => {
+                  this.setState({
+                    matrix: DEFAULT_ELASTICITY
+                  });
+                }}
+              >
+                <i className="fa fa-eraser" /> Clear
+              </button>
+            </div>
+
+            <hr />
             <MaterialProjectSearch
               setMatrix={matrix =>
                 this.setState({
@@ -72,7 +65,7 @@ class MaterialInput extends Component {
           </div>
 
           <div>
-            <h4>Composite elements</h4>
+            <h3>Composite elements</h3>
             {materials.map((material, key) =>
               <div className="card" key={key}>
                 <header>
