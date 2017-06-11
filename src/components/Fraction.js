@@ -31,7 +31,7 @@ export default class Fraction extends Component {
               this.setState({
                 fraction: e.target.value
               })}
-            onBlur={() => setFraction(fraction)}
+            onBlur={() => setFraction(Number(fraction))}
           />
         </div>
       </div>

@@ -243,8 +243,23 @@ onmessage = ({ data: action }) => {
     case types.CALCULATE: {
       let { materials } = action.payload;
       let results = {};
+
       if (materials.length === 1) {
-        results = calculate(materials.pop());
+        results = calculate(materials.pop().matrix);
+      } else {
+        let finalMaterial = materials.pop();
+
+        while (materials.length) {
+          const nextMaterial = materials.pop();
+          finalMaterial.fraction /=
+            finalMaterial.fraction + nextMaterial.fraction;
+          finalMaterial.matrix = createComposite(
+            finalMaterial.matrix,
+            nextMaterial.matrix,
+            finalMaterial.fraction
+          );
+          results = calculate(finalMaterial.matrix);
+        }
       }
 
       postMessage({
@@ -256,24 +271,6 @@ onmessage = ({ data: action }) => {
     default:
       postMessage();
   }
-
-  // if (materials.length == 1) {
-  //   postMessage(calculate(materials.pop()));
-  // } else {
-  //   let composite = createComposite(materials.pop(), materials.pop(), 0.5);
-  //   composite = materials.reduce((result, material) => {
-  //     return createComposite(material, result, 0.5);
-  //   }, composite);
-
-  //   // elasticities = elasticities.map(e => rotateTensor(e, rotation));
-  //   const results = calculate(composite);
-  //   // results.compositeElasticity = compositeElasticity;
-  //   // results.rotatedTensors = elasticities;
-
-  //   // results.ratioVariations = ratioVariations;
-
-  //   postMessage(results);
-  // }
 };
 
 onerror = e => console.log(e);

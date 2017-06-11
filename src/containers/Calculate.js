@@ -29,13 +29,16 @@ class Calculate extends Component {
           type="button"
           className="success"
           disabled={processing}
-          onClick={() =>
-            calculate(
-              materials.map(material => ({
+          onClick={() => {
+            const materialsRaw = materials.reduce((result, material) => {
+              result.push({
                 matrix: material.get("matrix"),
                 fraction: material.get("fraction")
-              }))
-            )}
+              });
+              return result;
+            }, []);
+            calculate(materialsRaw);
+          }}
         >
           {processing ? "⚙️ Processing..." : " ⚙️ Process"}
         </button>
