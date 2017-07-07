@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { removeMatrix, resetMatrix, setFraction } from "../actions";
 import { toggleModal } from "../actions/modalActions";
-import { rotateMatrix } from "../actions/workerActions";
+import { rotateMatrix, rotateByAngle } from "../actions/workerActions";
 
 import CompositeRotation from "../components/CompositeRotation";
+import AngleRotation from "../components/AngleRotation";
 import Fraction from "../components/Fraction";
 
 class Adjust extends Component {
@@ -13,18 +14,17 @@ class Adjust extends Component {
       materials,
       removeMatrix,
       rotateMatrix,
+      rotateByAngle,
       resetMatrix,
       setFraction,
       toggleModal
     } = this.props;
     return (
       <div>
-
         {materials.size
           ? <div>
               <h3>
-                Adjust rotations and set fractions
-                {" "}
+                Adjust rotations and set fractions{" "}
                 <a
                   className="handPointer fa fa-info-circle"
                   onClick={() => toggleModal("stiffnessMatrix")}
@@ -66,7 +66,6 @@ class Adjust extends Component {
                           )}
                         </tbody>
                       </table>
-
                     </footer>
                   </div>
 
@@ -77,6 +76,13 @@ class Adjust extends Component {
                       matrix={material.get("matrix")}
                       rotateMatrix={rotation =>
                         rotateMatrix(key, material.get("matrix"), rotation)}
+                      resetMatrix={() => resetMatrix(key)}
+                    />
+                    <AngleRotation
+                      rotated={material.get("rotated")}
+                      angle={material.get("angle")}
+                      rotateByAngle={angle =>
+                        rotateByAngle(key, material.get("matrix"), angle)}
                       resetMatrix={() => resetMatrix(key)}
                     />
                     <Fraction
@@ -94,7 +100,6 @@ class Adjust extends Component {
             >
               Nothing to adjust. Add materials first.
             </h3>}
-
       </div>
     );
   }
@@ -108,6 +113,7 @@ export default connect(mapStateToProps, {
   toggleModal,
   removeMatrix,
   rotateMatrix,
+  rotateByAngle,
   resetMatrix,
   setFraction
 })(Adjust);

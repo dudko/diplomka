@@ -12,6 +12,18 @@ export const rotateMatrix = (index, matrix, rotation) => ({
   }
 });
 
+export const rotateByAngle = (index, matrix, angle) => ({
+  type: types.ROTATE_BY_ANGLE,
+  meta: {
+    WebWorker: true
+  },
+  payload: {
+    index,
+    matrix,
+    angle
+  }
+});
+
 export const calculate = materials => ({
   type: types.CALCULATE,
   meta: {

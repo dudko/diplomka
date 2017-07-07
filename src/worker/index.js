@@ -107,6 +107,93 @@ const rotateTensor = (c, direction) => {
   return math.inv(c2);
 };
 
+const angleRotation = (c, lambda) => {
+  const S = math.inv(c);
+
+  const s = [
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ]
+  ];
+
+  const s2 = [
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ],
+    [
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ]
+  ];
+
+  // Convert from Voigt notation to full tensor
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++)
+      for (let k = 0; k < 3; k++)
+        for (let l = 0; l < 3; l++) {
+          const m = MI[i][j];
+          const n = MI[k][l];
+          s[i][j][k][l] = MK[i][j] * MK[k][l] * S[m][n];
+        }
+
+  // prettier-ignore
+  let A = [
+    [ math.cos(math.unit(lambda, 'deg')), -math.sin(math.unit(lambda, 'deg')), 0 ],
+    [ math.sin(math.unit(lambda, 'deg')), math.cos(math.unit(lambda, 'deg')), 0 ],
+    [ 0, 0, 1 ]
+  ];
+
+  A = math.transpose(A);
+
+  const c2 = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+  ];
+
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++)
+      for (let k = 0; k < 3; k++)
+        for (let l = 0; l < 3; l++) {
+          for (let a = 0; a < 3; a++)
+            for (let b = 0; b < 3; b++)
+              for (let c = 0; c < 3; c++)
+                for (let d = 0; d < 3; d++) {
+                  s2[i][j][k][l] +=
+                    A[i][a] * A[j][b] * A[k][c] * A[l][d] * s[a][b][c][d];
+                }
+
+          const m = MI[i][j];
+          const n = MI[k][l];
+          c2[m][n] = 1 / MK[i][j] * (1 / MK[k][l]) * s2[i][j][k][l];
+        }
+
+  return math.inv(c2);
+};
+
 const createComposite = (C1, C2, ratio) => {
   let P1 = math.matrix([
     [1, 0, 0, 0, 0, 0],
@@ -237,6 +324,20 @@ onmessage = ({ data: action }) => {
         index,
         matrix,
         rotation
+      });
+      break;
+    }
+    case types.ROTATE_BY_ANGLE: {
+      let { index, matrix, angle } = action.payload;
+      console.log(matrix);
+      matrix = angleRotation(matrix, angle);
+      console.log(matrix);
+
+      postMessage({
+        type: types.SET_ANGLE_ROTATED,
+        index,
+        matrix,
+        angle
       });
       break;
     }

@@ -20,9 +20,7 @@ export default class CompositeRotation extends Component {
 
     return (
       <div>
-        <h4>
-          Rotation
-        </h4>
+        <h4>Rotation</h4>
         <div className="four">
           {rotation.map((value, index) =>
             <input

@@ -20,9 +20,7 @@ export default class Fraction extends Component {
 
     return (
       <div>
-        <h4>
-          Fraction
-        </h4>
+        <h4>Fraction</h4>
         <div className="two">
           <input
             value={fraction}
