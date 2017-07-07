@@ -50,11 +50,19 @@
     "whatwg-fetch": "2.0.2"
   },
   "dependencies": {
+    "body-parser": "^1.16.0",
+    "cheerio": "^0.22.0",
+    "compression": "^1.6.2",
     "deep-freeze": "^0.0.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "font-awesome": "^4.7.0",
     "gl-plot3d": "^1.5.4",
     "gl-scatter3d": "^1.0.10",
+    "immutable": "^3.8.1",
     "lodash": "^4.17.4",
     "mathjs": "^3.12.0",
+    "morgan": "^1.8.0",
     "picnic": "^6.3.2",
     "plotly": "^1.0.6",
     "plotly.js": "^1.25.2",
@@ -70,14 +78,9 @@
     "redux": "^3.5.2",
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
+    "redux-worker-middleware": "^1.0.0",
     "shortid": "^2.2.8",
-    "worker-loader": "^0.8.0",
-    "body-parser": "^1.16.0",
-    "cheerio": "^0.22.0",
-    "compression": "^1.6.2",
-    "dotenv": "^4.0.0",
-    "express": "^4.14.1",
-    "morgan": "^1.8.0"
+    "worker-loader": "^0.8.0"
   },
   "scripts": {
     "start": "node scripts/start.js",

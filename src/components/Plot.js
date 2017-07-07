@@ -17,11 +17,7 @@ const Plot = ({
   cmax,
   colorScheme
 }) => {
-  let {
-    x,
-    y,
-    z
-  } = points;
+  let { x, y, z } = points;
 
   const property = points[propertyName];
 
@@ -29,27 +25,29 @@ const Plot = ({
   y = y.map((y, index) => y * property[index]);
   z = z.map((z, index) => z * property[index]);
 
-  const data = [{
-    x,
-    y,
-    z,
-    mode: "markers",
-    text: property,
-    marker: {
-      size: 12,
-      color: property,
-      colorscale: colorScheme || "Jet",
-      opacity: 1,
-      colorbar: {
-        title: unit,
-        lenmode: "fraction",
-        len: 0.9
+  const data = [
+    {
+      x,
+      y,
+      z,
+      mode: "markers",
+      text: property,
+      marker: {
+        size: 12,
+        color: property,
+        colorscale: colorScheme || "Jet",
+        opacity: 1,
+        colorbar: {
+          title: unit,
+          lenmode: "fraction",
+          len: 0.9
+        },
+        cmin,
+        cmax
       },
-      cmin,
-      cmax
-    },
-    type: "scatter3d"
-  }];
+      type: "scatter3d"
+    }
+  ];
 
   const layout = {
     autosize: true,
@@ -71,29 +69,19 @@ const Plot = ({
     displayModeBar: true,
     displaylogo: false,
     redraw,
-    modeBarButtons: [
-      ["toImage", "resetViews"]
-    ]
+    modeBarButtons: [["toImage", "resetViews"]]
   };
 
-  return ( <
-    div >
-    <
-    h3 > {
-      title
-    } < /h3> <
-    PlotlyComponent className = "Plot"
-    data = {
-      data
-    }
-    layout = {
-      layout
-    }
-    config = {
-      config
-    }
-    /> < /
-    div >
+  return (
+    <div>
+      <h3> {title} </h3>{" "}
+      <PlotlyComponent
+        className="Plot"
+        data={data}
+        layout={layout}
+        config={config}
+      />{" "}
+    </div>
   );
 };
 
