@@ -8,6 +8,8 @@ import IntroPage from "./IntroPage";
 import Calculate from "../containers/Calculate";
 
 import Navigation from "./Navigation";
+import Footer from "./Footer";
+
 
 const Root = ({ store }) =>
   <Provider store={store}>
@@ -18,7 +20,7 @@ const Root = ({ store }) =>
         <section
           className="flex"
           style={{
-            margin: "60px auto",
+            margin: "60px auto 0",
             width: "960px"
           }}
         >
@@ -26,6 +28,7 @@ const Root = ({ store }) =>
           <Route exact path="/adjust" component={Adjust} />
           <Route path="/calculate" component={Calculate} />
         </section>
+        <Footer />
       </main>
     </Router>
   </Provider>;
