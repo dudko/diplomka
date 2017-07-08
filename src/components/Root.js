@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import MaterialInput from "../containers/MaterialInput";
 import Adjust from "../containers/Adjust";
+
+import IntroPage from "./IntroPage";
 import Calculate from "../containers/Calculate";
-import Modal from "../containers/Modal";
 
 import Navigation from "./Navigation";
 
@@ -13,7 +14,7 @@ const Root = ({ store }) =>
     <Router>
       <main>
         <Navigation />
-        <Modal title="Stiffness matrix" content="Some text" show={true} />
+        <Route exact path="/" component={IntroPage} />
         <section
           className="flex"
           style={{
@@ -21,7 +22,7 @@ const Root = ({ store }) =>
             width: "960px"
           }}
         >
-          <Route exact path="/" component={MaterialInput} />
+          <Route exact path="/enter" component={MaterialInput} />
           <Route exact path="/adjust" component={Adjust} />
           <Route path="/calculate" component={Calculate} />
         </section>

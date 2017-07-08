@@ -4,16 +4,13 @@ import { connect } from 'react-redux';
 
 const Navigation = ({ count }) => (
   <nav
-    style={{
-      marginBottom: '20px',
-    }}
   >
     <div
       className="menu"
     >
       <Link
         className="button"
-        to="/"
+        to="/enter"
       >
         Enter Materials
       </Link>
