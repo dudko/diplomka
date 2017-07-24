@@ -14,22 +14,17 @@ import Footer from "./Footer";
 const Root = ({ store }) =>
   <Provider store={store}>
     <Router>
-      <main>
-        <Navigation />
+      <div>
+      <Navigation />
+      <div className="ui main container">
         <Route exact path="/" component={IntroPage} />
-        <section
-          className="flex"
-          style={{
-            margin: "60px auto 0",
-            width: "960px"
-          }}
-        >
-          <Route exact path="/enter" component={MaterialInput} />
-          <Route exact path="/adjust" component={Adjust} />
-          <Route path="/calculate" component={Calculate} />
-        </section>
+        <Route exact path="/enter" component={MaterialInput} />
+        <Route exact path="/adjust" component={Adjust} />
+        <Route path="/calculate" component={Calculate} />
+      </div>
         <Footer />
-      </main>
+      </div>
+      
     </Router>
   </Provider>;
 

@@ -79,6 +79,7 @@
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
     "redux-worker-middleware": "^1.0.0",
+    "semantic-ui-css": "^2.2.11",
     "shortid": "^2.2.8",
     "worker-loader": "^0.8.0"
   },

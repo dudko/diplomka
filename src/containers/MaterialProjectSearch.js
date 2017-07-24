@@ -52,27 +52,28 @@ export default class MaterialProjectSearch extends Component {
             }}
           >
             <h4>
-              Search in external database
-              {" "}
-              <a
+              {" "}<a
                 className="handPointer fa fa-info-circle"
                 onClick={() => toggleModal("stiffnessMatrix")}
               />
             </h4>
-            <div>
+            <h1 className="ui header">
+              Search in external database
+              <div className="sub header">
+                A Keyword search looks for words anywhere in the record.
+              </div>
+            </h1>
+
+            <div className="ui action left icon input">
+              <i className="search icon" />
               <input
-                className="two-third"
                 type="text"
+                placeholder="Search..."
                 value={keyword}
                 onChange={e => this.setState({ keyword: e.target.value })}
               />
-              <button
-                className="third"
-                style={{
-                  margin: 0
-                }}
-                type="button"
-                disabled={searching}
+              <div
+                className="ui blue button"
                 onClick={() => {
                   this.searchMaterial(keyword);
                   this.setState({
@@ -80,11 +81,10 @@ export default class MaterialProjectSearch extends Component {
                   });
                 }}
               >
-                <i className="fa fa-search" />
-                {" "}{searching ? "Searching..." : "Search"}
-
-              </button>
+                Search
+              </div>
             </div>
+            <div />
           </form>
         </div>
 

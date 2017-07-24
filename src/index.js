@@ -4,8 +4,9 @@ import Root from "./components/Root";
 import configureStore from "./store/configureStore";
 
 // style
-import "picnic/picnic.min.css";
-import "font-awesome/css/font-awesome.css";
+// import "picnic/picnic.min.css";
+// import "font-awesome/css/font-awesome.css";
+import "semantic-ui-css/semantic.css";
 
 import "./index.css";
 

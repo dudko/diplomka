@@ -1,5 +1,17 @@
-main {
-  color: #333;
+.main.container {
+    margin-top: 7em;
+    margin-bottom: 2em;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+span.nobr {
+  white-space: nowrap;
+}
+
+.footer {
+  flex: 1;
 }
 
 th {
