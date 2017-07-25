@@ -5,6 +5,8 @@ import MaterialInput from "../containers/MaterialInput";
 import Adjust from "../containers/Adjust";
 
 import IntroPage from "./IntroPage";
+import About from "../components/About";
+
 import Calculate from "../containers/Calculate";
 
 import Navigation from "./Navigation";
@@ -17,6 +19,7 @@ const Root = ({ store }) =>
         <Navigation />
         <div className="ui main container">
           <Route exact path="/" component={IntroPage} />
+          <Route exact path="/about" component={About} />
           <Route exact path="/enter" component={MaterialInput} />
           <Route exact path="/adjust" component={Adjust} />
           <Route path="/calculate" component={Calculate} />
