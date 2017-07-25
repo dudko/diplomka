@@ -10,21 +10,19 @@ import Calculate from "../containers/Calculate";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 
-
 const Root = ({ store }) =>
   <Provider store={store}>
     <Router>
       <div>
-      <Navigation />
-      <div className="ui main container">
-        <Route exact path="/" component={IntroPage} />
-        <Route exact path="/enter" component={MaterialInput} />
-        <Route exact path="/adjust" component={Adjust} />
-        <Route path="/calculate" component={Calculate} />
-      </div>
+        <Navigation />
+        <div className="ui main container">
+          <Route exact path="/" component={IntroPage} />
+          <Route exact path="/enter" component={MaterialInput} />
+          <Route exact path="/adjust" component={Adjust} />
+          <Route path="/calculate" component={Calculate} />
+        </div>
         <Footer />
       </div>
-      
     </Router>
   </Provider>;
 

@@ -22,13 +22,15 @@ export default class TextArea extends Component {
 
     return (
       <div>
-<h1 className="ui header">
-  Enter elastic constants
-  <div className="sub header">The stiffness matrix is the n-element square matrix A defined by.</div>
-</h1>
-        
+        <h1 className="ui header">
+          Enter elastic constants
+          <div className="sub header">
+            The stiffness matrix is the n-element square matrix A defined by.
+          </div>
+        </h1>
 
-        <textarea        
+        <textarea
+          className="large text"
           style={{
             resize: "none"
           }}
