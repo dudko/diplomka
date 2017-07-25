@@ -7,6 +7,7 @@ import configureStore from "./store/configureStore";
 // import "picnic/picnic.min.css";
 // import "font-awesome/css/font-awesome.css";
 import "semantic-ui-css/semantic.css";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 import "./index.css";
 
