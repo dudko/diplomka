@@ -12,7 +12,7 @@ const IntroPage = () =>
       <p>
         Our tool implements a linear-elasticity method of{" "}
         <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.33.5891">
-          M. Grimsditch and F. Nizzoli
+          <span className="nobr">M. Grimsditch and F. Nizzoli</span>
         </a>. It computes{" "}
         <b>anisotropic elastic properties of coherent nano-composites</b> using
         matrices of elastic constants of co-existing phases as the input.

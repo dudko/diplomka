@@ -16,7 +16,6 @@ export default class Gallery extends Component {
         showThumbnails={false}
         showFullscreenButton={false}
         showPlayButton={false}
-        showBullets={true}
       />
     );
   }
