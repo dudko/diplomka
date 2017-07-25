@@ -21,10 +21,9 @@ export default class Fraction extends Component {
     return (
       <div>
         <h4>Fraction</h4>
-        <div className="two">
+        <div className="ui input">
           <input
             value={fraction}
-            className="fifth"
             onChange={e =>
               this.setState({
                 fraction: e.target.value

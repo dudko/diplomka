@@ -21,7 +21,7 @@ export default class AngleRotation extends Component {
     return (
       <div>
         <h4>Angle</h4>
-        <div className="two">
+        <div className="ui action input">
           <input
             value={angle}
             className="fifth"
@@ -33,22 +33,16 @@ export default class AngleRotation extends Component {
 
           {rotated
             ? <button
-                className="warning fifth"
-                style={{
-                  margin: 0
-                }}
+                className="ui red icon button"
                 onClick={() => resetMatrix()}
               >
-                <i className="fa fa-undo" />
+                <i className="undo icon" />
               </button>
             : <button
-                className="fifth"
-                style={{
-                  margin: 0
-                }}
+                className="ui blue icon button"
                 onClick={() => rotateByAngle(angle)}
               >
-                <i className="fa fa-refresh" />
+                <i className="refresh icon" />
               </button>}
         </div>
       </div>

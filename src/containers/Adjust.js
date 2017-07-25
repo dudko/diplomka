@@ -22,54 +22,46 @@ class Adjust extends Component {
     return (
       <div>
         {materials.size
-          ? <div>
-              <h3>
-                Adjust rotations and set fractions{" "}
-                <a
-                  className="handPointer fa fa-info-circle"
-                  onClick={() => toggleModal("stiffnessMatrix")}
-                />
-              </h3>
+          ? <div className="ui centered grid">
+              <h1 className="ui header">
+                Adjust rotations and set fractions
+                <div className="sub header">
+                  Rotate internal axes or rotate by angle
+                </div>
+              </h1>
               {materials.map((material, key) =>
-                <div className="flex two" key={key}>
-                  <div className="card">
-                    <header>
-                      <h3>
-                        <span className="label success">{`# ${key}`}</span>
-                      </h3>
-                      <label
-                        className="close"
-                        onClick={() => removeMatrix(key)}
-                      >
-                        &times;
-                      </label>
-                    </header>
-
-                    <footer>
-                      <table
-                        style={{
-                          tableLayout: "fixed",
-                          width: "100%"
-                        }}
-                      >
-                        <tbody>
-                          {material.get("matrix").map((row, index) =>
-                            <tr key={index}>
-                              {row.map((cell, index) =>
-                                <td key={index}>
-                                  {Number(cell) % 1
-                                    ? Number(cell).toFixed(3)
-                                    : Number(cell)}
-                                </td>
-                              )}
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </footer>
+                <div className="row">
+                  <div className="six wide column" key={key}>
+                    <table className="ui table">
+                      <thead>
+                        <th colSpan="6">
+                          <button
+                            className="ui mini red icon button"
+                            onClick={() => removeMatrix(key)}
+                          >
+                            <i className="close icon" />
+                          </button>
+                        </th>
+                      </thead>
+                      <tbody>
+                        {material.get("matrix").map((row, index) =>
+                          <tr key={index}>
+                            {row.map((cell, index) =>
+                              <td key={index}>
+                                {Number(cell) % 1
+                                  ? Number(cell).toFixed(3)
+                                  : Number(cell)}
+                              </td>
+                            )}
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
                   </div>
 
-                  <div>
+                  <div className="one wide column" />
+
+                  <div className="six wide column">
                     <CompositeRotation
                       rotated={material.get("rotated")}
                       rotation={material.get("rotation")}

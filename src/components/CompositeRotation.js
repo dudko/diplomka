@@ -21,11 +21,13 @@ export default class CompositeRotation extends Component {
     return (
       <div>
         <h4>Rotation</h4>
-        <div className="four">
+
+        <div className="ui fluid action input">
           {rotation.map((value, index) =>
             <input
               key={index}
               value={value}
+              type="text"
               onChange={e => {
                 const nextRotation = [...rotation];
                 nextRotation[index] = e.target.value;
@@ -36,21 +38,16 @@ export default class CompositeRotation extends Component {
 
           {rotated
             ? <button
-                className="warning"
-                style={{
-                  margin: 0
-                }}
+                className="ui red icon button"
                 onClick={() => resetMatrix()}
               >
-                <i className="fa fa-undo" /> Reset
+                <i className="undo icon" /> Reset
               </button>
             : <button
-                style={{
-                  margin: 0
-                }}
+                className="ui blue icon button"
                 onClick={() => rotateMatrix(rotation)}
               >
-                <i className="fa fa-refresh" /> Rotate
+                <i className="refresh icon" /> Rotate
               </button>}
         </div>
       </div>
