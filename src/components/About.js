@@ -1,4 +1,5 @@
 import React from "react";
+import { BlockMath } from  "react-katex";
 
 export default () =>
   <div className="ui text container">
@@ -11,5 +12,6 @@ export default () =>
       nostrum eveniet! Harum, laborum a eligendi! Sunt corporis beatae
       asperiores sapiente unde non, pariatur quo ratione, nostrum, cupiditate
       quos inventore.
+      <BlockMath math='\sigma_{ij} = C_{ijkl} \epsilon_{kl}' />
     </p>
   </div>;
