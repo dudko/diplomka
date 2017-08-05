@@ -4,8 +4,8 @@ import { removeMatrix, resetMatrix, setFraction } from "../actions";
 import { toggleModal } from "../actions/modalActions";
 import { rotateMatrix, rotateByAngle } from "../actions/workerActions";
 
-import CompositeRotation from "../components/CompositeRotation";
-import AngleRotation from "../components/AngleRotation";
+import Reorientation from "../components/Reorientation";
+import Rotation from "../components/Rotation";
 import Fraction from "../components/Fraction";
 
 class Adjust extends Component {
@@ -62,7 +62,7 @@ class Adjust extends Component {
                   <div className="one wide column" />
 
                   <div className="six wide column">
-                    <CompositeRotation
+                    <Reorientation
                       rotated={material.get("rotated")}
                       rotation={material.get("rotation")}
                       matrix={material.get("matrix")}
@@ -70,7 +70,7 @@ class Adjust extends Component {
                         rotateMatrix(key, material.get("matrix"), rotation)}
                       resetMatrix={() => resetMatrix(key)}
                     />
-                    <AngleRotation
+                    <Rotation
                       rotated={material.get("rotated")}
                       angle={material.get("angle")}
                       rotateByAngle={angle =>

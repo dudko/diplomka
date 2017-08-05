@@ -20,7 +20,7 @@ const Root = ({ store }) =>
         <div className="ui main container">
           <Route exact path="/" component={IntroPage} />
           <Route exact path="/about" component={About} />
-          <Route exact path="/enter" component={MaterialInput} />
+          <Route exact path="/input" component={MaterialInput} />
           <Route exact path="/adjust" component={Adjust} />
           <Route path="/calculate" component={Calculate} />
         </div>

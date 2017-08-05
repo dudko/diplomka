@@ -7,7 +7,7 @@ export const MI = [[0, 5, 4], [5, 1, 3], [4, 3, 2]];
 
 export const MK = [[1, 0.5, 0.5], [0.5, 1, 0.5], [0.5, 0.5, 1]];
 
-const rotateTensor = (c, direction) => {
+const reorient = (c, direction) => {
   const S = math.inv(c);
 
   // Normalize vector
@@ -107,7 +107,7 @@ const rotateTensor = (c, direction) => {
   return math.inv(c2);
 };
 
-const angleRotation = (c, lambda) => {
+const rotation = (c, lambda) => {
   const S = math.inv(c);
 
   const s = [
@@ -317,7 +317,7 @@ onmessage = ({ data: action }) => {
   switch (action.type) {
     case types.ROTATE_MATRIX: {
       let { index, matrix, rotation } = action.payload;
-      matrix = rotateTensor(matrix, rotation);
+      matrix = reorient(matrix, rotation);
 
       postMessage({
         type: types.SET_ROTATED,
@@ -330,7 +330,7 @@ onmessage = ({ data: action }) => {
     case types.ROTATE_BY_ANGLE: {
       let { index, matrix, angle } = action.payload;
       console.log(matrix);
-      matrix = angleRotation(matrix, angle);
+      matrix = rotation(matrix, angle);
       console.log(matrix);
 
       postMessage({

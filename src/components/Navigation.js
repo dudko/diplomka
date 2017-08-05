@@ -13,8 +13,8 @@ const Navigation = ({ count }) =>
       </Link>
 
       <div className="right secondary menu">
-        <Link className="item" to="/enter">
-          <i className="edit icon" /> Enter
+        <Link className="item" to="/input">
+          <i className="edit icon" /> Input
         </Link>
         <Link className="item" to="/adjust">
           <i className="settings icon" /> Adjust

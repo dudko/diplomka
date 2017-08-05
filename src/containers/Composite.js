@@ -7,7 +7,7 @@ import { DEFAULT_ELATE, DEFAULT_ELASTICITY } from '../constants/defaults';
 
 
 import CompositeRatio from '../components/CompositeRatio';
-import CompositeRotation from '../components/CompositeRotation';
+import Reorientation from '../components/Reorientation';
 import ColorScheme from '../components/ColorScheme';
 import ColorbarRange from '../components/ColorbarRange';
 import Properties from '../components/Properties';
@@ -206,7 +206,7 @@ class Composite extends Component {
               <div
                 className="flex two"
               >
-                <CompositeRotation
+                <Reorientation
                   updateRotation={rotation => this.setState({ rotation })}
                 />
                 <CompositeRatio
