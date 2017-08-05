@@ -7,7 +7,7 @@ export const MI = [[0, 5, 4], [5, 1, 3], [4, 3, 2]];
 
 export const MK = [[1, 0.5, 0.5], [0.5, 1, 0.5], [0.5, 0.5, 1]];
 
-const reorient = (c, direction) => {
+const reorientAxes = (c, direction) => {
   const S = math.inv(c);
 
   // Normalize vector
@@ -107,7 +107,7 @@ const reorient = (c, direction) => {
   return math.inv(c2);
 };
 
-const rotation = (c, lambda) => {
+const rotateByAngle = (c, lambda) => {
   const S = math.inv(c);
 
   const s = [
@@ -316,27 +316,15 @@ const calculate = (tensors, totalCount = 20000, direction) => {
 onmessage = ({ data: action }) => {
   switch (action.type) {
     case types.ROTATE_MATRIX: {
-      let { index, matrix, rotation } = action.payload;
-      matrix = reorient(matrix, rotation);
+      let { index, matrix, axes, angle } = action.payload;
+      matrix = reorientAxes(matrix, axes);
+      matrix = rotateByAngle(matrix, angle);
 
       postMessage({
         type: types.SET_ROTATED,
         index,
         matrix,
-        rotation
-      });
-      break;
-    }
-    case types.ROTATE_BY_ANGLE: {
-      let { index, matrix, angle } = action.payload;
-      console.log(matrix);
-      matrix = rotation(matrix, angle);
-      console.log(matrix);
-
-      postMessage({
-        type: types.SET_ANGLE_ROTATED,
-        index,
-        matrix,
+        axes,
         angle
       });
       break;

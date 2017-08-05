@@ -20,7 +20,9 @@ export default class Fraction extends Component {
 
     return (
       <div>
-        <h4>Fraction</h4>
+        <h3 className="ui horizontal divider header">
+          Fraction
+        </h3>
         <div className="ui input">
           <input
             value={fraction}

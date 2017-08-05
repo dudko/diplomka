@@ -10,11 +10,12 @@ export const removeMatrix = index => ({
   index
 });
 
-export const setRotated = (index, matrix, rotation) => ({
+export const setRotated = (index, matrix, axes, angle) => ({
   type: types.SET_ROTATED,
   index,
   matrix,
-  rotation
+  axes,
+  angle
 });
 
 export const setFraction = (index, fraction) => ({

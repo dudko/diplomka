@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { removeMatrix, resetMatrix, setFraction } from "../actions";
 import { toggleModal } from "../actions/modalActions";
-import { rotateMatrix, rotateByAngle } from "../actions/workerActions";
+import { rotateMatrix } from "../actions/workerActions";
 
-import Reorientation from "../components/Reorientation";
-import Rotation from "../components/Rotation";
+import Rotations from "../components/Rotations";
 import Fraction from "../components/Fraction";
 
 class Adjust extends Component {
@@ -14,10 +13,8 @@ class Adjust extends Component {
       materials,
       removeMatrix,
       rotateMatrix,
-      rotateByAngle,
       resetMatrix,
       setFraction,
-      toggleModal
     } = this.props;
     return (
       <div>
@@ -62,21 +59,18 @@ class Adjust extends Component {
                   <div className="one wide column" />
 
                   <div className="six wide column">
-                    <Reorientation
-                      rotated={material.get("rotated")}
-                      rotation={material.get("rotation")}
-                      matrix={material.get("matrix")}
-                      rotateMatrix={rotation =>
-                        rotateMatrix(key, material.get("matrix"), rotation)}
-                      resetMatrix={() => resetMatrix(key)}
-                    />
-                    <Rotation
-                      rotated={material.get("rotated")}
+                    <Rotations
+                      axes={material.get("axes")}
                       angle={material.get("angle")}
-                      rotateByAngle={angle =>
-                        rotateByAngle(key, material.get("matrix"), angle)}
+                      matrix={material.get("matrix")}
+                      rotateMatrix={(axes, angle) =>
+                        rotateMatrix(key, material.get("matrix"), axes, angle)}
                       resetMatrix={() => resetMatrix(key)}
                     />
+
+                    <br />
+                    <br />
+                    
                     <Fraction
                       fraction={material.get("fraction")}
                       setFraction={fraction => setFraction(key, fraction)}
@@ -105,7 +99,6 @@ export default connect(mapStateToProps, {
   toggleModal,
   removeMatrix,
   rotateMatrix,
-  rotateByAngle,
   resetMatrix,
   setFraction
 })(Adjust);

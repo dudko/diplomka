@@ -1,6 +1,6 @@
 import * as types from "./actionTypes";
 
-export const rotateMatrix = (index, matrix, rotation) => ({
+export const rotateMatrix = (index, matrix, axes, angle) => ({
   type: types.ROTATE_MATRIX,
   meta: {
     WebWorker: true
@@ -8,18 +8,7 @@ export const rotateMatrix = (index, matrix, rotation) => ({
   payload: {
     index,
     matrix,
-    rotation
-  }
-});
-
-export const rotateByAngle = (index, matrix, angle) => ({
-  type: types.ROTATE_BY_ANGLE,
-  meta: {
-    WebWorker: true
-  },
-  payload: {
-    index,
-    matrix,
+    axes,
     angle
   }
 });
