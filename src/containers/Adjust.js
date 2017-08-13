@@ -1,13 +1,43 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { push } from "react-router-redux";
 import { removeMatrix, resetMatrix, setFraction } from "../actions";
 import { toggleModal } from "../actions/modalActions";
 import { rotateMatrix } from "../actions/workerActions";
-
+import { isValidFractionSum } from "../helpers";
 import Rotations from "../components/Rotations";
 import Fraction from "../components/Fraction";
 
 class Adjust extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      invalidFraction: false
+    };
+  }
+
+  componentDidMount() {
+    const { materials } = this.props;
+
+    if (!isValidFractionSum(materials)) {
+      this.setState({
+        invalidFraction: true
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { materials, results } = nextProps;
+    this.state = {
+      results: results
+    };
+
+    if (!isValidFractionSum(materials)) {
+      this.setState({
+        invalidFraction: true
+      });
+    }
+  }
   render() {
     const {
       materials,
@@ -15,7 +45,10 @@ class Adjust extends Component {
       rotateMatrix,
       resetMatrix,
       setFraction,
+      push
     } = this.props;
+
+    const { invalidFraction } = this.state;
     return (
       <div>
         {materials.size
@@ -70,10 +103,11 @@ class Adjust extends Component {
 
                     <br />
                     <br />
-                    
+
                     <Fraction
                       fraction={material.get("fraction")}
                       setFraction={fraction => setFraction(key, fraction)}
+                      invalidFraction={invalidFraction}
                     />
                   </div>
                 </div>
@@ -85,6 +119,13 @@ class Adjust extends Component {
               }}
             >
               Nothing to adjust. Add materials first.
+              <br />
+              <div
+                className="ui green inverted button"
+                onClick={() => push("/input")}
+              >
+                <i className="edit icon" /> Input
+              </div>
             </h3>}
       </div>
     );
@@ -100,5 +141,6 @@ export default connect(mapStateToProps, {
   removeMatrix,
   rotateMatrix,
   resetMatrix,
-  setFraction
+  setFraction,
+  push
 })(Adjust);

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import { DEFAULT_ELASTICITY } from "../constants/defaults";
 import { addToComposite, removeMatrix } from "../actions";
-import { toggleModal } from "../actions/modalActions";
 
 import TextArea from "./TextArea";
 import MaterialProjectSearch from "./MaterialProjectSearch";
@@ -60,7 +59,6 @@ class MaterialInput extends Component {
               this.setState({
                 matrix
               })}
-            toggleModal={toggleModal}
           />
         </div>
 
@@ -105,6 +103,5 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps, {
   addToComposite,
-  removeMatrix,
-  toggleModal
+  removeMatrix
 })(MaterialInput);

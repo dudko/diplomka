@@ -1,5 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
+import { ConnectedRouter } from "react-router-redux";
+
 import { Provider } from "react-redux";
 import MaterialInput from "../containers/MaterialInput";
 import Adjust from "../containers/Adjust";
@@ -12,9 +14,9 @@ import Calculate from "../containers/Calculate";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 
-const Root = ({ store }) =>
+const Root = ({ store, history }) =>
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <div>
         <Navigation />
         <div className="ui main container">
@@ -26,7 +28,7 @@ const Root = ({ store }) =>
         </div>
         <Footer />
       </div>
-    </Router>
+    </ConnectedRouter>
   </Provider>;
 
 export default Root;
