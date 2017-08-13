@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SearchResult from "../components/SearchResult";
-import { BASE_URL } from "../constants/URLs";
 
 export default class MaterialProjectSearch extends Component {
   constructor(props) {
@@ -15,7 +14,9 @@ export default class MaterialProjectSearch extends Component {
   }
 
   searchMaterial(keyword) {
-    fetch(`${BASE_URL}/api/searchMaterialProject/${keyword}`)
+    fetch(
+      `${process.env.REACT_APP_SERVER_URL}/api/searchMaterialProject/${keyword}`
+    )
       .then(response => (response.status !== 200 ? [] : response.json()))
       .then(result =>
         this.setState({

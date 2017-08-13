@@ -1,5 +1,4 @@
 import React from "react";
-import { MATERIALS_PROJECT } from "../constants/URLs";
 
 const SearchResult = ({ material, setMatrix }) =>
   <table
@@ -12,7 +11,9 @@ const SearchResult = ({ material, setMatrix }) =>
         <th colSpan="2">
           <h3>
             <a
-              href={`${MATERIALS_PROJECT}/materials/${material.task_ids[0]}`}
+              href={`${process.env
+                .REACT_APP_MATERIALS_PROJECT}/materials/${material
+                .task_ids[0]}`}
               target="_blank"
               rel="noopener noreferrer"
             >
