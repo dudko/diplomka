@@ -5,7 +5,6 @@ export const SET_ROTATED = "SET_ROTATED";
 export const SET_ANGLE_ROTATED = "SET_ANGLE_ROTATED";
 export const SET_FRACTION = "SET_FRACTION";
 export const SET_RESULTS = "SET_RESULTS";
-export const TOGGLE_MODAL = "TOGGLE_MODAL";
 export const ROTATE_MATRIX = "ROTATE_MATRIX";
 export const ROTATE_BY_ANGLE = "ROTATE_BY_ANGLE";
 export const RESET_MATRIX = "RESET_MATRIX";

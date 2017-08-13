@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { removeMatrix, resetMatrix, setFraction } from "../actions";
-import { toggleModal } from "../actions/modalActions";
 import { rotateMatrix } from "../actions/workerActions";
 import { isValidFractionSum } from "../helpers";
 import Rotations from "../components/Rotations";
@@ -137,7 +136,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  toggleModal,
   removeMatrix,
   rotateMatrix,
   resetMatrix,

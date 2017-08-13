@@ -34,7 +34,7 @@ export default class MaterialProjectSearch extends Component {
 
   render() {
     const { searchResults, keyword, searching } = this.state;
-    const { setMatrix, toggleModal } = this.props;
+    const { setMatrix } = this.props;
     return (
       <div>
         <div

@@ -20,7 +20,7 @@ class MaterialInput extends Component {
 
   render() {
     const { matrix } = this.state;
-    const { materials, addToComposite, removeMatrix, toggleModal } = this.props;
+    const { materials, addToComposite, removeMatrix } = this.props;
 
     return (
       <div className="ui centered grid">
@@ -29,7 +29,6 @@ class MaterialInput extends Component {
             <TextArea
               matrix={matrix}
               setElasticity={matrix => this.setState({ matrix })}
-              toggleModal={toggleModal}
             />
             <br />
             <button

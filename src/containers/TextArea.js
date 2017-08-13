@@ -18,7 +18,7 @@ export default class TextArea extends Component {
 
   render() {
     const { matrix, rowDelimiter, cellDelimiter } = this.state;
-    const { setElasticity, toggleModal } = this.props;
+    const { setElasticity } = this.props;
 
     return (
       <div>
