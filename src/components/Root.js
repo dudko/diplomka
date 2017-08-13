@@ -18,7 +18,7 @@ const Root = ({ store, history }) =>
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <div>
-        <Navigation />
+        <Route component={Navigation} />
         <div className="ui main container">
           <Route exact path="/" component={IntroPage} />
           <Route exact path="/about" component={About} />
