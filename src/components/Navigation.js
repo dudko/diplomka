@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 const Navigation = ({ count }) =>
   <div className="ui fixed stackable menu">
     <div className="ui container">
-      <Link className="item" to="/">
-        <i className="home icon" />
+      <Link className="header item" to="/">
+        <i className="home icon" /> MELASA
       </Link>
       <Link className="item" to="/about">
         <i className="info icon" /> About
