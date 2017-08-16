@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "react-router-redux";
 
 import { Provider } from "react-redux";
@@ -20,11 +20,19 @@ const Root = ({ store, history }) =>
       <div>
         <Route component={Navigation} />
         <div className="ui main container">
-          <Route exact path="/" component={IntroPage} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/input" component={MaterialInput} />
-          <Route exact path="/adjust" component={Adjust} />
-          <Route path="/calculate" component={Calculate} />
+          <Switch>
+            <Route exact path="/" component={IntroPage} />
+            <Route path="/about" component={About} />
+            <Route path="/input" component={MaterialInput} />
+            <Route path="/adjust" component={Adjust} />
+            <Route path="/calculate" component={Calculate} />
+            <Route
+              render={() =>
+                <div className="ui negative message">
+                  <div className="header">This page does not exist.</div>
+                </div>}
+            />
+          </Switch>
         </div>
         <Footer />
       </div>
