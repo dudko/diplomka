@@ -30,7 +30,7 @@ export default class Fraction extends Component {
             </div>}
           <div className="field">
             <label>
-              {"Number in <0, 1>"}
+              {"A value within the range <0, 1>"}
             </label>
             <div className="ui action input">
               <input

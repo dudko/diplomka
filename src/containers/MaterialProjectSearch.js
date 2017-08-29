@@ -55,7 +55,11 @@ export default class MaterialProjectSearch extends Component {
             <h1 className="ui header">
               Search in external database
               <div className="sub header">
-                A Keyword search looks for words anywhere in the record.
+                A Keyword search looks for words anywhere in the record of the{" "}
+                <a href="https://www.materialsproject.org/" target="_blank">
+                  Materials Project
+                </a>{" "}
+                database.
               </div>
             </h1>
 

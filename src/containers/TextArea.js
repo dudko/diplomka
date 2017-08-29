@@ -25,7 +25,7 @@ export default class TextArea extends Component {
         <h1 className="ui header">
           Enter elastic constants
           <div className="sub header">
-            The stiffness matrix is the n-element square matrix A defined by.
+            The stiffness matrix is the 6x6-element square matrix A defined by.
           </div>
         </h1>
 

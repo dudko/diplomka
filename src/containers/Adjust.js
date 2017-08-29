@@ -53,9 +53,11 @@ class Adjust extends Component {
         {materials.size
           ? <div className="ui centered grid">
               <h1 className="ui header">
-                Adjust rotations and set fractions
+                Adjust rotations (optional) and/or set fractions of phases in
+                the composite
                 <div className="sub header">
-                  Rotate internal axes or rotate by angle
+                  Re-orientation of the [0, 0, 1] axis into a new direction and
+                  subsequent rotation around it
                 </div>
               </h1>
               {materials.map((material, key) =>
