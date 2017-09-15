@@ -30,7 +30,8 @@ class Calculate extends Component {
   componentWillReceiveProps(nextProps) {
     const { materials, results } = nextProps;
     this.state = {
-      results: results
+      results: results,
+      processing: false
     };
 
     if (!isValidFractionSum(materials)) {
@@ -45,7 +46,7 @@ class Calculate extends Component {
     const { processing, results, invalidFraction } = this.state;
 
     return (
-      <div>
+      <div className="ui centered grid">
         <Modal open={invalidFraction} basic size="small">
           <Header icon="warning circle" content="Fraction sum must be 1" />
           <Modal.Content>
@@ -65,24 +66,8 @@ class Calculate extends Component {
             </div>
           </Modal.Actions>
         </Modal>
-        <button
-          type="button"
-          className="success"
-          disabled={processing}
-          onClick={() => {
-            const materialsRaw = materials.reduce((result, material) => {
-              result.push({
-                matrix: material.get("matrix"),
-                fraction: material.get("fraction")
-              });
-              return result;
-            }, []);
-            calculate(materialsRaw);
-          }}
-        >
-          {processing ? "⚙️ Processing..." : " ⚙️ Process"}
-        </button>
-        {results &&
+
+        {results && (
           <div>
             <Plot
               key={"youngs"}
@@ -99,7 +84,36 @@ class Calculate extends Component {
               propertyName={"compress"}
               title={"Linear compressibility"}
             />
-          </div>}
+          </div>
+        )}
+
+        <div className="ui row">
+          {!processing ? (
+            <button
+              type="button"
+              className="ui green icon button"
+              onClick={() => {
+                const materialsRaw = materials.reduce((result, material) => {
+                  result.push({
+                    matrix: material.get("matrix"),
+                    fraction: material.get("fraction")
+                  });
+                  return result;
+                }, []);
+                calculate(materialsRaw);
+                this.setState({ processing: true });
+              }}
+            >
+              Start calculations <i className="icon wizard" />
+            </button>
+          ) : (
+            <div className="ui active inverted dimmer">
+              <div className="ui indeterminate text loader">
+                Running calculations
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
