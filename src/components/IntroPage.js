@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Gallery from "./Gallery";
 
-const IntroPage = () =>
+const IntroPage = () => (
   <div className="ui centered grid">
     <div className="five wide column">
       <h1 className="ui header">
@@ -17,9 +17,11 @@ const IntroPage = () =>
         <b>anisotropic elastic properties of coherent nano-composites</b> using
         matrices of elastic constants of co-existing phases as the input.
         Elastic properties are visualized in the form of{" "}
-        <b>directional dependencies of selected measures</b>. Importantly, the
-        tool can handle <b>more than two phases</b> and allows for including
-        internal rotation of coexisting phases.
+        <b>
+          directional dependencies of selected elastic characteristics (Young´s
+          modulus and linear compressibility)
+        </b>. Importantly, the tool can handle <b>more than two phases</b> and
+        allows for including internal rotation of coexisting phases.
       </p>
 
       <div className="ui buttons">
@@ -36,6 +38,7 @@ const IntroPage = () =>
     <div className="six wide column">
       <Gallery />
     </div>
-  </div>;
+  </div>
+);
 
 export default IntroPage;
