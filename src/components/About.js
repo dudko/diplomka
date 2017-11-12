@@ -23,7 +23,6 @@ P_{ij} =
 C_{31} & C_{32} & C_{33} & C_{34} & C_{35} & C_{36} \\\\
 C_{41} & C_{42} & C_{43} & C_{44} & C_{45} & C_{46} \\\\
 C_{51} & C_{52} & C_{53} & C_{54} & C_{55} & C_{56} \\\\
-C_{61} & C_{62} & C_{63} & C_{64} & C_{65} & C_{66} \\\\
 0 & 0 & 0 & 0 & 0 & 1
 \\end{pmatrix}
 `;
@@ -79,8 +78,10 @@ export default () => (
       as a 2-dimensional representation of a 4-dimensional tensor of elastic
       constants <InlineMath math="C_{ijkl}" />.
     </p>
+    <h4>
+      MELASA computes a 6x6 matrix of elastic constants of the whole composite.
+    </h4>
     <p>
-      MELASA computes a 6x6 matrix of elastic constants of the whole composite.<br />
       Each phase has a molar fraction <InlineMath math="f" /> from the interval{" "}
       <InlineMath math="[0, 1]" /> and the sum of molar fractions of all phases
       is equal to 1. For the two-phase case we have{" "}
@@ -101,9 +102,9 @@ export default () => (
       of the inverse of matrix <InlineMath math="P_{ij}^1" /> and the matrix{" "}
       <InlineMath math="P_{ij}^2" />:{" "}
     </p>
-    <BlockMath math="M = ((P_{ij}^1)^-1)2Pij" />
+    <BlockMath math="M = ((P_{ij}^1)^{-1})P^2_{ij}" />
     <p>
-      The matrix of elastic constants <InlineMath math="C_{ij}^12" /> of the
+      The matrix of elastic constants <InlineMath math="C_{ij}^{12}" /> of the
       whole composites is:
     </p>
     <BlockMath math="C_{ij}^{12} = (f_{1} C_{ij}^1 M + f_{2} C_{ij}^2)(f_{1} M + f_{2} I)^{-1}" />
@@ -126,7 +127,7 @@ export default () => (
       Considering the example in the figure immediately above, the input matrix
       of elastic constants of phase 1 must be transformed from the local rotated
       coordinate system of phase 1 into the global coordinate system. It is
-      often so that the matrix of elastic constants is known only in the most
+      often so that the matrix of elastic constants is known only in the most{" "}
       <i>“natural”</i> coordinate system when the axes coincide with the main
       crystallographic directions (and the matrix is then particularly simple).
       MELASA computes the rotated matrix of elastic constants for the user
