@@ -25,3 +25,27 @@ span.nobr {
 .ui.buttons {
   display: flex;
 }
+
+.ui.steps {
+  border-radius: 0;
+  border-bottom: 0;
+  border-top: 0;
+}
+
+.ui.steps .step {
+  padding: 0.6em 2em;
+}
+
+.ui.steps .step > .icon {
+  font-size: 1.5em;
+}
+
+.ui.menu:not(.vertical) .right {
+  display: flex;
+  margin-left: auto !important;
+}
+
+.ui.steps .step .description {
+  white-space: nowrap;
+  overflow: hidden;
+}
