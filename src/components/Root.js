@@ -14,29 +14,32 @@ import Calculate from "../containers/Calculate";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 
-const Root = ({ store, history }) =>
+const Root = ({ store, history }) => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <div>
+      <div className="wrapper">
         <Route component={Navigation} />
         <div className="ui main container">
-          <Switch>
+          <Switch style={{ flex: 1 }}>
             <Route exact path="/" component={IntroPage} />
             <Route path="/about" component={About} />
             <Route path="/input" component={MaterialInput} />
             <Route path="/adjust" component={Adjust} />
             <Route path="/calculate" component={Calculate} />
             <Route
-              render={() =>
+              render={() => (
                 <div className="ui negative message">
                   <div className="header">This page does not exist.</div>
-                </div>}
+                </div>
+              )}
             />
           </Switch>
         </div>
+
         <Footer />
       </div>
     </ConnectedRouter>
-  </Provider>;
+  </Provider>
+);
 
 export default Root;

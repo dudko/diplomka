@@ -57,13 +57,15 @@ class MaterialInput extends Component {
             setMatrix={matrix =>
               this.setState({
                 matrix
-              })}
+              })
+            }
           />
         </div>
 
         <div className="one wide column" />
-        <div className="center aligned six wide column">
-          {materials.map((material, key) =>
+
+        <div className="six wide column">
+          {materials.map((material, key) => (
             <table className="ui table">
               <thead>
                 <th colSpan="6">
@@ -76,20 +78,22 @@ class MaterialInput extends Component {
                 </th>
               </thead>
               <tbody>
-                {material.get("matrix").map((row, index) =>
-                  <tr key={`mat-${index}`}>
-                    {row.map((cell, index) =>
-                      <td key={index}>
-                        {Number(cell) % 1
-                          ? Number(cell).toFixed(3)
-                          : Number(cell)}
-                      </td>
-                    )}
-                  </tr>
-                )}
+                {material
+                  .get("matrix")
+                  .map((row, index) => (
+                    <tr key={`mat-${index}`}>
+                      {row.map((cell, index) => (
+                        <td key={index}>
+                          {Number(cell) % 1
+                            ? Number(cell).toFixed(3)
+                            : Number(cell)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
               </tbody>
             </table>
-          )}
+          ))}
         </div>
       </div>
     );

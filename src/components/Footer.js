@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logoIPM from "../assets/logoIPM.png";
 
 const Footer = ({ count }) => (
-  <div className="ui inverted vertical footer segment">
+  <div className="ui inverted vertical segment">
     <div className="ui container">
       <div className="ui stackable inverted divided equal height stackable grid">
         <div className="three wide column">
