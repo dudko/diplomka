@@ -66,16 +66,18 @@ class MaterialInput extends Component {
 
         <div className="six wide column">
           {materials.map((material, key) => (
-            <table className="ui table">
+            <table key={key} className="ui table">
               <thead>
-                <th colSpan="6">
-                  <button
-                    className="ui mini red icon button"
-                    onClick={() => removeMatrix(key)}
-                  >
-                    <i className="close icon" />
-                  </button>
-                </th>
+                <tr>
+                  <th colSpan="6">
+                    <button
+                      className="ui mini red icon button"
+                      onClick={() => removeMatrix(key)}
+                    >
+                      <i className="close icon" />
+                    </button>
+                  </th>
+                </tr>
               </thead>
               <tbody>
                 {material

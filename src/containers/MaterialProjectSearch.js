@@ -7,7 +7,8 @@ export default class MaterialProjectSearch extends Component {
     this.state = {
       searchResults: [],
       keyword: "",
-      searching: false
+      searching: false,
+      noResults: false
     };
 
     this.searchMaterial = this.searchMaterial.bind(this);
@@ -15,26 +16,46 @@ export default class MaterialProjectSearch extends Component {
 
   searchMaterial(keyword) {
     fetch(
-      `${process.env.REACT_APP_SERVER_URL}/api/searchMaterialProject/${keyword}`
+      `https://cors-anywhere.herokuapp.com/https://www.materialsproject.org/rest/v1/materials/${
+        keyword
+      }/vasp?API_KEY=St8EilVWwT1Z0KoF`
     )
-      .then(response => (response.status !== 200 ? [] : response.json()))
+      .then(response => {
+        if (response.status === 400) {
+          throw new Error("no results");
+        }
+        return response.json();
+      })
+      .then(
+        results =>
+          (results.response &&
+            results.response.filter(result => result.elasticity)) ||
+          []
+      )
       .then(result =>
         this.setState({
           searchResults: result,
           searching: false
         })
       )
-      .catch(e => {
-        console.error(e);
-        this.setState({
-          searchResults: [],
-          searching: false
-        });
+      .catch(err => {
+        console.log(err);
+        if (err.message === "no results") {
+          this.setState({
+            searching: false,
+            noResults: true
+          });
+        } else {
+          this.setState({
+            searchResults: [],
+            searching: false
+          });
+        }
       });
   }
 
   render() {
-    const { searchResults, keyword, searching } = this.state;
+    const { searchResults, keyword, searching, noResults } = this.state;
     const { setMatrix } = this.props;
     return (
       <div>
@@ -48,18 +69,36 @@ export default class MaterialProjectSearch extends Component {
               e.preventDefault();
               this.searchMaterial(keyword);
               this.setState({
-                searching: true
+                searching: true,
+                noResults: false
               });
             }}
           >
             <h1 className="ui header">
               Search in external database
               <div className="sub header">
-                A Keyword search looks for words anywhere in the record of the{" "}
+                A keyword search looks for words anywhere in the record of the{" "}
                 <a href="https://www.materialsproject.org/" target="_blank">
                   Materials Project
                 </a>{" "}
                 database.
+                {noResults && (
+                  <div className="ui negative tiny  message">
+                    <i
+                      className="close icon"
+                      onClick={() => this.setState({ noResults: false })}
+                    />
+                    <div className="content">
+                      <div className="header">Invalid formula</div>
+                      <p>
+                        Search is <b>case sensitive</b>. The identifier can be a
+                        Materials Project material id (e.g., <i>mp-123</i>), a
+                        formula (e.g., <i>Fe2O3</i>), or a chemical system ("-"
+                        separated list of elemments, e.g., <i>Li-Fe-O</i>).
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </h1>
 
@@ -89,9 +128,9 @@ export default class MaterialProjectSearch extends Component {
           </form>
         </div>
 
-        {searchResults.map((material, index) =>
+        {searchResults.map((material, index) => (
           <SearchResult key={index} material={material} setMatrix={setMatrix} />
-        )}
+        ))}
       </div>
     );
   }
