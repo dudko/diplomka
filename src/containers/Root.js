@@ -1,18 +1,16 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "react-router-redux";
-
 import { Provider } from "react-redux";
-import MaterialInput from "../containers/MaterialInput";
-import Adjust from "../containers/Adjust";
 
 import IntroPage from "./IntroPage";
-import About from "../components/About";
+import About from "./About";
+import MaterialInput from "./MaterialInput";
+import Adjust from "./Adjust";
+import Calculate from "./Calculate";
 
-import Calculate from "../containers/Calculate";
-
-import Navigation from "./Navigation";
-import Footer from "./Footer";
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
 
 const Root = ({ store, history }) => (
   <Provider store={store}>

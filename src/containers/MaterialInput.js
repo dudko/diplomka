@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { DEFAULT_ELASTICITY } from "../constants/defaults";
 import { addToComposite, removeMatrix } from "../actions";
 
-import TextArea from "./TextArea";
-import MaterialProjectSearch from "./MaterialProjectSearch";
+import TextArea from "../components/TextArea";
+import MaterialProjectSearch from "../components/MaterialProjectSearch";
 
 // eslint-disable-next-line
 const CreateWorker = require("worker-loader!../worker");
