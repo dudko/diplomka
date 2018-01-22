@@ -1,18 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import logoIPM from "../assets/logoIPM.png";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import logoIPM from '../assets/logoIPM.png'
+import Newsletter from './Newsletter'
 
-const Footer = ({ count }) => (
+export default ({ count }) => (
   <div className="ui inverted vertical segment">
     <div className="ui container">
       <div className="ui stackable inverted divided equal height stackable grid">
-        <div className="three wide column">
+        <div className="four wide column">
           <h4 className="ui inverted header">Sitemap</h4>
           <div className="ui inverted link list">
             <Link className="item" to="/about">
               About
             </Link>
           </div>
+          <Newsletter />
         </div>
         <div className="five wide column">
           <img
@@ -32,6 +34,4 @@ const Footer = ({ count }) => (
       </div>
     </div>
   </div>
-);
-
-export default Footer;
+)
