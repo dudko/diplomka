@@ -1,26 +1,23 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import { DEFAULT_ELASTICITY } from "../constants/defaults";
-import { addToComposite, removeMatrix } from "../actions";
+import { DEFAULT_ELASTICITY } from '../constants/defaults'
+import { addToComposite, removeMatrix } from '../actions'
 
-import TextArea from "../components/TextArea";
-import MaterialProjectSearch from "../components/MaterialProjectSearch";
-
-// eslint-disable-next-line
-const CreateWorker = require("worker-loader!../worker");
+import TextArea from '../components/TextArea'
+import MaterialProjectSearch from '../components/MaterialProjectSearch'
 
 class MaterialInput extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      matrix: DEFAULT_ELASTICITY
-    };
+      matrix: DEFAULT_ELASTICITY,
+    }
   }
 
   render() {
-    const { matrix } = this.state;
-    const { materials, addToComposite, removeMatrix } = this.props;
+    const { matrix } = this.state
+    const { materials, addToComposite, removeMatrix } = this.props
 
     return (
       <div className="ui centered grid">
@@ -34,7 +31,7 @@ class MaterialInput extends Component {
             <button
               className="ui blue button"
               onClick={() => {
-                addToComposite(matrix);
+                addToComposite(matrix)
               }}
             >
               <i className="plus icon" /> Add
@@ -43,8 +40,8 @@ class MaterialInput extends Component {
               className="ui blue button"
               onClick={() => {
                 this.setState({
-                  matrix: DEFAULT_ELASTICITY
-                });
+                  matrix: DEFAULT_ELASTICITY,
+                })
               }}
             >
               <i className="eraser icon" /> Clear
@@ -56,7 +53,7 @@ class MaterialInput extends Component {
           <MaterialProjectSearch
             setMatrix={matrix =>
               this.setState({
-                matrix
+                matrix,
               })
             }
           />
@@ -81,7 +78,7 @@ class MaterialInput extends Component {
               </thead>
               <tbody>
                 {material
-                  .get("matrix")
+                  .get('matrix')
                   .map((row, index) => (
                     <tr key={`mat-${index}`}>
                       {row.map((cell, index) => (
@@ -98,15 +95,15 @@ class MaterialInput extends Component {
           ))}
         </div>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  materials: state.materials
-});
+const mapStateToProps = state => ({
+  materials: state.materials,
+})
 
 export default connect(mapStateToProps, {
   addToComposite,
-  removeMatrix
-})(MaterialInput);
+  removeMatrix,
+})(MaterialInput)
