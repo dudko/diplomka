@@ -82,7 +82,6 @@
     "redux-thunk": "^2.2.0",
     "redux-worker-middleware": "^1.0.0",
     "semantic-ui-css": "^2.2.11",
-    "semantic-ui-react": "^0.71.4",
     "worker-loader": "^0.8.0"
   },
   "scripts": {

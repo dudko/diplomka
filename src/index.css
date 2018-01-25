@@ -53,3 +53,7 @@ span.nobr {
 .image-gallery {
   max-width: 330px;
 }
+
+.ui.modal {
+  top: 30%;
+}
