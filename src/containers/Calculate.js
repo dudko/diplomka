@@ -9,22 +9,32 @@ import Plot from '../components/Plot'
 import InvalidFractionModal from '../components/InvalidFractionModal'
 
 class Calculate extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      results: props.results,
-      processing: false,
-      invalidFraction: false,
-    }
+  state = {
+    results: this.props.results,
+    processing: false,
+    invalidFraction: false,
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { materials } = this.props
+    const invalidFraction = !isValidFractionSum(materials)
+    const processing = !invalidFraction && materials.size
 
-    if (!isValidFractionSum(materials)) {
-      this.setState({
-        invalidFraction: true,
-      })
+    this.setState({
+      invalidFraction,
+      processing,
+    })
+
+    if (!invalidFraction && processing) {
+      const materialsRaw = materials.reduce((result, material) => {
+        result.push({
+          matrix: material.get('matrix'),
+          fraction: material.get('fraction'),
+        })
+        return result
+      }, [])
+
+      this.props.calculate(materialsRaw)
     }
   }
 
@@ -43,60 +53,38 @@ class Calculate extends Component {
   }
 
   render() {
-    const { materials, calculate } = this.props
+    const { materials } = this.props
     const { processing, results, invalidFraction } = this.state
 
     if (!materials.size) return <NoMaterialsAdded />
     if (invalidFraction) return <InvalidFractionModal />
+    if (processing)
+      return (
+        <div className="ui active inverted dimmer">
+          <div className="ui indeterminate text loader">
+            Running calculations
+          </div>
+        </div>
+      )
 
     return (
       <div className="ui centered grid">
-        {results && (
-          <div>
-            <Plot
-              key={'youngs'}
-              points={results}
-              redraw={true}
-              propertyName={'youngs'}
-              title={"Young's modulus"}
-              unit={'GPa'}
-            />
-            <Plot
-              key={'compress'}
-              points={results}
-              redraw={true}
-              propertyName={'compress'}
-              title={'Linear compressibility'}
-            />
-          </div>
-        )}
-
-        <div className="ui row">
-          {!processing ? (
-            <button
-              type="button"
-              className="ui green icon button"
-              onClick={() => {
-                const materialsRaw = materials.reduce((result, material) => {
-                  result.push({
-                    matrix: material.get('matrix'),
-                    fraction: material.get('fraction'),
-                  })
-                  return result
-                }, [])
-                calculate(materialsRaw)
-                this.setState({ processing: true })
-              }}
-            >
-              Start calculations <i className="icon wizard" />
-            </button>
-          ) : (
-            <div className="ui active inverted dimmer">
-              <div className="ui indeterminate text loader">
-                Running calculations
-              </div>
-            </div>
-          )}
+        <div>
+          <Plot
+            key={'youngs'}
+            points={results}
+            redraw={true}
+            propertyName={'youngs'}
+            title={"Young's modulus"}
+            unit={'GPa'}
+          />
+          <Plot
+            key={'compress'}
+            points={results}
+            redraw={true}
+            propertyName={'compress'}
+            title={'Linear compressibility'}
+          />
         </div>
       </div>
     )
