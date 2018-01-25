@@ -1,3 +1,7 @@
+body {
+  line-height: 0.8em;
+}
+
 .wrapper {
   display: flex;
   min-height: 100vh;
@@ -12,8 +16,7 @@
 span.nobr {
   white-space: nowrap;
 }
-
-.label {
+` .label {
   margin-left: 0;
 }
 
@@ -48,6 +51,10 @@ span.nobr {
 .ui.steps .step .description {
   white-space: nowrap;
   overflow: hidden;
+}
+
+.ui.table thead th {
+  padding: 0.6em;
 }
 
 .image-gallery {
