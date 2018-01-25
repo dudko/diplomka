@@ -49,3 +49,7 @@ span.nobr {
   white-space: nowrap;
   overflow: hidden;
 }
+
+.image-gallery {
+  max-width: 330px;
+}
