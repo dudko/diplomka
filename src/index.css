@@ -64,3 +64,11 @@ span.nobr {
 .ui.modal {
   top: 30%;
 }
+
+.ui.tiny.footer.image {
+  padding: 12px 0;
+}
+
+.ui.inverted.vertical.segment {
+  background: #4e4e4e;
+}
