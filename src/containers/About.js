@@ -1,7 +1,10 @@
-import React from "react";
-import { BlockMath, InlineMath } from "react-katex";
-import zCoordinateSystem from "../assets/z-coordinateSystem.png";
-import figure2 from "../assets/figure2.png";
+import React from 'react'
+
+import InlineTex from '../components/InlineTex'
+import BlockTex from '../components/BlockTex'
+
+import zCoordinateSystem from '../assets/z-coordinateSystem.png'
+import figure2 from '../assets/figure2.png'
 
 const Cij = `
 C_{ij} =
@@ -13,7 +16,7 @@ C_{41} & C_{42} & C_{43} & C_{44} & C_{45} & C_{46} \\\\
 C_{51} & C_{52} & C_{53} & C_{54} & C_{55} & C_{56} \\\\
 C_{61} & C_{62} & C_{63} & C_{64} & C_{65} & C_{66}
 \\end{pmatrix}
-`;
+`
 
 const Pij = `
 P_{ij} =
@@ -25,7 +28,7 @@ C_{41} & C_{42} & C_{43} & C_{44} & C_{45} & C_{46} \\\\
 C_{51} & C_{52} & C_{53} & C_{54} & C_{55} & C_{56} \\\\
 0 & 0 & 0 & 0 & 0 & 1
 \\end{pmatrix}
-`;
+`
 
 export default () => (
   <div className="ui container">
@@ -37,75 +40,74 @@ export default () => (
         </h1>
 
         <p>
-          Our software tool MELASA computes{" "}
+          Our software tool MELASA computes{' '}
           <b>anisotropic elastic properties</b> of a specific type of layered
           composites consisting of <b>elastically anisotropic phases</b>. Below
           we will explain the method in the case of two different phases but
           MELASA represents a generalization of the original method by
-          Grimsditch and Nizzoli (as described in their paper:{" "}
+          Grimsditch and Nizzoli (as described in their paper:{' '}
           <a
             href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.33.5891"
             target="_blank"
           >
             Effective elastic-constants of superlattices of any symmetry.
             Physical Review B 33 (1986) 5891)
-          </a>{" "}
+          </a>{' '}
           and <b>can handle more than two phases</b>. The derivation below
           expects that the composite is a stacking of two (or more) phases, one
-          on top of the other, along the{" "}
+          on top of the other, along the{' '}
           <b>z-coordinate of a global coordinate system:</b>
           <img
             className="ui centered big image"
             src={zCoordinateSystem}
             alt="z-coordinate of a global coordinate system"
           />
-          The phases are infinite within the <InlineMath math="(x,y)" /> plane
-          and{" "}
+          The phases are infinite within the <InlineTex tex="(x,y)" /> plane and{' '}
           <b>
-            within the interface <InlineMath math="(x,y)" /> plane the strains
-            are bound to be equal in both phases
+            within the interface <InlineTex tex="(x,y)" /> plane the strains are
+            bound to be equal in both phases
           </b>. The original method was derived by Grimsditch and Nizzoli for
           so-called superlattices - systems where atomic planes of one material
           coherently continue from one phase through the interface to the other
           (see red and blue circles representing atoms in the figure above).
           <br />
           <br />
-          Each phase is described by a 6x6 matrix of elastic constants{" "}
-          <InlineMath math="C_{ij}" />:
-          <BlockMath math={Cij} />
+          Each phase is described by a 6x6 matrix of elastic constants{' '}
+          <InlineTex tex="C_{ij}" />:
+          <BlockTex tex={Cij} />
           as a 2-dimensional representation of a 4-dimensional tensor of elastic
-          constants <InlineMath math="C_{ijkl}" />.
+          constants <InlineTex tex="C_{ijkl}" />.
           <h4>
             MELASA computes a 6x6 matrix of elastic constants of the whole
             composite.
           </h4>
-          Each phase has a molar fraction <InlineMath math="f" /> from the
-          interval <InlineMath math="[0, 1]" /> and the sum of molar fractions
-          of all phases is equal to 1. For the two-phase case we have{" "}
-          <InlineMath math="f_{1} + f_{2} = 1" />. The calculation of the
-          overall anisotropic elasticity of the composite proceeds as follows.
-          The elasticity of both phases 1 and 2 are described by matrices{" "}
-          <InlineMath math="C_{ij}^1" /> and <InlineMath math="C_{ij}^2" /> of
-          their elastic constants in the form as mentioned above. For each
-          phase, the following matrix <InlineMath math="P" /> is derived from
-          the original matrix of elastic constants <InlineMath math="C_{ij}" />:
-          <BlockMath math={Pij} />
-          Having these matrices for both phases, <InlineMath math="P_{ij}^1" />{" "}
+          Each phase has a molar fraction <InlineTex tex="f" /> from the
+          interval <InlineTex tex="[0, 1]" /> and the sum of molar fractions of
+          all phases is equal to 1. For the two-phase case we have{' '}
+          <InlineTex tex="f_{1} + f_{2} = 1" />. The calculation of the overall
+          anisotropic elasticity of the composite proceeds as follows. The
+          elasticity of both phases 1 and 2 are described by matrices{' '}
+          <InlineTex tex="C_{ij}^1" /> and <InlineTex tex="C_{ij}^2" /> of their
+          elastic constants in the form as mentioned above. For each phase, the
+          following matrix <InlineTex tex="P" /> is derived from the original
+          matrix of elastic constants <InlineTex tex="C_{ij}" />:
+          <BlockTex tex={Pij} />
+          Having these matrices for both phases, <InlineTex tex="P_{ij}^1" />{' '}
           and
-          <InlineMath math="P_{ij}^2" /> (derived from their matrices{" "}
-          <InlineMath math="C_{ij}^1" /> and <InlineMath math="C_{ij}^2" /> ,
-          respectively), a matrix <InlineMath math="M" /> is computed as the
-          product of the inverse of matrix <InlineMath math="P_{ij}^1" /> and
-          the matrix <InlineMath math="P_{ij}^2" />:{" "}
-          <BlockMath math="M = ((P_{ij}^1)^{-1})P^2_{ij}" />
-          The matrix of elastic constants <InlineMath math="C_{ij}^{12}" /> of
-          the whole composites is:
-          <BlockMath math="C_{ij}^{12} = (f_{1} C_{ij}^1 M + f_{2} C_{ij}^2)(f_{1} M + f_{2} I)^{-1}" />
-          Where the identity matrix <InlineMath math="I" /> appears in the
-          second bracket. Importantly,{" "}
+          <InlineTex tex="P_{ij}^2" /> (derived from their matrices{' '}
+          <InlineTex tex="C_{ij}^1" /> and <InlineTex tex="C_{ij}^2" /> ,
+          respectively), a matrix <InlineTex tex="M" /> is computed as the
+          product of the inverse of matrix <InlineTex tex="P_{ij}^1" /> and the
+          matrix <InlineTex tex="P_{ij}^2" />:{' '}
+          <BlockTex tex="M = ((P_{ij}^1)^{-1})P^2_{ij}" />
+          The matrix of elastic constants <InlineTex tex="C_{ij}^{12}" /> of the
+          whole composites is:
+          <BlockTex tex="C_{ij}^{12} = (f_{1} C_{ij}^1 M + f_{2} C_{ij}^2)(f_{1} M + f_{2} I)^{-1}" />
+          Where the identity matrix <InlineTex tex="I" /> appears in the second
+          bracket. Importantly,{' '}
           <b>
             all matrices mentioned above must be in the same global coordinate
-            system{" "}
+            system{' '}
           </b>
           (see it in black in the first figure). MELASA allows for describing
           the situation when the individual phases have their internal
@@ -126,9 +128,9 @@ export default () => (
           global coordinate system) and can also additionally add an
           anti-clockwise rotation around the local z-axes. MELASA computes and
           displays the new matrix of elastic constants for the user and use it
-          in the calculation steps summarized above.{" "}
+          in the calculation steps summarized above.{' '}
         </p>
       </div>
     </div>
   </div>
-);
+)
