@@ -87,7 +87,7 @@ export default class MaterialProjectSearch extends Component {
                 </a>{' '}
                 database.
                 {noResults && (
-                  <div className="ui negative tiny  message">
+                  <div className="ui negative tiny message">
                     <i
                       className="close icon"
                       onClick={() => this.setState({ noResults: false })}

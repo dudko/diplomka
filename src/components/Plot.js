@@ -68,7 +68,6 @@ class Plot extends Component {
 
   render() {
     const { title, propertyName } = this.props
-    const { data } = this.state
     return (
       <div>
         <h3> {title} </h3>
