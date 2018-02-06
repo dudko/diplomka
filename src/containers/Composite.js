@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import _ from 'lodash';
-import * as api from '../api';
-import { addToCompare } from '../actions';
-import { DEFAULT_ELATE, DEFAULT_ELASTICITY } from '../constants/defaults';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import * as api from '../api'
+import { addToCompare } from '../actions'
+import { DEFAULT_ELATE, DEFAULT_ELASTICITY } from '../constants/defaults'
 
-
-import CompositeRatio from '../components/CompositeRatio';
-import Reorientation from '../components/Reorientation';
-import ColorScheme from '../components/ColorScheme';
-import ColorbarRange from '../components/ColorbarRange';
-import Properties from '../components/Properties';
-import Plot from '../components/Plot';
-import PlotRatioVariations from '../components/PlotRatioVariations';
+import CompositeRatio from '../components/CompositeRatio'
+import Reorientation from '../components/Reorientation'
+import ColorScheme from '../components/ColorScheme'
+import ColorbarRange from '../components/ColorbarRange'
+import Properties from '../components/Properties'
+import Plot from '../components/Plot'
+import PlotRatioVariations from '../components/PlotRatioVariations'
 
 // eslint-disable-next-line
-const CreateWorker = require('worker-loader!../worker');
+const CreateWorker = require('worker-loader!../worker')
 
 class Composite extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       elasticities: [0, 1].map(() => DEFAULT_ELASTICITY),
       crystalSystems: ['any', 'any'],
@@ -46,7 +44,7 @@ class Composite extends Component {
       processing: false,
       error: '',
       advanceInput: [false, false],
-    };
+    }
   }
 
   /* Prevent plotly to update frequently */
@@ -54,15 +52,25 @@ class Composite extends Component {
     if (prevState.redraw) {
       this.setState({
         redraw: false,
-      });
+      })
     }
   }
 
   render() {
-    const { elasticities, results, worker, elateAnalysis,
-      redraw, rotation, ratio, colorScheme, colorbarRange, processing,
-      error } = this.state;
-    const { addToCompare } = this.props;
+    const {
+      elasticities,
+      results,
+      worker,
+      elateAnalysis,
+      redraw,
+      rotation,
+      ratio,
+      colorScheme,
+      colorbarRange,
+      processing,
+      error,
+    } = this.state
+    const { addToCompare } = this.props
 
     return (
       <div>
@@ -73,7 +81,7 @@ class Composite extends Component {
             points={results}
             redraw={redraw}
             propertyName={'youngs'}
-            title={'Young\'s modulus'}
+            title={"Young's modulus"}
             unit={'GPa'}
             colorScheme={colorScheme}
             cmin={colorbarRange.min}
@@ -88,13 +96,13 @@ class Composite extends Component {
             colorScheme={colorScheme}
           />
 
-          <PlotRatioVariations
-            results={results.ratioVariations}
-          />
+          <PlotRatioVariations results={results.ratioVariations} />
 
           <div>
             <div>
-              {results.compositeElasticity.length > 0 && <h5>Calculated elasticty</h5>}
+              {results.compositeElasticity.length > 0 && (
+                <h5>Calculated elasticty</h5>
+              )}
               <table
                 style={{
                   tableLayout: 'fixed',
@@ -102,19 +110,22 @@ class Composite extends Component {
                 }}
               >
                 <tbody>
-                  {results.compositeElasticity.map((row, index) =>
+                  {results.compositeElasticity.map((row, index) => (
                     <tr key={index}>
-                      {row.map((cell, index) =>
-                        <td key={index}>{cell.toFixed(3)}</td>)}
-                    </tr>,
-                  )}
+                      {row.map((cell, index) => (
+                        <td key={index}>{cell.toFixed(3)}</td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
 
             <div>
-              {results.rotatedTensors.length > 0 && <h5>Rotated elasticities</h5>}
-              {results.rotatedTensors.map(rotated =>
+              {results.rotatedTensors.length > 0 && (
+                <h5>Rotated elasticities</h5>
+              )}
+              {results.rotatedTensors.map(rotated => (
                 <table
                   style={{
                     tableLayout: 'fixed',
@@ -123,23 +134,22 @@ class Composite extends Component {
                   }}
                 >
                   <tbody>
-                    {rotated.map((row, index) =>
+                    {rotated.map((row, index) => (
                       <tr key={index}>
-                        {row.map((cell, index) =>
-                          <td key={index}>{cell.toFixed(3)}</td>)}
-                      </tr>,
-                    )}
+                        {row.map((cell, index) => (
+                          <td key={index}>{cell.toFixed(3)}</td>
+                        ))}
+                      </tr>
+                    ))}
                   </tbody>
-                </table>,
-              )}
+                </table>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Properties calculated with elate */}
-        <Properties
-          tables={elateAnalysis}
-        />
+        <Properties tables={elateAnalysis} />
 
         {/* Main panel */}
         <div className="card">
@@ -168,44 +178,48 @@ class Composite extends Component {
                   this.setState({
                     processing: true,
                     error: '',
-                  });
+                  })
                   worker.postMessage({
                     elasticities,
                     ratio,
                     rotation,
-                  });
-                  worker.onmessage = (msg) => {
-                    this.setState({ results: msg.data, redraw: true, processing: false });
-                    api.sendToElate(msg.data.compositeElasticity,
-                      tables => this.setState({ elateAnalysis: tables }));
-                  };
-                  worker.addEventListener('error', (e) => {
+                  })
+                  worker.onmessage = msg => {
+                    this.setState({
+                      results: msg.data,
+                      redraw: true,
+                      processing: false,
+                    })
+                    api.sendToElate(msg.data.compositeElasticity, tables =>
+                      this.setState({ elateAnalysis: tables })
+                    )
+                  }
+                  worker.addEventListener('error', e => {
                     this.setState({
                       processing: false,
                       error: e.message,
-                    });
-                  });
+                    })
+                  })
                 }}
               >
                 {processing ? '⚙️ Processing...' : ' ⚙️ Process'}
               </button>
             </div>
 
-            <div
-              className="flex half"
-            >
+            <div className="flex half">
               <ColorScheme
                 colorScheme={colorScheme}
                 setColorScheme={colorScheme => this.setState({ colorScheme })}
               />
               <ColorbarRange
-                setColorbarRange={range => this.setState({
-                  colorbarRange: { ...colorbarRange, ...range } })}
+                setColorbarRange={range =>
+                  this.setState({
+                    colorbarRange: { ...colorbarRange, ...range },
+                  })
+                }
               />
 
-              <div
-                className="flex two"
-              >
+              <div className="flex two">
                 <Reorientation
                   updateRotation={rotation => this.setState({ rotation })}
                 />
@@ -215,15 +229,11 @@ class Composite extends Component {
               </div>
             </div>
           </header>
-          {error &&
-            <footer>
-              {`⚠️ ${error.replace(/^(.+?):/, '')}.`}
-            </footer>}
+          {error && <footer>{`⚠️ ${error.replace(/^(.+?):/, '')}.`}</footer>}
         </div>
-
       </div>
-    );
+    )
   }
 }
 
-export default connect(null, { addToCompare })(Composite);
+export default connect(null, { addToCompare })(Composite)

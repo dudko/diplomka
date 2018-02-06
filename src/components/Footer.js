@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import logoIPM from '../assets/logoIPM.png'
 import logoCerit from '../assets/cerit-sc-logo.png'
 
