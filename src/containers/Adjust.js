@@ -28,9 +28,9 @@ class Adjust extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { materials, results } = nextProps
-    this.state = {
+    this.setState({
       results: results,
-    }
+    })
 
     if (!isValidFractionSum(materials)) {
       this.setState({

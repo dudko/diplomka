@@ -10,10 +10,10 @@ export default class Rotations extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state = {
+    this.setState({
       axes: nextProps.axes,
       angle: nextProps.angle,
-    }
+    })
   }
 
   render() {

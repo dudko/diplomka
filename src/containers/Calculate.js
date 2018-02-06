@@ -40,10 +40,10 @@ class Calculate extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { materials, results } = nextProps
-    this.state = {
+    this.setState({
       results: results,
       processing: false,
-    }
+    })
 
     if (!isValidFractionSum(materials)) {
       this.setState({

@@ -49,6 +49,7 @@ export default () => (
           <a
             href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.33.5891"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Effective elastic-constants of superlattices of any symmetry.
             Physical Review B 33 (1986) 5891)

@@ -9,9 +9,9 @@ export default class Fraction extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state = {
+    this.setState({
       fraction: nextProps.fraction,
-    }
+    })
   }
 
   render() {
