@@ -21,6 +21,8 @@ class Plot extends Component {
       font: {
         size: 15,
       },
+      width: 450,
+      height: 450,
       margin: {
         l: 0,
         r: 0,

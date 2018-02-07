@@ -72,3 +72,7 @@ span.nobr {
 .ui.inverted.vertical.segment {
   background: #4e4e4e;
 }
+
+.ui.table:first-child {
+  margin-top: 1em;
+}

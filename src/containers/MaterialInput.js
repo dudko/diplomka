@@ -45,6 +45,7 @@ class MaterialInput extends Component {
     try {
       math.inv(matrix)
       this.props.addToComposite(matrix)
+      this.setState({ invalidMatrix: null })
     } catch (e) {
       this.setState({
         invalidMatrix: 'determinant',
