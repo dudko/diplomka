@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const SearchResult = ({ material, setMatrix }) => (
   <table
@@ -8,24 +8,25 @@ const SearchResult = ({ material, setMatrix }) => (
   >
     <thead>
       <tr>
-        <th colSpan="2">
-          <h3>
-            <a
-              href={`https://www.materialsproject.org/materials/${
-                material.task_ids[0]
-              }`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {material.task_ids[0]}
-            </a>
+        <th colSpan="1">
+          <h3 onClick={() => setMatrix(material.elasticity.elastic_tensor)}>
+            {material.pretty_formula}
           </h3>
         </th>
         <th colSpan="2">
-          <h3>{material.pretty_formula}</h3>
-        </th>
-        <th colSpan="2">
           <h3>{material.spacegroup.crystal_system}</h3>
+        </th>
+        <th colSpan="2" />
+        <th colSpan="1">
+          <a
+            href={`https://www.materialsproject.org/materials/${
+              material.task_ids[0]
+            }`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i className="small external link alternate icon"> </i>
+          </a>
         </th>
       </tr>
     </thead>
@@ -37,6 +38,6 @@ const SearchResult = ({ material, setMatrix }) => (
       ))}
     </tbody>
   </table>
-);
+)
 
-export default SearchResult;
+export default SearchResult
