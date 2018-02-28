@@ -9,14 +9,14 @@ const SearchResult = ({ material, setMatrix }) => (
     <thead>
       <tr>
         <th colSpan="1">
-          <h3 onClick={() => setMatrix(material.elasticity.elastic_tensor)}>
-            {material.pretty_formula}
-          </h3>
+          <a
+            className="handPointer"
+            onClick={() => setMatrix(material.elasticity.elastic_tensor)}
+          >
+            <h3>{material.pretty_formula}</h3>
+          </a>
         </th>
-        <th colSpan="2">
-          <h3>{material.spacegroup.crystal_system}</h3>
-        </th>
-        <th colSpan="2" />
+
         <th colSpan="1">
           <a
             href={`https://www.materialsproject.org/materials/${
@@ -28,6 +28,11 @@ const SearchResult = ({ material, setMatrix }) => (
             <i className="small external link alternate icon"> </i>
           </a>
         </th>
+
+        <th colSpan="2">
+          <h3>{material.spacegroup.crystal_system}</h3>
+        </th>
+        <th colSpan="2" />
       </tr>
     </thead>
     <tbody>

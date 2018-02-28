@@ -16,7 +16,8 @@ body {
 span.nobr {
   white-space: nowrap;
 }
-` .label {
+
+.label {
   margin-left: 0;
 }
 
