@@ -27,7 +27,7 @@ export default class Newsletter extends Component {
 
     return (
       <div>
-        <h4 className="ui inverted header">Join our mailing list</h4>
+        <h4 className="ui inverted header">Get email updates</h4>
         <div className="ui action fluid input">
           <input
             type="text"
@@ -40,7 +40,7 @@ export default class Newsletter extends Component {
               ' green'} button`}
             onClick={() => this.subscribe(email)}
           >
-            {signedUp ? <i className={'checkmark icon'} /> : 'Join'}
+            {signedUp ? <i className={'checkmark icon'} /> : 'Submit'}
           </button>
         </div>
       </div>

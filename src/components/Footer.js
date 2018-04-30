@@ -68,6 +68,10 @@ export default ({ count }) => (
             <a href="https://github.com/dudko/melasa" className="item">
               <i className="small github icon" style={{ fontSize: '1.5em' }} />
             </a>
+            <br />
+            <a className="item" href="/terms">
+              Terms of Use
+            </a>
             <span className="item">2018</span>
           </div>
         </div>
