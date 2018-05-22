@@ -1,16 +1,15 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { ConnectedRouter } from "react-router-redux";
-import { Provider } from "react-redux";
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import { ConnectedRouter } from 'react-router-redux'
+import { Provider } from 'react-redux'
 
-import IntroPage from "./IntroPage";
-import About from "./About";
-import MaterialInput from "./MaterialInput";
-import Adjust from "./Adjust";
-import Calculate from "./Calculate";
+import IntroPage from './IntroPage'
+import About from './About'
+import Tool from './Tool'
+import TermsOfUse from '../components/TermsOfUse'
 
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
@@ -21,9 +20,9 @@ const Root = ({ store, history }) => (
           <Switch style={{ flex: 1 }}>
             <Route exact path="/" component={IntroPage} />
             <Route path="/about" component={About} />
-            <Route path="/input" component={MaterialInput} />
-            <Route path="/adjust" component={Adjust} />
-            <Route path="/calculate" component={Calculate} />
+            <Route path="/tool" component={Tool} />
+
+            <Route path="/terms" component={TermsOfUse} />
             <Route
               render={() => (
                 <div className="ui negative message">
@@ -38,6 +37,6 @@ const Root = ({ store, history }) => (
       </div>
     </ConnectedRouter>
   </Provider>
-);
+)
 
-export default Root;
+export default Root

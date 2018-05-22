@@ -14,6 +14,7 @@ class MaterialInput extends Component {
     this.state = {
       matrix: DEFAULT_ELASTICITY,
       invalidMatrix: false,
+      searchOn: false,
     }
     this.addToComposite = this.addToComposite.bind(this)
   }
@@ -60,70 +61,81 @@ class MaterialInput extends Component {
     return (
       <div className="ui centered grid">
         <div className="six wide column">
-          <div className="ui form">
-            <h1 className="ui header">
-              Enter elastic constants
-              <div className="sub header">
-                The stiffness matrix is the 6x6-element square matrix A
-              </div>
-            </h1>
-            {invalidMatrix && (
-              <div className="ui negative tiny message">
-                <i
-                  className="close icon"
-                  onClick={() => this.setState({ invalidMatrix: null })}
-                />
-                <div className="content">
-                  <div className="header">Invalid matrix</div>
-
-                  {invalidMatrix === 'format' && (
-                    <p>Number of rows or columns.</p>
-                  )}
-                  {invalidMatrix === 'NaN' && <p>Invalid value.</p>}
-                  {invalidMatrix === 'determinant' && (
-                    <p>Determinant must be non-zero value.</p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            <TextArea
-              matrix={matrix}
-              setElasticity={matrix => this.setState({ matrix })}
-            />
-            <br />
-            <button
-              className="ui blue button"
-              onClick={() => {
-                this.addToComposite(matrix)
-              }}
-            >
-              <i className="plus icon" /> Add
-            </button>
-            <button
-              className="ui blue button"
-              onClick={() => {
+          {this.state.searchOn ? (
+            <MaterialProjectSearch
+              setMatrix={matrix =>
                 this.setState({
-                  matrix: DEFAULT_ELASTICITY,
+                  matrix,
+                  searchOn: false,
                 })
-              }}
-            >
-              <i className="eraser icon" /> Clear
-            </button>
-          </div>
+              }
+            />
+          ) : (
+            <div className="ui form">
+              <h1 className="ui header">
+                Enter elastic constants
+                <div className="sub header">
+                  The stiffness matrix is the 6x6-element square matrix A
+                </div>
+              </h1>
+              {invalidMatrix && (
+                <div className="ui negative tiny message">
+                  <i
+                    className="close icon"
+                    onClick={() => this.setState({ invalidMatrix: null })}
+                  />
+                  <div className="content">
+                    <div className="header">Invalid matrix</div>
 
-          <div className="ui horizontal divider">Or</div>
+                    {invalidMatrix === 'format' && (
+                      <p>Number of rows or columns.</p>
+                    )}
+                    {invalidMatrix === 'NaN' && <p>Invalid value.</p>}
+                    {invalidMatrix === 'determinant' && (
+                      <p>Determinant must be non-zero value.</p>
+                    )}
+                  </div>
+                </div>
+              )}
 
-          <MaterialProjectSearch
-            setMatrix={matrix =>
-              this.setState({
-                matrix,
-              })
-            }
-          />
+              <TextArea
+                matrix={matrix}
+                setElasticity={matrix => this.setState({ matrix })}
+              />
+              <br />
+              <button
+                className="ui green button"
+                onClick={() => {
+                  this.addToComposite(matrix)
+                }}
+              >
+                <i className="plus icon" /> Add
+              </button>
+              <button
+                className="ui blue button"
+                onClick={() => {
+                  this.setState({
+                    matrix: DEFAULT_ELASTICITY,
+                  })
+                }}
+              >
+                <i className="eraser icon" /> Clear
+              </button>
+              <button
+                className="ui yellow button"
+                onClick={() => {
+                  this.setState({
+                    searchOn: true,
+                  })
+                }}
+              >
+                <i className="search icon" /> Use Search
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className="one wide column" />
+        <div className="four wide column" />
 
         <div className="six wide column">
           {materials.map((material, key) => (

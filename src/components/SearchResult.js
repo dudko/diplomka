@@ -10,29 +10,29 @@ const SearchResult = ({ material, setMatrix }) => (
       <tr>
         <th colSpan="1">
           <a
-            className="handPointer"
-            onClick={() => setMatrix(material.elasticity.elastic_tensor)}
-          >
-            <h3>{material.pretty_formula}</h3>
-          </a>
-        </th>
-
-        <th colSpan="1">
-          <a
             href={`https://www.materialsproject.org/materials/${
               material.task_ids[0]
             }`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="small external link alternate icon"> </i>
+            <h3>{material.pretty_formula}</h3>
           </a>
         </th>
+        <th colSpan="1" />
 
         <th colSpan="2">
           <h3>{material.spacegroup.crystal_system}</h3>
         </th>
-        <th colSpan="2" />
+
+        <th colSpan="2" style={{ textAlign: 'right' }}>
+          <button
+            className="ui mini green button"
+            onClick={() => setMatrix(material.elasticity.elastic_tensor)}
+          >
+            <i className="plus icon" /> Use
+          </button>
+        </th>
       </tr>
     </thead>
     <tbody>

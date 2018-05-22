@@ -25,7 +25,7 @@ const IntroPage = () => (
       </p>
 
       <div className="ui buttons">
-        <Link className="ui positive button" to="/input">
+        <Link className="ui positive button" to="/tool">
           <i className="edit icon" /> Try now
         </Link>
         <Link className="ui blue right labeled icon button" to="/about">
