@@ -15,4 +15,4 @@ jobs:
           npm i
           npm run build
       - run: ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
-      - run: rsync -avh build/ root@$DEV_SERVER:/root/melasa --delete
+      - run: rsync -avh build/ root@$DEV_SERVER:/usr/share/nginx/html --delete
