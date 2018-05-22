@@ -330,28 +330,29 @@ onmessage = ({ data: action }) => {
       break
     }
     case types.CALCULATE: {
+      const m = action.payload.materials.map(m => m)
       let { materials } = action.payload
+
       let results = {}
 
-      if (materials.length === 1) {
-        results = calculate(materials[0].matrix)
-        results.compositeMatrix = materials[0].matrix
-      } else {
-        let finalMaterial = materials.pop()
+      const finalMaterial = Object.assign({}, materials[0])
 
-        while (materials.length) {
-          const nextMaterial = materials.pop()
-          finalMaterial.fraction /=
-            finalMaterial.fraction + nextMaterial.fraction
-          finalMaterial.matrix = createComposite(
-            finalMaterial.matrix,
-            nextMaterial.matrix,
-            finalMaterial.fraction
-          )
-          results = calculate(finalMaterial.matrix)
+      for (let i = 1; i < materials.length; i += 1) {
+        let f = 0
+        for (let j = 0; j < i; j++) {
+          f += materials[j].fraction
         }
-        results.compositeMatrix = finalMaterial.matrix
+
+        f = f / (f + materials[i].fraction)
+        finalMaterial.matrix = createComposite(
+          finalMaterial.matrix,
+          materials[i].matrix,
+          f
+        )
       }
+
+      results = calculate(finalMaterial.matrix)
+      results.compositeMatrix = finalMaterial.matrix
 
       postMessage({
         type: types.SET_RESULTS,
