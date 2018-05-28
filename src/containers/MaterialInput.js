@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import math from 'mathjs'
+import numeric from 'numeric'
 
 import { DEFAULT_ELASTICITY } from '../constants/defaults'
 import { addToComposite, removeMatrix } from '../actions'
@@ -13,49 +15,90 @@ class MaterialInput extends Component {
     super(props)
     this.state = {
       matrix: DEFAULT_ELASTICITY,
-      invalidMatrix: false,
+      error: null,
       searchOn: false,
     }
     this.addToComposite = this.addToComposite.bind(this)
   }
 
   addToComposite(matrix) {
-    try {
-      // number of rows
-      if (matrix.length !== 6) throw new Error('format')
+    if (matrix.length !== 6) {
+      this.setState({
+        error: {
+          title: 'Invalid matrix',
+          text: `Number of rows: ${
+            matrix.length
+          }. Matrix dimension must be 6x6.`,
+        },
+      })
+      return
+    }
 
-      for (let i = 0; i < 6; i++) {
-        // number of columns
-        if (matrix[i].length !== 6) throw new Error('format')
+    for (let i = 0; i < 6; i++) {
+      if (matrix[i].length !== 6) {
+        this.setState({
+          error: {
+            title: 'Invalid matrix',
+            text: `Number of columns: ${
+              matrix.length
+            }. Matrix dimension must be 6x6.`,
+          },
+        })
+        return
+      }
 
-        for (let j = 0; j < 6; j++) {
-          if (isNaN(matrix[i][j])) throw new Error('NaN')
+      for (let j = 0; j < 6; j++) {
+        if (isNaN(matrix[i][j])) {
+          this.setState({
+            error: {
+              title: 'Invalid value',
+              text: `${matrix[i][j]} is not a number`,
+            },
+          })
+          return
         }
       }
-    } catch (e) {
-      if (e.message === 'format') {
-        this.setState({ invalidMatrix: 'format' })
-      }
-      if (e.message === 'NaN') {
-        this.setState({ invalidMatrix: 'NaN' })
-      }
-
-      return
     }
 
     try {
       math.inv(matrix)
-      this.props.addToComposite(matrix)
-      this.setState({ invalidMatrix: null })
     } catch (e) {
       this.setState({
-        invalidMatrix: 'determinant',
+        error: {
+          title: 'Invalid matrix',
+          text: `${e.message}.`,
+        },
       })
+      return
     }
+
+    try {
+      const eigenvals = numeric.eig(matrix).lambda.x
+
+      if (eigenvals.some(x => x < 0)) {
+        this.setState({
+          error: {
+            title: 'All eigenvalues must be positive',
+            text: JSON.stringify(eigenvals),
+          },
+        })
+        return
+      }
+    } catch (e) {
+      this.setState({
+        error: {
+          title: 'Invalid matrix',
+          text: 'Cannot calculate eigenvalues.',
+        },
+      })
+      return
+    }
+
+    this.setState({ error: null }, () => this.props.addToComposite(matrix))
   }
 
   render() {
-    const { matrix, invalidMatrix } = this.state
+    const { matrix, error } = this.state
     const { materials, removeMatrix } = this.props
 
     return (
@@ -64,10 +107,12 @@ class MaterialInput extends Component {
           {this.state.searchOn ? (
             <MaterialProjectSearch
               setMatrix={matrix =>
-                this.setState({
-                  matrix,
-                  searchOn: false,
-                })
+                this.setState(
+                  {
+                    searchOn: false,
+                  },
+                  () => this.addToComposite(matrix)
+                )
               }
             />
           ) : (
@@ -78,22 +123,29 @@ class MaterialInput extends Component {
                   The stiffness matrix is the 6x6-element square matrix A
                 </div>
               </h1>
-              {invalidMatrix && (
+              {error && (
                 <div className="ui negative tiny message">
                   <i
                     className="close icon"
-                    onClick={() => this.setState({ invalidMatrix: null })}
+                    onClick={() => this.setState({ error: null })}
                   />
-                  <div className="content">
-                    <div className="header">Invalid matrix</div>
 
-                    {invalidMatrix === 'format' && (
-                      <p>Number of rows or columns.</p>
-                    )}
-                    {invalidMatrix === 'NaN' && <p>Invalid value.</p>}
-                    {invalidMatrix === 'determinant' && (
-                      <p>Determinant must be non-zero value.</p>
-                    )}
+                  <div className="content">
+                    <div className="header">{error.title}</div>
+                    <p>
+                      {[
+                        error.text,
+                        <br />,
+                        <Link
+                          to={{
+                            pathname: '/about',
+                            hash: '#input-validation',
+                          }}
+                        >
+                          More details
+                        </Link>,
+                      ]}
+                    </p>
                   </div>
                 </div>
               )}
@@ -116,10 +168,11 @@ class MaterialInput extends Component {
                 onClick={() => {
                   this.setState({
                     matrix: DEFAULT_ELASTICITY,
+                    error: null,
                   })
                 }}
               >
-                <i className="eraser icon" /> Clear
+                <i className="eraser icon" /> Reset
               </button>
               <button
                 className="ui yellow button"
