@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import math from 'mathjs'
-import numeric from 'numeric'
+// import numeric from 'numeric'
 
 import { DEFAULT_ELASTICITY } from '../constants/defaults'
 import { addToComposite, removeMatrix } from '../actions'
@@ -72,27 +72,27 @@ class MaterialInput extends Component {
       return
     }
 
-    try {
-      const eigenvals = numeric.eig(matrix).lambda.x
+    // try {
+    //   const eigenvals = numeric.eig(matrix).lambda.x
 
-      if (eigenvals.some(x => x < 0)) {
-        this.setState({
-          error: {
-            title: 'All eigenvalues must be positive',
-            text: JSON.stringify(eigenvals),
-          },
-        })
-        return
-      }
-    } catch (e) {
-      this.setState({
-        error: {
-          title: 'Invalid matrix',
-          text: 'Cannot calculate eigenvalues.',
-        },
-      })
-      return
-    }
+    //   if (eigenvals.some(x => x < 0)) {
+    //     this.setState({
+    //       error: {
+    //         title: 'All eigenvalues must be positive',
+    //         text: JSON.stringify(eigenvals),
+    //       },
+    //     })
+    //     return
+    //   }
+    // } catch (e) {
+    //   this.setState({
+    //     error: {
+    //       title: 'Invalid matrix',
+    //       text: 'Cannot calculate eigenvalues.',
+    //     },
+    //   })
+    //   return
+    // }
 
     this.setState({ error: null }, () => this.props.addToComposite(matrix))
   }
@@ -232,7 +232,10 @@ const mapStateToProps = state => ({
   materials: state.materials,
 })
 
-export default connect(mapStateToProps, {
-  addToComposite,
-  removeMatrix,
-})(MaterialInput)
+export default connect(
+  mapStateToProps,
+  {
+    addToComposite,
+    removeMatrix,
+  }
+)(MaterialInput)
