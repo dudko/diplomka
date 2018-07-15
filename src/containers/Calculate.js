@@ -78,7 +78,7 @@ class Calculate extends Component {
     this.setState({
       processing: false,
     })
-    this.analyse(nextProps.results.compositeMatrix)
+    // this.analyse(nextProps.results.compositeMatrix)
   }
 
   render() {
@@ -143,7 +143,7 @@ class Calculate extends Component {
           </div>
         </div>
 
-        <div className="row">
+        {/* <div className="row">
           <div className="sixteen wide column">
             <h3>Results of external analysis</h3>
           </div>
@@ -159,7 +159,7 @@ class Calculate extends Component {
                 />
               </div>
             ))}
-        </div>
+        </div> */}
       </div>
     )
   }
@@ -170,4 +170,7 @@ const mapStateToProps = state => ({
   results: state.results,
 })
 
-export default connect(mapStateToProps, { calculate })(Calculate)
+export default connect(
+  mapStateToProps,
+  { calculate }
+)(Calculate)
