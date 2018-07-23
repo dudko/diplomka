@@ -1,28 +1,31 @@
-# Scientific tool dealing with elastic properties
+# MELASA (Multi-phase ELAStic Aggregates)
 
-  Tool featuring calculation of nano-composite elasticity and visualization of calculated directional dependence of Young's modulus and linear compressibility especially useful for better understanding of materials elasticity.
+> software tool for modeling anisotropic elastic properties of lamellar composites
 
 ## Getting Started
 
 ### Requirements
 
-- latest stable node.js (tested with 6.x and 7.x)
-- create-react-app (simplifies configuration)
+- node.js (tested with version >=6.x )
 
 ### Installation
 
-```
-npm install # install dependencies
-npm run eject # create necessary boiler plate
-npm run build # optimized bundle served from express.js
+In root directory with `package.json` run:
 
-# run the server
-node server
 ```
+npm i
+```
+
 ### Development
 
-For implementing small changes, you can use preconfigured dev-server. It's recommended to create you own webpack/babel/eslint setup for further development.
+To start the app in development mode run:
 
-### Configuration
+```
+npm start
+```
 
-Done globally with from `.env`. Use `env.example` as starting point.
+MELASA was created with [create-react-app](https://github.com/facebook/create-react-app) requiring no build configuration.
+
+## License
+
+Licensed as [MIT](https://github.com/dudko/melasa/blob/master/LICENSE).
