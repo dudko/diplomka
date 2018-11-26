@@ -13,7 +13,7 @@ const NoMaterialAdded = ({ push }) => (
     }}
   >
     <h3 className="ui header">Add materials first.</h3>
-    <div className="ui green inverted button" onClick={() => push('/input')}>
+    <div className="ui green inverted button" onClick={() => push('/tool')}>
       <i className="edit icon" /> Input
     </div>
   </div>

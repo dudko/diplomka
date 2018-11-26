@@ -21,7 +21,6 @@ const Root = ({ store, history }) => (
             <Route exact path="/" component={IntroPage} />
             <Route path="/about" component={About} />
             <Route path="/tool" component={Tool} />
-
             <Route path="/terms" component={TermsOfUse} />
             <Route
               render={() => (

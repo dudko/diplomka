@@ -70,6 +70,8 @@ class Calculate extends Component {
         return result
       }, [])
 
+      console.log(materialsRaw)
+
       this.props.calculate(materialsRaw)
     }
   }

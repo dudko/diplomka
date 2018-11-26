@@ -7,6 +7,7 @@ import { isValidFractionSum } from '../helpers'
 import Rotations from '../components/Rotations'
 import Fraction from '../components/Fraction'
 import NoMaterialsAdded from '../components/NoMaterialsAdded'
+import MaterialMatrix from '../components/MaterialMatrix'
 
 class Adjust extends Component {
   constructor(props) {
@@ -53,49 +54,20 @@ class Adjust extends Component {
 
     return (
       <div className="ui centered grid">
-        <h1 className="ui left aligned header">
-          Optionaly adjust rotations and material ratios
-          <div className="sub header">
-            Re-orientation of the [0, 0, 1] axis into a new direction and
-            subsequent rotation around it
+        <div className="row">
+          <div className="sixteen wide column">
+            <div className="ui form">
+              <h1 className="ui header">
+                Optionaly adjust rotations and material ratios
+                <div className="sub header">
+                  Re-orientation of the [0, 0, 1] axis into a new direction and subsequent rotation around it
+                </div>
+              </h1>
+            </div>
           </div>
-        </h1>
+        </div>
         {materials.map((material, index) => (
           <div className="row" key={index}>
-            <div className="six wide column">
-              <table className="ui table">
-                <thead>
-                  <tr>
-                    <th colSpan="6">
-                      <button
-                        className="ui mini red icon button"
-                        onClick={() => removeMatrix(index)}
-                      >
-                        <i className="close icon" />
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {material
-                    .get('matrix')
-                    .map((row, index) => (
-                      <tr key={index}>
-                        {row.map((cell, index) => (
-                          <td key={index}>
-                            {Number(cell) % 1
-                              ? Number(cell).toFixed(3)
-                              : Number(cell)}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="one wide column" />
-
             <div className="six wide column">
               <Rotations
                 axes={material.get('axes')}
@@ -116,6 +88,13 @@ class Adjust extends Component {
                 invalidFraction={invalidFraction}
               />
             </div>
+
+            <div className="four wide column" />
+
+            <div className="six wide column">
+              <MaterialMatrix key={index} material={material} removeHandler={() => removeMatrix(index)} />
+            </div>
+
           </div>
         ))}
       </div>

@@ -37,7 +37,7 @@ export default ({ count }) => (
         </div>
 
         <div className="four wide column">
-          <h4 className="ui inverted header">Developed and supported:</h4>
+          <h4 className="ui inverted header">Developed and supported by:</h4>
           <div className="ui inverted link list">
             <a href="https://www.cerit-sc.cz/">
               <img

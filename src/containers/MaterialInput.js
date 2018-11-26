@@ -8,6 +8,7 @@ import { DEFAULT_ELASTICITY } from '../constants/defaults'
 import { addToComposite, removeMatrix } from '../actions'
 
 import TextArea from '../components/TextArea'
+import MaterialMatrix from '../components/MaterialMatrix'
 import MaterialProjectSearch from '../components/MaterialProjectSearch'
 
 class MaterialInput extends Component {
@@ -28,7 +29,7 @@ class MaterialInput extends Component {
           title: 'Invalid matrix',
           text: `Number of rows: ${
             matrix.length
-          }. Matrix dimension must be 6x6.`,
+            }. Matrix dimension must be 6x6.`,
         },
       })
       return
@@ -41,7 +42,7 @@ class MaterialInput extends Component {
             title: 'Invalid matrix',
             text: `Number of columns: ${
               matrix.length
-            }. Matrix dimension must be 6x6.`,
+              }. Matrix dimension must be 6x6.`,
           },
         })
         return
@@ -116,112 +117,83 @@ class MaterialInput extends Component {
               }
             />
           ) : (
-            <div className="ui form">
-              <h1 className="ui header">
-                Enter elastic constants
+              <div className="ui form">
+                <h1 className="ui header">
+                  Enter elastic constants
                 <div className="sub header">
-                  The stiffness matrix is the 6x6-element square matrix A
+                    The stiffness matrix is the 6x6-element square matrix A
                 </div>
-              </h1>
-              {error && (
-                <div className="ui negative tiny message">
-                  <i
-                    className="close icon"
-                    onClick={() => this.setState({ error: null })}
-                  />
+                </h1>
+                {error && (
+                  <div className="ui negative tiny message">
+                    <i
+                      className="close icon"
+                      onClick={() => this.setState({ error: null })}
+                    />
 
-                  <div className="content">
-                    <div className="header">{error.title}</div>
-                    <p>
-                      {[
-                        error.text,
-                        <br />,
-                        <Link
-                          to={{
-                            pathname: '/about',
-                            hash: '#input-validation',
-                          }}
-                        >
-                          More details
+                    <div className="content">
+                      <div className="header">{error.title}</div>
+                      <p>
+                        {[
+                          error.text,
+                          <br />,
+                          <Link
+                            to={{
+                              pathname: '/about',
+                              hash: '#input-validation',
+                            }}
+                          >
+                            More details
                         </Link>,
-                      ]}
-                    </p>
+                        ]}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              <TextArea
-                matrix={matrix}
-                setElasticity={matrix => this.setState({ matrix })}
-              />
-              <br />
-              <button
-                className="ui green button"
-                onClick={() => {
-                  this.addToComposite(matrix)
-                }}
-              >
-                <i className="plus icon" /> Add
+                <TextArea
+                  matrix={matrix}
+                  setElasticity={matrix => this.setState({ matrix })}
+                />
+                <br />
+                <button
+                  className="ui green button"
+                  onClick={() => {
+                    this.addToComposite(matrix)
+                  }}
+                >
+                  <i className="plus icon" /> Add
               </button>
-              <button
-                className="ui blue button"
-                onClick={() => {
-                  this.setState({
-                    matrix: DEFAULT_ELASTICITY,
-                    error: null,
-                  })
-                }}
-              >
-                <i className="eraser icon" /> Reset
+                <button
+                  className="ui blue button"
+                  onClick={() => {
+                    this.setState({
+                      matrix: DEFAULT_ELASTICITY,
+                      error: null,
+                    })
+                  }}
+                >
+                  <i className="eraser icon" /> Reset
               </button>
-              <button
-                className="ui yellow button"
-                onClick={() => {
-                  this.setState({
-                    searchOn: true,
-                  })
-                }}
-              >
-                <i className="search icon" /> Use Search
+                <button
+                  className="ui yellow button"
+                  onClick={() => {
+                    this.setState({
+                      searchOn: true,
+                    })
+                  }}
+                >
+                  <i className="search icon" /> Use Search
               </button>
-            </div>
-          )}
+              </div>
+            )}
         </div>
 
         <div className="four wide column" />
 
         <div className="six wide column">
-          {materials.map((material, key) => (
-            <table key={key} className="ui table">
-              <thead>
-                <tr>
-                  <th colSpan="6">
-                    <button
-                      className="ui mini red icon button"
-                      onClick={() => removeMatrix(key)}
-                    >
-                      <i className="close icon" />
-                    </button>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {material
-                  .get('matrix')
-                  .map((row, index) => (
-                    <tr key={`mat-${index}`}>
-                      {row.map((cell, index) => (
-                        <td key={index}>
-                          {Number(cell) % 1
-                            ? Number(cell).toFixed(3)
-                            : Number(cell)}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          ))}
+          {materials.map((material, index) =>
+            <MaterialMatrix key={index} material={material} removeHandler={() => removeMatrix(index)} />)}
         </div>
       </div>
     )
