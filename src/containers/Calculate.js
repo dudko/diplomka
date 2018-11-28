@@ -11,7 +11,6 @@ import InvalidFractionModal from '../components/InvalidFractionModal'
 class Calculate extends Component {
   state = {
     tables: [],
-    processing: false,
     invalidFraction: false,
   }
 
@@ -54,42 +53,36 @@ class Calculate extends Component {
   componentWillMount() {
     const { materials } = this.props
     const invalidFraction = !isValidFractionSum(materials)
-    const processing = !invalidFraction && materials.size
 
-    this.setState({
-      invalidFraction,
-      processing,
-    })
-
-    if (processing) {
-      const materialsRaw = materials.reduce((result, material) => {
-        result.push({
-          matrix: material.get('matrix'),
-          fraction: material.get('fraction'),
-        })
-        return result
-      }, [])
-
-      console.log(materialsRaw)
-
-      this.props.calculate(materialsRaw)
+    if (invalidFraction) {
+      this.setState({
+        invalidFraction,
+      })
+      return
     }
+
+    const materialsRaw = materials.reduce((result, material) => {
+      result.push({
+        matrix: material.get('matrix'),
+        fraction: material.get('fraction'),
+      })
+      return result
+    }, [])
+
+    setTimeout(() => this.props.calculate(materialsRaw), 0)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      processing: false,
-    })
     // this.analyse(nextProps.results.compositeMatrix)
   }
 
   render() {
     const { materials, results } = this.props
-    const { processing, invalidFraction } = this.state
+    const { invalidFraction } = this.state
 
     if (!materials.size) return <NoMaterialsAdded />
     if (invalidFraction) return <InvalidFractionModal />
-    if (processing)
+    if (!results)
       return (
         <div className="ui active inverted dimmer">
           <div className="ui indeterminate text loader">

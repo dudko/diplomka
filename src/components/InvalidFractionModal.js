@@ -20,7 +20,7 @@ const InvalidFractionModal = ({ push }) => (
       <div className="actions">
         <div
           className="ui green inverted button"
-          onClick={() => push('/adjust')}
+          onClick={() => push('/tool/adjust')}
         >
           <i className="settings icon" /> Adjust
         </div>

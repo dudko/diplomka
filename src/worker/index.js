@@ -158,9 +158,9 @@ const rotateByAngle = (c, lambda) => {
 
   // prettier-ignore
   let A = [
-    [ math.cos(math.unit(lambda, 'deg')), -math.sin(math.unit(lambda, 'deg')), 0 ],
-    [ math.sin(math.unit(lambda, 'deg')), math.cos(math.unit(lambda, 'deg')), 0 ],
-    [ 0, 0, 1 ]
+    [math.cos(math.unit(lambda, 'deg')), -math.sin(math.unit(lambda, 'deg')), 0],
+    [math.sin(math.unit(lambda, 'deg')), math.cos(math.unit(lambda, 'deg')), 0],
+    [0, 0, 1]
   ];
 
   A = math.transpose(A)
@@ -313,28 +313,24 @@ const calculate = (tensors, totalCount = 20000, direction) => {
   return result
 }
 
-onmessage = ({ data: action }) => {
+export const handleAction = action => {
   switch (action.type) {
     case types.ROTATE_MATRIX: {
       let { index, matrix, axes, angle } = action.payload
       matrix = reorientAxes(matrix, axes)
       matrix = rotateByAngle(matrix, angle)
 
-      postMessage({
+      return ({
         type: types.SET_ROTATED,
         index,
         matrix,
         axes,
         angle,
       })
-      break
     }
     case types.CALCULATE: {
-      const m = action.payload.materials.map(m => m)
       let { materials } = action.payload
-
       let results = {}
-
       const finalMaterial = Object.assign({}, materials[0])
 
       for (let i = 1; i < materials.length; i += 1) {
@@ -354,15 +350,12 @@ onmessage = ({ data: action }) => {
       results = calculate(finalMaterial.matrix)
       results.compositeMatrix = finalMaterial.matrix
 
-      postMessage({
+      return ({
         type: types.SET_RESULTS,
         results,
       })
-      break
     }
     default:
-      postMessage()
+      return
   }
 }
-
-onerror = e => console.log(e)
