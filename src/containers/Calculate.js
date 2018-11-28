@@ -12,6 +12,7 @@ class Calculate extends Component {
   state = {
     tables: [],
     invalidFraction: false,
+    processing: true
   }
 
   analyse = matrix => {
@@ -69,20 +70,25 @@ class Calculate extends Component {
       return result
     }, [])
 
-    setTimeout(() => this.props.calculate(materialsRaw), 0)
+    setTimeout(() => this.props.calculate(materialsRaw), 300)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.results !== this.props.results) {
+      this.setState({
+        processing: false
+      })
+    }
     // this.analyse(nextProps.results.compositeMatrix)
   }
 
   render() {
     const { materials, results } = this.props
-    const { invalidFraction } = this.state
+    const { processing, invalidFraction } = this.state
 
     if (!materials.size) return <NoMaterialsAdded />
     if (invalidFraction) return <InvalidFractionModal />
-    if (!results)
+    if (processing)
       return (
         <div className="ui active inverted dimmer">
           <div className="ui indeterminate text loader">
