@@ -1,6 +1,7 @@
 import React from 'react'
 import logoIPM from '../assets/logoIPM.png'
 import logoCerit from '../assets/cerit-sc-logo.png'
+import logoGACR from '../assets/gacr.png'
 
 import Newsletter from './Newsletter'
 
@@ -62,7 +63,29 @@ export default ({ count }) => (
           </div>
         </div>
 
-        <div className="five wide column">
+        <div className="four wide column">
+          <h4 className="ui inverted header">Financial support:</h4>
+          <div className="ui inverted link list">
+            <a href="https://gacr.cz/en/">
+              <img
+                src={logoGACR}
+                alt="Czech Science Foundation"
+                className="ui small footer image"
+              />
+            </a>
+            <p>
+              <b>Czech Science Foundation</b>
+            </p>
+
+            <p>
+              <i>
+                Project No. 17-22139S
+              </i>
+            </p>
+          </div>
+        </div>
+
+        <div className="four wide column">
           <Newsletter />
           <div className="ui inverted link list" style={{ textAlign: 'right' }}>
             <a href="https://github.com/dudko/melasa" className="item">
