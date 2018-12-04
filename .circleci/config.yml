@@ -3,16 +3,23 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest
-
     branches:
       only:
-        - dev
+        - master
 
     steps:
       - checkout
-      - run: sudo apt install -y rsync
-      - run: |
-          npm i
-          npm run build
-      - run: ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
-      - run: rsync -avh build/ root@$DEV_SERVER:/usr/share/nginx/html --delete
+      - run:
+          name: 'Build'
+          command: |
+            npm i
+            npm run build
+          working_directory: ~/project/react-app
+      
+      - run:
+          name: 'Deploy build'
+          command: |
+            sudo apt install -y rsync
+            ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
+            rsync -avh ~/project/react-app/build/ root@$DEV_SERVER:/usr/share/nginx/html --delete
+            ssh -t root@$DEV_SERVER "systemctl restart nginx"
