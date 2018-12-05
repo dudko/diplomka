@@ -1,30 +1,60 @@
 # MELASA (Multi-phase ELAStic Aggregates)
 
-> software tool for modeling anisotropic elastic properties of lamellar composites
+> tool for computations and visualizations of anisotropic elastic properties of lamellar (nano-)composites
 
-## Getting Started
+## Development
 
 ### Requirements
 
 - node.js (tested with version >=6.x )
 
-### Installation
-
-In root directory with `package.json` run:
+### Getting Started
 
 ```
+cd react-app
+cp .env.example .env # add missing secrets
 npm i
-```
-
-### Development
-
-To start the app in development mode run:
-
-```
 npm start
 ```
 
-MELASA was created with [create-react-app](https://github.com/facebook/create-react-app) requiring no build configuration.
+### Deployment
+
+#### Requirements
+
+* docker
+
+#### Steps
+
+1. add `melasa-cerit-sc.pem` to directory `secrets`
+1. ```
+    docker build . \
+        --build-arg REACT_APP_MATERIAL_PROJECT_API=$REACT_APP_MATERIAL_PROJECT_API \
+        --build-arg REACT_APP_SUBSCRIBERS_DB=$REACT_APP_SUBSCRIBERS_DB \
+        -t melasa-web:latest
+    ```
+1. ```
+    docker run \
+        -d \
+        -p 80:80 \
+        -p 443:443 \
+        --restart=always \
+        melasa-web:latest
+    ```
+
+#### Using CircleCI build with nginx
+
+```
+docker build . \
+    -f ./nginx/Dockerfile \
+    -t melasa-web:latest \
+docker run \
+    -d \
+    -p 80:80 \
+    -p 443:443 \
+    -v /root/app:/usr/share/nginx/html \
+    --restart=always \
+    melasa-web:latest
+```
 
 ## License
 

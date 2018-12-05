@@ -21,5 +21,4 @@ jobs:
           command: |
             sudo apt install -y rsync
             ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
-            rsync -avh ~/project/react-app/build/ root@$DEV_SERVER:/usr/share/nginx/html --delete
-            ssh -t root@$DEV_SERVER "systemctl restart nginx"
+            rsync -avh ~/project/react-app/build/ root@$DEV_SERVER:/root/app --delete
