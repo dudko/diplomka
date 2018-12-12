@@ -101,26 +101,24 @@ class Calculate extends Component {
 
     return (
       <div className="ui grid">
-        <div className="two column centered row">
-          <div className="eigth wide column">
-            <Plot
-              key={"youngs"}
-              points={results}
-              redraw={true}
-              propertyName={"youngs"}
-              title={"Young's modulus"}
-              unit={"GPa"}
-            />
-          </div>
-          <div className="eigth wide column">
-            <Plot
-              key={"compress"}
-              points={results}
-              redraw={true}
-              propertyName={"compress"}
-              title={"Linear compressibility"}
-            />
-          </div>
+        <div className="centered row">
+          <Plot
+            key={"youngs"}
+            points={results}
+            redraw={true}
+            propertyName={"youngs"}
+            title={"Young's modulus"}
+            unit={"GPa"}
+          />
+        </div>
+        <div className="centered row">
+          <Plot
+            key={"compress"}
+            points={results}
+            redraw={true}
+            propertyName={"compress"}
+            title={"Linear compressibility"}
+          />
         </div>
 
         <div className="row">

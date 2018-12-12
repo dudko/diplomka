@@ -121,7 +121,7 @@ class MaterialInput extends Component {
               <h1 className="ui header">
                 Enter elastic constants
                 <div className="sub header">
-                  The stiffness matrix is the 6x6-element square matrix A
+                  The main input are 6x6 matrices of elastic stiffnesses.
                 </div>
               </h1>
               {error && (

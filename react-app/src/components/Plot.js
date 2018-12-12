@@ -21,14 +21,14 @@ class Plot extends Component {
       font: {
         size: 15,
       },
-      width: 450,
-      height: 450,
+      width: 600,
+      height: 600,
       margin: {
         l: 0,
         r: 0,
-        b: 10,
+        b: 0,
         t: 0,
-        pad: 0,
+        pad: 10,
       },
     };
 
