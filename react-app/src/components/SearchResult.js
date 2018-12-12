@@ -16,7 +16,10 @@ const SearchResult = ({ material, setMatrix }) => (
             target="_blank"
             rel="noopener noreferrer"
           >
-            <h3>{material.pretty_formula}</h3>
+            <h3>
+              {`${material.pretty_formula} `}
+              <i class="small external alternate icon" />
+            </h3>
           </a>
         </th>
         <th colSpan="1" />
