@@ -1,0 +1,19 @@
+version: "3"
+services:
+  reverse-proxy:
+    image: reverse-proxy
+    build:
+      context: ./
+      dockerfile: ./docker/reverse-proxy.Dockerfile
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+
+  node-server:
+    image: node-server
+    build:
+      context: ./
+      dockerfile: ./docker/node-server.Dockerfile
+    restart: unless-stopped
+    env_file: ./server/.env

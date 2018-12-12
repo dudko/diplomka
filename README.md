@@ -12,7 +12,7 @@
 
 ```
 cd react-app
-cp .env.example .env # add missing secrets
+cp .env.example .env # and edit
 npm i
 npm start
 ```
@@ -21,40 +21,19 @@ npm start
 
 #### Requirements
 
-* docker
+- docker, docker-compose
 
 #### Steps
 
 1. add `melasa-cerit-sc.pem` to directory `secrets`
 1. ```
-    docker build . \
-        --build-arg REACT_APP_MATERIAL_PROJECT_API=$REACT_APP_MATERIAL_PROJECT_API \
-        --build-arg REACT_APP_SUBSCRIBERS_DB=$REACT_APP_SUBSCRIBERS_DB \
-        -t melasa-web:latest
-    ```
-1. ```
-    docker run \
-        -d \
-        -p 80:80 \
-        -p 443:443 \
-        --restart=always \
-        melasa-web:latest
-    ```
-
-#### Using CircleCI build with nginx
-
-```
-docker build . \
-    -f ./nginx/Dockerfile \
-    -t melasa-web:latest \
-docker run \
-    -d \
-    -p 80:80 \
-    -p 443:443 \
-    -v /root/app:/usr/share/nginx/html \
-    --restart=always \
-    melasa-web:latest
-```
+   cd react-app
+   cp env.example .env # and edit`
+   npm i
+   npm run build
+   ```
+1. `cp server/{env.example,.env} # and edit`
+1. `docker-compose up -d --force-recreate --build`
 
 ## License
 

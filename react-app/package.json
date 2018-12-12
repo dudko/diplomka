@@ -1,7 +1,13 @@
 {
-  "name": "melasa",
+  "name": "melasa-react-app",
   "version": "0.1.0",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dudko/melasa.git"
+  },
+  "author": "Dušan Lago",
+  "license": "MIT",
   "dependencies": {
     "history": "^4.7.2",
     "immutable": "^3.8.2",

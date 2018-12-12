@@ -16,28 +16,19 @@ export default class MaterialProjectSearch extends Component {
 
   searchMaterial(keyword) {
     fetch(
-      `https://cors-anywhere.herokuapp.com/https://www.materialsproject.org/rest/v1/materials/${keyword}/vasp?API_KEY=${
-        process.env.REACT_APP_MATERIAL_PROJECT_API
-      }`
+      `${process.env.REACT_APP_API_ENDPOINT}/material/search?keyword=${keyword}`
     )
-      .then(response => {
-        if (response.status === 400) {
+      .then(response => response.json())
+      .then(results => {
+        if (!results.length) {
           throw new Error("no results");
         }
-        return response.json();
-      })
-      .then(
-        results =>
-          (results.response &&
-            results.response.filter(result => result.elasticity)) ||
-          []
-      )
-      .then(result =>
+
         this.setState({
-          searchResults: result,
+          searchResults: results,
           searching: false,
-        })
-      )
+        });
+      })
       .catch(err => {
         console.log(err);
         if (err.message === "no results") {

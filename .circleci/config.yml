@@ -10,15 +10,23 @@ jobs:
     steps:
       - checkout
       - run:
-          name: 'Build'
+          name: "Test melasa-node-server"
+          command: |
+            npm i
+            npm run test
+          working_directory: ~/project/node-server
+
+      - run:
+          name: "Build"
           command: |
             npm i
             npm run build
           working_directory: ~/project/react-app
-      
+
       - run:
-          name: 'Deploy build'
+          name: "Deploy"
           command: |
             sudo apt install -y rsync
             ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
-            rsync -avh ~/project/react-app/build/ root@$DEV_SERVER:/root/app --delete
+            rsync -avh ~/project/react-app/build/ root@$DEV_SERVER:/root/melasa/react-app/build --delete
+            ssh root@melasa.cerit-sc.cz -t "cd melasa; docker-compose up -d --force-recreate --build;"
