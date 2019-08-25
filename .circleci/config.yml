@@ -27,6 +27,6 @@ jobs:
           name: "Deploy"
           command: |
             sudo apt install -y rsync
-            ssh-keyscan -H $DEV_SERVER >> ~/.ssh/known_hosts
-            rsync -avh ~/project/react-app/build/ root@$DEV_SERVER:/root/melasa/react-app/build --delete
-            ssh root@melasa.cerit-sc.cz -t "cd melasa; docker-compose up -d --force-recreate --build;"
+            ssh-keyscan -H $HOSTNAME >> ~/.ssh/known_hosts
+            rsync -avh ~/project/react-app/build/ $USER@$HOSTNAME:/home/$USER/melasa/react-app/build --delete
+            ssh $USER@melasa.cerit-sc.cz -t "cd melasa && git pull && docker-compose up -d --force-recreate --build;"
