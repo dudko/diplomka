@@ -15,10 +15,25 @@ export default class MaterialProjectSearch extends Component {
   }
 
   searchMaterial(keyword) {
+    // fetch(
+    //   `${process.env.REACT_APP_API_ENDPOINT}/material/search?keyword=${keyword}`
+    // )
+    //   .then(response => response.json())
     fetch(
-      `${process.env.REACT_APP_API_ENDPOINT}/material/search?keyword=${keyword}`
+      `https://cors-anywhere.herokuapp.com/https://www.materialsproject.org/rest/v1/materials/${keyword}/vasp?API_KEY=${process.env.REACT_APP_MATERIAL_PROJECT_API}`
     )
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 400) {
+          throw new Error("no results");
+        }
+        return response.json();
+      })
+      .then(
+        results =>
+          (results.response &&
+            results.response.filter(result => result.elasticity)) ||
+          []
+      )
       .then(results => {
         if (!results.length) {
           throw new Error("no results");
