@@ -16,4 +16,4 @@ services:
       context: ./
       dockerfile: ./docker/node-server.Dockerfile
     restart: unless-stopped
-    env_file: ./server/.env
+    env_file: ./node-server/.env

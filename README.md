@@ -8,7 +8,7 @@
 
 - node.js (tested with version >=6.x )
 
-### Getting Started
+### Local development
 
 ```
 cd react-app
@@ -17,23 +17,32 @@ npm i
 npm start
 ```
 
-### Deployment
+In another terminal do:
+```
+cd node-server
+cp .env.example .env # and edit
+npm i
+node index.js
+```
 
-#### Requirements
+## Deployment to production server
+
+### Requirements
 
 - docker, docker-compose
 
-#### Steps
+### Server setup
 
-1. add `melasa-cerit-sc.pem` to directory `secrets`
+1. clone the repo and `cd` into it
+1. create directory `secrets` and add `melasa-cerit-sc.pem` to it
 1. ```
    cd react-app
-   cp env.example .env # and edit`
+   cp env.example .env # in this case REACT_APP_API_ENDPOINT=https://melasa.cerit-sc.cz/api
    npm i
    npm run build
    ```
-1. `cp server/{env.example,.env} # and edit`
-1. `docker-compose up -d --force-recreate --build`
+1. `cp node-server/{env.example,.env} # and edit`
+1. in repo root run `docker-compose up -d --force-recreate --build`
 
 ## License
 
