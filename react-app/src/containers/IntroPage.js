@@ -26,6 +26,18 @@ const IntroPage = () => (
         allows for including internal rotation of coexisting phases.
       </p>
 
+      <p>
+        <i className="file outline icon" /> <b>Published article: </b> <br />
+        <a href="https://doi.org/10.1016/j.cpc.2019.106863">
+          Multi-phase ELAStic Aggregates (MELASA) software tool for modeling
+          anisotropic elastic properties of lamellar composites
+        </a>
+        <br />
+        Computer Physics Communications
+        <br />
+        <i>2019, 106863, ISSN 0010-4655</i>
+      </p>
+
       <div className="ui buttons">
         <Link className="ui positive button" to="/tool">
           <i className="edit icon" /> Try now
