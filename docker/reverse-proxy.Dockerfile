@@ -1,6 +1,7 @@
 # nginx server
 FROM nginx:1.13-alpine
 COPY ./react-app/build /usr/share/nginx/html
+COPY ./custom_visualisation /usr/share/nginx/html/custom_visualisation
 COPY ./docker/melasa-nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./docker/melasa.cerit-sc.crt /etc/ssl/
 COPY ./secrets/melasa.cerit-sc.pem /etc/ssl/
