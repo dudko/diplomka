@@ -31,7 +31,6 @@ const SearchResult = ({ material, setMatrix }) => (
         <th colSpan="2" style={{ textAlign: "right" }}>
           <button
             className="ui mini green button"
-            onClick={() => setMatrix(material.elasticity.elastic_tensor)}
           >
             <i className="plus icon" /> Use
           </button>
