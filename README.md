@@ -44,6 +44,14 @@ node index.js
 1. `cp node-server/{env.example,.env} # and edit`
 1. in repo root run `docker-compose up -d --force-recreate --build`
 
+#### Docker issue with MTU
+
+Network card provided to virtual machine hosting the MELASA do not have the default MTU of 1500. Problem and its solution is described [here](https://mlohr.com/docker-mtu/). MTU value can be determined with:
+
+```sh
+$ docker network inspect bridge  | grep mtu | awk '{print $2}'
+```
+
 ## License
 
 Licensed as [MIT](https://github.com/dudko/melasa/blob/master/LICENSE).
