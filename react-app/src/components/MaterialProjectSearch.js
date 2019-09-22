@@ -25,9 +25,8 @@ export default class MaterialProjectSearch extends Component {
         return response.json();
       })
       .then(
-        results =>
-          (results.response &&
-            results.response.filter(result => result.elasticity)) ||
+        results => 
+          results.filter(result => result.elasticity && result.elasticity.elastic_tensor_original) ||
           []
       )
       .then(results => {

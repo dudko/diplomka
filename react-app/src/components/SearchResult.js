@@ -18,7 +18,7 @@ const SearchResult = ({ material, setMatrix }) => (
           >
             <h3>
               {`${material.pretty_formula} `}
-              <i class="small external alternate icon" />
+              <i className="small external alternate icon" />
             </h3>
           </a>
         </th>
