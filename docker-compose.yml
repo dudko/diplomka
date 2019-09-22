@@ -17,3 +17,9 @@ services:
       dockerfile: ./docker/node-server.Dockerfile
     restart: unless-stopped
     env_file: ./node-server/.env
+
+networks:                                
+  default:                               
+    driver: bridge                       
+    driver_opts:                         
+      com.docker.network.driver.mtu: 1442
