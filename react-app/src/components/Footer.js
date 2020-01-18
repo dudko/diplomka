@@ -3,8 +3,6 @@ import logoIPM from "../assets/footer/ipm.png";
 import logoCerit from "../assets/footer/cerit-sc.png";
 import logoGACR from "../assets/footer/gacr.png";
 
-import Newsletter from "./Newsletter";
-
 export default ({ count }) => (
   <div className="ui inverted vertical segment">
     <div className="ui container">
@@ -91,8 +89,7 @@ export default ({ count }) => (
         </div>
 
         <div className="four wide column">
-          <Newsletter />
-          <div className="ui inverted link list" style={{ textAlign: "right" }}>
+          <div className="ui inverted link list">
             <a href="https://github.com/dudko/melasa" className="item">
               <i className="small github icon" style={{ fontSize: "1.5em" }} />
             </a>
