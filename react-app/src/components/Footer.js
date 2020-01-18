@@ -39,7 +39,7 @@ export default ({ count }) => (
         </div>
 
         <div className="four wide column">
-          <h4 className="ui inverted header">Developed and supported by:</h4>
+          <h4 className="ui inverted header">Developed and financilly supported by:</h4>
           <div className="ui inverted link list">
             <a href="https://www.cerit-sc.cz/">
               <img
@@ -61,12 +61,17 @@ export default ({ count }) => (
               <a href="https://github.com/dudko" className="item">
                 Mgr. Dušan Lago
               </a>
+              <br/>
+              <i>Consultant:</i>{" "}
+              <a href="https://www.muni.cz/lide/39685-tomas-rebok" className="item">
+                RNDr. Tomáš Rebok, Ph.D.
+              </a>
             </p>
           </div>
         </div>
 
         <div className="four wide column">
-          <h4 className="ui inverted header">Financial support:</h4>
+          <h4 className="ui inverted header">Financially supported by:</h4>
           <div className="ui inverted link list">
             <a href="https://gacr.cz/en/">
               <img
